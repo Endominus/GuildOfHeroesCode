@@ -58,7 +58,7 @@ def main():
 		if key_down > 0:
 			x, y = key_pressed()
 		
-		player.change_momentum(x, y)
+		player.change_velocity(x, y)
 		
 		allsprites.update()
 		screen.blit(background, (0, 0))
