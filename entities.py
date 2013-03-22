@@ -1,5 +1,6 @@
 import os, sys
 import pygame
+import math
 from pygame.locals import *
 
 MAX_SPEED = 8
@@ -62,3 +63,78 @@ class Player_Character(pygame.sprite.Sprite):
 		elif x < 0:
 			self.hor_velocity = max(-MAX_SPEED, self.hor_velocity + x)
 		self._degradeSpeed()
+
+class Frame:
+    #Frame object contains a position representing where the camera is looking
+    #on the level. Sprites should take this as an object so they can use its
+    #absolute position and their absolute position to determine where to
+    #draw themselves on the screen
+
+    x = 100
+    y = 100
+    #position, pixels
+    dxdt = 0
+    dydt = 0
+    #velocity, pixels/time step
+    d2xdt2 = 0
+    d2ydt2 = 0
+    #accelleration, pixels/time step^2
+
+    #bad physics
+    nDamping = 1
+    maxSpeed = 8
+    accel = 3
+
+    m = -1
+    mu_k = -1
+    c_d = -1
+    f_k = -1
+    
+    #not implemented
+    use_good_physics = False
+
+    def update_keys(self, x, y):
+	if x==0:
+	    self.d2xdt2 = 0
+	else:
+	    self.d2xdt2 = math.copysign(self.accel, x)
+	
+	if y==0:
+	    self.d2ydt2 = 0
+	else:
+	    self.d2ydt2 = math.copysign(self.accel, y)
+
+    def run_kinetics(self):
+	self.dxdt += self.d2xdt2
+	self.dydt += self.d2ydt2
+	
+	self.dxdt = min(self.maxSpeed, self.dxdt)
+	self.dxdt = max(-self.maxSpeed, self.dxdt)
+	self.dydt = min(self.maxSpeed, self.dydt)
+	self.dydt = max(-self.maxSpeed, self.dydt)
+
+	if self.dxdt != 0:
+	    self.dxdt -= math.copysign(self.nDamping, self.dxdt)
+	
+	if self.dydt != 0:
+	    self.dydt -= math.copysign(self.nDamping, self.dydt)
+
+	self.x += self.dxdt
+	self.y += self.dydt
+
+	print self.x
+	print self.y
+
+
+
+
+
+
+
+
+
+
+
+
+
+

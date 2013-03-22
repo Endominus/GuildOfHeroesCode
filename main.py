@@ -39,6 +39,8 @@ def main():
 	allsprites = pygame.sprite.RenderPlain((player))
 	clock = pygame.time.Clock()
 	
+	frm = Frame()
+
 	key_down = 0
 	while 1:
 		clock.tick(60)
@@ -59,6 +61,8 @@ def main():
 			x, y = key_pressed()
 		
 		player.change_velocity(x, y)
+		frm.update_keys(x, y)
+		frm.run_kinetics()
 		
 		allsprites.update()
 		screen.blit(background, (0, 0))
