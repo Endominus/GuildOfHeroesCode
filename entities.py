@@ -21,48 +21,51 @@ def load_image(name, colorkey=None):
 
 class Player_Character(pygame.sprite.Sprite):
 	"""Main character, Ghost. This controls her image on the screen."""
-	vert_velocity = 0
-	hor_velocity = 0
-	def __init__(self, image):
+#	vert_velocity = 0
+#	hor_velocity = 0
+	frame = 0
+	def __init__(self, image, frm):
 		pygame.sprite.Sprite.__init__(self)
 		self.image, self.rect = load_image(image, -1)
 		screen = pygame.display.get_surface()
 		self.area = screen.get_rect()
-		self.rect.topleft = 100, 100
-		self.vert_velocity = 0
-		self.hor_velocity = 0
+		self.rect.topleft = 750, 400
+#		self.vert_velocity = 0
+#		self.hor_velocity = 0
+		self.frame = frm
 	
-	def _degradeSpeed(self):
-		if self.vert_velocity > 0:
-			self.vert_velocity = max(0, self.vert_velocity-1)
-		else:
-			self.vert_velocity = min(0, self.vert_velocity+1)
-		if self.hor_velocity > 0:
-			self.hor_velocity = max(0, self.hor_velocity-1)
-		else:
-			self.hor_velocity = min(0, self.hor_velocity+1)
+#	def _degradeSpeed(self):
+#		if self.vert_velocity > 0:
+#			self.vert_velocity = max(0, self.vert_velocity-1)
+#		else:
+#			self.vert_velocity = min(0, self.vert_velocity+1)
+#		if self.hor_velocity > 0:
+#			self.hor_velocity = max(0, self.hor_velocity-1)
+#		else:
+#			self.hor_velocity = min(0, self.hor_velocity+1)
 	
 	def update(self):
-		newpos = self.rect.move((self.hor_velocity, self.vert_velocity))
-		if not self.area.contains(newpos):
-			if self.rect.left < self.area.left or self.rect.right > self.area.right:
-				newpos = self.rect.move((-self.hor_velocity, 0))
-				self.hor_velocity = 0
-			if self.rect.top > self.area.top or self.rect.bottom < self.area.bottom:
-				newpos = self.rect.move((0, -self.vert_velocity))
-				self.vert_velocity = 0
-		self.rect = newpos
+#		newpos = self.rect.move((self.hor_velocity, self.vert_velocity))
+#		if not self.area.contains(newpos):
+#			if self.rect.left < self.area.left or self.rect.right > self.area.right:
+#				newpos = self.rect.move((-self.hor_velocity, 0))
+#				self.hor_velocity = 0
+#			if self.rect.top > self.area.top or self.rect.bottom < self.area.bottom:
+#				newpos = self.rect.move((0, -self.vert_velocity))
+#				self.vert_velocity = 0
+#		self.rect = newpos
+		pass
 		
-	def change_velocity(self, x, y):
-		if y < 0:
-			self.vert_velocity = max(-MAX_SPEED, self.vert_velocity+y)
-		elif y > 0:
-			self.vert_velocity = min(MAX_SPEED, self.vert_velocity+y)
-		if x > 0:
-			self.hor_velocity = min(MAX_SPEED, self.hor_velocity + x)
-		elif x < 0:
-			self.hor_velocity = max(-MAX_SPEED, self.hor_velocity + x)
-		self._degradeSpeed()
+#	def change_velocity(self, x, y):
+#		if y < 0:
+#			self.vert_velocity = max(-MAX_SPEED, self.vert_velocity+y)
+#		elif y > 0:
+#			self.vert_velocity = min(MAX_SPEED, self.vert_velocity+y)
+#		if x > 0:
+#			self.hor_velocity = min(MAX_SPEED, self.hor_velocity + x)
+#		elif x < 0:
+#			self.hor_velocity = max(-MAX_SPEED, self.hor_velocity + x)
+#		self._degradeSpeed()
 
 class Obstacle(pygame.sprite.Sprite):
     x_pos = 0
@@ -116,6 +119,13 @@ class Frame:
     #not implemented
     use_good_physics = False
 
+    #boundary to navigable area
+    x_min = 0
+    x_max = 0
+    y_min = 0
+    y_max = 0
+    bound = False
+
     def update_keys(self, x, y):
 	if x==0:
 	    self.d2xdt2 = 0
@@ -145,17 +155,16 @@ class Frame:
 	self.x += self.dxdt
 	self.y += self.dydt
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+	if(self.bound):
+	    self.x = max(self.x, self.x_min)
+	    self.x = min(self.x, self.x_max)
+	    self.y = max(self.y, self.y_min)
+	    self.y = min(self.y, self.y_max)
+	
+    def bind(self, x1, x2, y1, y2):
+	self.x_min = x1
+	self.x_max = x2
+	self.y_min = y1
+	self.y_max = y2
+	self.bound = True
 

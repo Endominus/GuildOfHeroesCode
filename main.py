@@ -36,10 +36,13 @@ def main():
 	pygame.display.flip()
 	
 	frm = Frame()
-	player = Player_Character('Ghost.bmp')
+	frm.bind(-500, 500, -500, 500)
+	player = Player_Character('Ghost.bmp', frm)
 	rock = Obstacle('Ghost.bmp', 200, 200, frm)
-	allsprites = pygame.sprite.RenderPlain((player))
-	allsprites2 = pygame.sprite.RenderPlain((rock))
+	rock2 = Obstacle('Ghost.bmp', 800, 200, frm)
+	rock3 = Obstacle('Ghost.bmp', 200, 800, frm)
+	rock4 = Obstacle('Ghost.bmp', 600, 600, frm)
+	allsprites = pygame.sprite.RenderPlain((player, rock, rock2, rock3, rock4))
 	clock = pygame.time.Clock()
 	
 
@@ -62,15 +65,12 @@ def main():
 		if key_down > 0:
 			x, y = key_pressed()
 		
-		player.change_velocity(x, y)
 		frm.update_keys(x, y)
 		frm.run_kinetics()
 		
 		allsprites.update()
-		allsprites2.update()
 		screen.blit(background, (0, 0))
 		allsprites.draw(screen)
-		allsprites2.draw(screen)
 		pygame.display.flip()
 
 				
