@@ -156,8 +156,6 @@ class Frame:
 	    self.dydt -= math.copysign(self.nDamping, self.dydt)
 
 	self.fixcollision()
-	print self.dxdt
-	print self.dydt
 
 	self.x += self.dxdt
 	self.y += self.dydt
@@ -189,7 +187,6 @@ class Frame:
 	    self.player.rect.move_ip(self.dxdt, self.dydt)  
 	    collided = pygame.sprite.spritecollide(self.player, self.obstacles, False)
 	    if(len(collided) > 0):
-		print "collision"
 		self.dxdt = 0
 		self.dydt = 0
 	    del self.player.rect
