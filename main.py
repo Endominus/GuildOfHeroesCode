@@ -35,11 +35,13 @@ def main():
 	screen.blit(background, (0, 0))
 	pygame.display.flip()
 	
+	frm = Frame()
 	player = Player_Character('Ghost.bmp')
+	rock = Obstacle('Ghost.bmp', 200, 200, frm)
 	allsprites = pygame.sprite.RenderPlain((player))
+	allsprites2 = pygame.sprite.RenderPlain((rock))
 	clock = pygame.time.Clock()
 	
-	frm = Frame()
 
 	key_down = 0
 	while 1:
@@ -65,8 +67,10 @@ def main():
 		frm.run_kinetics()
 		
 		allsprites.update()
+		allsprites2.update()
 		screen.blit(background, (0, 0))
 		allsprites.draw(screen)
+		allsprites2.draw(screen)
 		pygame.display.flip()
 
 				

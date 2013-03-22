@@ -64,14 +64,37 @@ class Player_Character(pygame.sprite.Sprite):
 			self.hor_velocity = max(-MAX_SPEED, self.hor_velocity + x)
 		self._degradeSpeed()
 
+class Obstacle(pygame.sprite.Sprite):
+    x_pos = 0
+    y_pos = 0
+    frame = 0
+    #absolute coordinates
+
+    def __init__(self, image, x, y, frm):
+	    pygame.sprite.Sprite.__init__(self)
+	    self.image, self.rect = load_image(image, -1)
+	    screen = pygame.display.get_surface()
+	    self.area = screen.get_rect()
+	    self.rect.topleft = 100, 100
+	    self.x_pos = x
+	    self.y_pos = y
+	    self.frame = frm
+	    self.update()
+
+    def update(self):
+	self.rect = (self.x_pos - self.frame.x, self.y_pos - self.frame.y)
+
+    
+
 class Frame:
     #Frame object contains a position representing where the camera is looking
     #on the level. Sprites should take this as an object so they can use its
     #absolute position and their absolute position to determine where to
     #draw themselves on the screen
-
-    x = 100
-    y = 100
+    
+    #top left corner
+    x = 0
+    y = 0
     #position, pixels
     dxdt = 0
     dydt = 0
@@ -122,8 +145,6 @@ class Frame:
 	self.x += self.dxdt
 	self.y += self.dydt
 
-	print self.x
-	print self.y
 
 
 
