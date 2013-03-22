@@ -183,16 +183,17 @@ class Frame:
 	    collided = pygame.sprite.spritecollide(self.player, self.obstacles, False)
 	    if(len(collided) > 0):
 		return
-	    oldpos = pygame.Rect.copy(self.player.rect)
-	    self.player.rect.move_ip(self.dxdt, self.dydt)  
+
+	    self.player.rect.move_ip(self.dxdt, 0)  
 	    collided = pygame.sprite.spritecollide(self.player, self.obstacles, False)
+	    self.player.rect.move_ip(-self.dxdt, 0)
 	    if(len(collided) > 0):
 		self.dxdt = 0
+
+	    self.player.rect.move_ip(0, self.dydt)  
+	    collided = pygame.sprite.spritecollide(self.player, self.obstacles, False)
+	    self.player.rect.move_ip(0, -self.dydt)
+	    if(len(collided) > 0):
 		self.dydt = 0
-	    del self.player.rect
-	    self.player.rect = oldpos
-
-
-
 
 
