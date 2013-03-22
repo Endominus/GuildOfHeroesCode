@@ -28,7 +28,7 @@ def main():
 	
 	if pygame.font:
 		font = pygame.font.Font(None, 36)
-		text = font.render("This is the main game window.", 1, (20, 100, 20))
+		text = font.render("This is the main Etna window.", 1, (20, 100, 20))
 		textpos = text.get_rect(centerx=background.get_width()/2)
 		background.blit(text, textpos)
 		
