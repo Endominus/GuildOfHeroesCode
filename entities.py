@@ -29,10 +29,12 @@ class Player_Character(pygame.sprite.Sprite):
 		self.image, self.rect = load_image(image, -1)
 		screen = pygame.display.get_surface()
 		self.area = screen.get_rect()
+		print self.rect
 		self.rect.topleft = 750, 400
 #		self.vert_velocity = 0
 #		self.hor_velocity = 0
 		self.frame = frm
+		print self.rect
 	
 #	def _degradeSpeed(self):
 #		if self.vert_velocity > 0:
@@ -85,9 +87,9 @@ class Obstacle(pygame.sprite.Sprite):
 	    self.update()
 
     def update(self):
-	self.rect = (self.x_pos - self.frame.x, self.y_pos - self.frame.y)
-
+	self.rect.topleft = self.x_pos - self.frame.x, self.y_pos - self.frame.y
     
+	print self.rect
 
 class Frame:
     #Frame object contains a position representing where the camera is looking
