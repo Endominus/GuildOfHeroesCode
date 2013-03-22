@@ -29,12 +29,10 @@ class Player_Character(pygame.sprite.Sprite):
 		self.image, self.rect = load_image(image, -1)
 		screen = pygame.display.get_surface()
 		self.area = screen.get_rect()
-		print self.rect
 		self.rect.topleft = 750, 400
 #		self.vert_velocity = 0
 #		self.hor_velocity = 0
 		self.frame = frm
-		print self.rect
 	
 #	def _degradeSpeed(self):
 #		if self.vert_velocity > 0:
@@ -88,8 +86,6 @@ class Obstacle(pygame.sprite.Sprite):
 
     def update(self):
 	self.rect.topleft = self.x_pos - self.frame.x, self.y_pos - self.frame.y
-    
-	print self.rect
 
 class Frame:
     #Frame object contains a position representing where the camera is looking
@@ -128,6 +124,11 @@ class Frame:
     y_max = 0
     bound = False
 
+    #obsctacles
+    obstacles = 0
+    obstructed = False
+    player = 0
+
     def update_keys(self, x, y):
 	if x==0:
 	    self.d2xdt2 = 0
@@ -154,6 +155,10 @@ class Frame:
 	if self.dydt != 0:
 	    self.dydt -= math.copysign(self.nDamping, self.dydt)
 
+	self.fixcollision()
+	print self.dxdt
+	print self.dydt
+
 	self.x += self.dxdt
 	self.y += self.dydt
 
@@ -169,4 +174,28 @@ class Frame:
 	self.y_min = y1
 	self.y_max = y2
 	self.bound = True
+
+    def obstruct(self, player, group):
+	self.obstacles = group
+	self.player = player
+	self.obstructed = True
+
+    def fixcollision(self):
+	if(self.obstructed):
+	    collided = pygame.sprite.spritecollide(self.player, self.obstacles, False)
+	    if(len(collided) > 0):
+		return
+	    oldpos = pygame.Rect.copy(self.player.rect)
+	    self.player.rect.move_ip(self.dxdt, self.dydt)  
+	    collided = pygame.sprite.spritecollide(self.player, self.obstacles, False)
+	    if(len(collided) > 0):
+		print "collision"
+		self.dxdt = 0
+		self.dydt = 0
+	    del self.player.rect
+	    self.player.rect = oldpos
+
+
+
+
 

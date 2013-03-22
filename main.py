@@ -43,6 +43,8 @@ def main():
 	rock3 = Obstacle('Ghost.bmp', 200, 800, frm)
 	rock4 = Obstacle('Ghost.bmp', 600, 600, frm)
 	allsprites = pygame.sprite.RenderPlain((player, rock, rock2, rock3, rock4))
+	obstacles = pygame.sprite.Group((rock, rock4, rock2, rock3))
+	frm.obstruct(player, obstacles)
 	clock = pygame.time.Clock()
 	
 
