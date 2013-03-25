@@ -3,6 +3,9 @@ from entities import *
 import pygame
 from pygame.locals import *
 
+SCREEN_WIDTH = 1024
+SCREEN_HEIGHT = 768
+
 def key_pressed():
 	x, y = 0, 0
 	keysPressed = pygame.key.get_pressed()
@@ -18,7 +21,7 @@ def key_pressed():
 
 def main():
 	pygame.init()
-	screen = pygame.display.set_mode((1600, 900))
+	screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 	pygame.display.set_caption('Guild of Heroes Test')
 	pygame.mouse.set_visible(0)
 	
@@ -38,10 +41,10 @@ def main():
 	frm = Frame()
 	frm.bind(-500, 500, -500, 500)
 	player = Player_Character('Ghost.bmp', frm)
-	rock = Obstacle('Ghost.bmp', 200, 200, frm)
-	rock2 = Obstacle('Ghost.bmp', 800, 200, frm)
-	rock3 = Obstacle('Ghost.bmp', 200, 800, frm)
-	rock4 = Obstacle('Ghost.bmp', 600, 600, frm)
+	rock = Obstacle('Concrete Wall Horizontal.png', 200, 200, frm, False)
+	rock2 = Obstacle('Concrete Wall Horizontal.png', 800, 200, frm, False)
+	rock3 = Obstacle('Concrete Wall Horizontal.png', 200, 800, frm, False)
+	rock4 = Obstacle('Concrete Wall Horizontal.png', 600, 600, frm, False)
 	allsprites = pygame.sprite.RenderPlain((player, rock, rock2, rock3, rock4))
 	obstacles = pygame.sprite.Group((rock, rock4, rock2, rock3))
 	frm.obstruct(player, obstacles)
