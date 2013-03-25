@@ -114,10 +114,10 @@ class Frame:
 	maxSpeed = 8
 	accel = 3
 
-	m = -1
-	mu_k = -1
-	c_d = -1
-	f_k = -1
+	m = 100.0
+	mu_k = 0.3
+	c_d = 0.1
+	f_k = 10.0
 
 	#not implemented
 	use_good_physics = False
@@ -146,20 +146,25 @@ class Frame:
 			self.d2ydt2 = math.copysign(self.accel, y)
 
 	def run_kinetics(self):
-		self.dxdt += self.d2xdt2
-		self.dydt += self.d2ydt2
-		
-		self.dxdt = min(self.maxSpeed, self.dxdt)
-		self.dxdt = max(-self.maxSpeed, self.dxdt)
-		self.dydt = min(self.maxSpeed, self.dydt)
-		self.dydt = max(-self.maxSpeed, self.dydt)
+		if self.use_good_physics==False:
+		    self.dxdt += self.d2xdt2
+		    self.dydt += self.d2ydt2
+		    
+		    self.dxdt = min(self.maxSpeed, self.dxdt)
+		    self.dxdt = max(-self.maxSpeed, self.dxdt)
+		    self.dydt = min(self.maxSpeed, self.dydt)
+		    self.dydt = max(-self.maxSpeed, self.dydt)
 
-		if self.dxdt != 0:
-			self.dxdt -= math.copysign(self.nDamping, self.dxdt)
+		    if self.dxdt != 0:
+			    self.dxdt -= math.copysign(self.nDamping, self.dxdt)
+		    
+		    if self.dydt != 0:
+			    self.dydt -= math.copysign(self.nDamping, self.dydt)
+		else:
+		    #accelleration
+		    self.dxdt += (self.d2xdt2*f_k)/m
+		    self.dydt += (self.d2ydt2*f_k)/m
 		
-		if self.dydt != 0:
-			self.dydt -= math.copysign(self.nDamping, self.dydt)
-
 		self.fixcollision()
 
 		self.x += self.dxdt
@@ -189,16 +194,33 @@ class Frame:
 			if(len(collided) > 0):
 				return
 
+			#check collision in x
 			self.player.rect.move_ip(self.dxdt, 0)  
 			collided = pygame.sprite.spritecollide(self.player, self.obstacles, False)
 			self.player.rect.move_ip(-self.dxdt, 0)
 			if(len(collided) > 0):
 				self.dxdt = 0
 
+			#check collision in y
 			self.player.rect.move_ip(0, self.dydt)  
 			collided = pygame.sprite.spritecollide(self.player, self.obstacles, False)
 			self.player.rect.move_ip(0, -self.dydt)
 			if(len(collided) > 0):
 				self.dydt = 0
+
+			#check collision in diagonal
+			self.player.rect.move_ip(0, self.dxdt)  
+			self.player.rect.move_ip(0, self.dydt)  
+			collided = pygame.sprite.spritecollide(self.player, self.obstacles, False)
+			self.player.rect.move_ip(0, -self.dxdt)
+			self.player.rect.move_ip(0, -self.dydt)
+			if(len(collided) > 0):
+				self.dydt = 0
+				self.dxdt = 0
+
+
+
+
+
 
 
