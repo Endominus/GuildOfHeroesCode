@@ -29,7 +29,7 @@ class Player_Character(pygame.sprite.Sprite):
 		self.image, self.rect = load_image(image, -1)
 		screen = pygame.display.get_surface()
 		self.area = screen.get_rect()
-		self.rect.topleft = 750, 400
+		self.rect.topleft = 20*32-16, 15*32-16
 #		self.vert_velocity = 0
 #		self.hor_velocity = 0
 		self.frame = frm
@@ -165,8 +165,8 @@ class Frame:
 		    self.dxdt += (self.d2xdt2*f_k)/m
 		    self.dydt += (self.d2ydt2*f_k)/m
 		
-		print "dx ", self.dxdt
-		print "dy ", self.dydt
+		#print "dx ", self.dxdt
+		#print "dy ", self.dydt
 			
 		self.fixcollision()
 		self.x += self.dxdt

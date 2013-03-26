@@ -2,9 +2,10 @@ import os, sys
 from entities import *
 import pygame
 from pygame.locals import *
+import prologue_outside
 
-SCREEN_WIDTH = 1024
-SCREEN_HEIGHT = 768
+SCREEN_WIDTH = 40*32
+SCREEN_HEIGHT = 30*32
 
 def key_pressed():
 	x, y = 0, 0
@@ -31,23 +32,25 @@ def main():
 	
 	if pygame.font:
 		font = pygame.font.Font(None, 36)
-		text = font.render("This is the main Etna window.", 1, (20, 100, 20))
+		text = font.render(" ", 1, (20, 100, 20))
 		textpos = text.get_rect(centerx=background.get_width()/2)
 		background.blit(text, textpos)
 		
 	screen.blit(background, (0, 0))
 	pygame.display.flip()
 	
-	frm = Frame()
-	frm.bind(-500, 500, -500, 500)
-	player = Player_Character('Ghost.bmp', frm)
-	rock = Obstacle('Concrete Wall Horizontal.png', 200, 200, frm, False)
-	rock2 = Obstacle('Concrete Wall Horizontal.png', 800, 200, frm, False)
-	rock3 = Obstacle('Concrete Wall Horizontal.png', 200, 800, frm, False)
-	rock4 = Obstacle('Concrete Wall Horizontal.png', 600, 600, frm, False)
-	allsprites = pygame.sprite.RenderPlain((player, rock, rock2, rock3, rock4))
-	obstacles = pygame.sprite.Group((rock, rock4, rock2, rock3))
-	frm.obstruct(player, obstacles)
+	# frm = Frame()
+	# frm.bind(-500, 500, -500, 500)
+	# player = Player_Character('Ghost.bmp', frm)
+	# rock = Obstacle('Concrete Wall Horizontal.png', 200, 200, frm, False)
+	# rock2 = Obstacle('Concrete Wall Horizontal.png', 800, 200, frm, False)
+	# rock3 = Obstacle('Concrete Wall Horizontal.png', 200, 800, frm, False)
+	# rock4 = Obstacle('Concrete Wall Horizontal.png', 600, 600, frm, False)
+	# allsprites = pygame.sprite.RenderPlain((player, rock, rock2, rock3, rock4))
+	# obstacles = pygame.sprite.Group((rock, rock4, rock2, rock3))
+	# frm.obstruct(player, obstacles)
+	
+	frm, allsprites = prologue_outside.initialize_level()
 	clock = pygame.time.Clock()
 	
 
