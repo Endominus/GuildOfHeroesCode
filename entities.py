@@ -165,11 +165,12 @@ class Frame:
 		    self.dxdt += (self.d2xdt2*f_k)/m
 		    self.dydt += (self.d2ydt2*f_k)/m
 		
+		
 		self.fixcollision()
-
 		self.x += self.dxdt
 		self.y += self.dydt
 
+		
 		if(self.bound):
 			self.x = max(self.x, self.x_min)
 			self.x = min(self.x, self.x_max)
@@ -191,15 +192,17 @@ class Frame:
 	def fixcollision(self):
 		if(self.obstructed):
 			collided = pygame.sprite.spritecollide(self.player, self.obstacles, False)
+			#TODO: put player outside of the object
 			if(len(collided) > 0):
 				return
-
+		    
 			#check collision in x
 			self.player.rect.move_ip(self.dxdt, 0)  
 			collided = pygame.sprite.spritecollide(self.player, self.obstacles, False)
 			self.player.rect.move_ip(-self.dxdt, 0)
 			if(len(collided) > 0):
 				self.dxdt = 0
+				print "horizontal collision"
 
 			#check collision in y
 			self.player.rect.move_ip(0, self.dydt)  
@@ -207,6 +210,7 @@ class Frame:
 			self.player.rect.move_ip(0, -self.dydt)
 			if(len(collided) > 0):
 				self.dydt = 0
+				print "vertical collision"
 
 			#check collision in diagonal
 			self.player.rect.move_ip(0, self.dxdt)  
@@ -217,6 +221,8 @@ class Frame:
 			if(len(collided) > 0):
 				self.dydt = 0
 				self.dxdt = 0
+				print "diagonal collision"
+
 
 
 
