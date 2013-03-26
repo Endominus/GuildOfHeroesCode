@@ -165,7 +165,9 @@ class Frame:
 		    self.dxdt += (self.d2xdt2*f_k)/m
 		    self.dydt += (self.d2ydt2*f_k)/m
 		
-		
+		print "dx ", self.dxdt
+		print "dy ", self.dydt
+			
 		self.fixcollision()
 		self.x += self.dxdt
 		self.y += self.dydt
@@ -202,7 +204,6 @@ class Frame:
 			self.player.rect.move_ip(-self.dxdt, 0)
 			if(len(collided) > 0):
 				self.dxdt = 0
-				print "horizontal collision"
 
 			#check collision in y
 			self.player.rect.move_ip(0, self.dydt)  
@@ -210,7 +211,6 @@ class Frame:
 			self.player.rect.move_ip(0, -self.dydt)
 			if(len(collided) > 0):
 				self.dydt = 0
-				print "vertical collision"
 
 			#check collision in diagonal
 			self.player.rect.move_ip(0, self.dxdt)  
@@ -219,9 +219,8 @@ class Frame:
 			self.player.rect.move_ip(0, -self.dxdt)
 			self.player.rect.move_ip(0, -self.dydt)
 			if(len(collided) > 0):
-				self.dydt = 0
 				self.dxdt = 0
-				print "diagonal collision"
+				self.dydt = 0
 
 
 
