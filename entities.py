@@ -32,20 +32,9 @@ class Player_Character(pygame.sprite.Sprite):
 		self.frame = frm
 
 	def update(self):
-	    self._check_interact()
-	
-	interacts = False
-	interactors = 0
-
-	def make_interact(self, interactors):
-	    self.interacts = True
-	    self.interactors = interactors
-	
-	def _check_interact(self):
-	    if (not self.interacts):
-		return
-	    print "interacty"
-
+	    pass
+	    	
+	    
 	
 #	def _degradeSpeed(self):
 #		if self.vert_velocity > 0:
