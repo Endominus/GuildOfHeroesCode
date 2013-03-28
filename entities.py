@@ -24,6 +24,7 @@ class Player_Character(pygame.sprite.Sprite):
 #	vert_velocity = 0
 #	hor_velocity = 0
 	frame = 0
+	layer = 3
 	def __init__(self, image, frm):
 		pygame.sprite.Sprite.__init__(self)
 		self.image, self.rect = load_image(image, -1)
@@ -72,6 +73,8 @@ class Obstacle(pygame.sprite.Sprite):
 	y_pos = 0
 	frame = 0
 	#absolute coordinates
+	
+	layer = 2
 
 	def __init__(self, image, x, y, frm, transparent_pixel = True):
 		pygame.sprite.Sprite.__init__(self)
