@@ -18,4 +18,4 @@ def initialize_level():
 
     player.make_interact(interactables)
 
-    return frm, allsprites
+    return frm, player, interactables, allsprites
