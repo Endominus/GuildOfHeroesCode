@@ -18,11 +18,13 @@ class Gamestate:
     kd = 0
     
     def idle(self):
-        self.clock.tick(60)
+	self.clock.tick(60)
         self._check_input()
         self.frame.run_kinetics()
-        
+        self._check_interact()
+
         self.allsprites.update()
+
         self.screen.blit(self.background, (0, 0))
         self.allsprites.draw(self.screen)
         pygame.display.flip()
@@ -32,13 +34,14 @@ class Gamestate:
         self.background = background
         self.frame, self.player, self.interactables, self.allsprites = levelInit() 
 
-    def check_interact(self):
-        collider = pygame.sprite.collide_rect_ratio(1.2)
-        collided = pygame.sprite.collide(self.player, self.interactables, False, collider)
-        #TODO: this 
-    
+    def _check_interact(self):
+	collider = pygame.sprite.collide_rect_ratio(1.2)
+        collided = pygame.sprite.spritecollide(self.player, self.interactables, False, collider)
+        if(len(collided) > 0):
+	    print collided
+
     def _check_input(self):
-        interact = False
+	interact = False
         x, y = 0, 0
         for event in pygame.event.get():
             if event.type == QUIT:

@@ -73,20 +73,17 @@ class Player_Character(pygame.sprite.Sprite):
 		self.area = screen.get_rect()
 		self.rect.topleft = 20*32-16, 15*32-16
 		self.frame = frm
-
-	def make_interact(self, interactables):
-		pass
 		
-	def _degradeSpeed(self):
-		if y < 0:
-			self.vert_velocity = max(-MAX_SPEED, self.vert_velocity+y)
-		elif y > 0:
-			self.vert_velocity = min(MAX_SPEED, self.vert_velocity+y)
-		if x > 0:
-			self.hor_velocity = min(MAX_SPEED, self.hor_velocity + x)
-		elif x < 0:
-			self.hor_velocity = max(-MAX_SPEED, self.hor_velocity + x)
-		self._degradeSpeed()
+#	def _degradeSpeed(self):
+#		if y < 0:
+#			self.vert_velocity = max(-MAX_SPEED, self.vert_velocity+y)
+#		elif y > 0:
+#			self.vert_velocity = min(MAX_SPEED, self.vert_velocity+y)
+#		if x > 0:
+#			self.hor_velocity = min(MAX_SPEED, self.hor_velocity + x)
+#		elif x < 0:
+#			self.hor_velocity = max(-MAX_SPEED, self.hor_velocity + x)
+#		self._degradeSpeed()
 
 	def change_facing(self, direction):
 		if abs(direction) > 3:

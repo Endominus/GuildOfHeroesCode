@@ -12,7 +12,7 @@ def key_pressed():
     x, y = 0, 0
     keysPressed = pygame.key.get_pressed()
     if keysPressed[K_w]:
-        y -= 3
+        y -= 2
     if keysPressed[K_s]:
         y += 3
     if keysPressed[K_a]:
@@ -43,7 +43,7 @@ def main():
     gs = Gamestate(screen, background, prologue_outside.initialize_level)
     
     while (not gs.quit):
-        gs.idle()
+	gs.idle()
     
     # frm = Frame()
     # frm.bind(-500, 500, -500, 500)

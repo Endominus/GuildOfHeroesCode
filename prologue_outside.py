@@ -16,6 +16,4 @@ def initialize_level():
 
     interactables = pygame.sprite.Group(actor)
 
-    player.make_interact(interactables)
-
     return frm, player, interactables, allsprites
