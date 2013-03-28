@@ -1,5 +1,6 @@
 import os, sys
 from entities import *
+from conversation import *
 import pygame
 from pygame.locals import*
 
@@ -12,6 +13,7 @@ class Gamestate:
     player = 0
     interactables = 0
     quit = False
+    interact = False
     
     #interpreting keys
     x, y = 0, 0
@@ -35,13 +37,14 @@ class Gamestate:
         self.frame, self.player, self.interactables, self.allsprites = levelInit() 
 
     def _check_interact(self):
-	collider = pygame.sprite.collide_rect_ratio(1.2)
-        collided = pygame.sprite.spritecollide(self.player, self.interactables, False, collider)
-        if(len(collided) > 0):
-	    print collided
+	if self.interact:
+	    collider = pygame.sprite.collide_rect_ratio(1.2)
+	    collided = pygame.sprite.spritecollide(self.player, self.interactables, False, collider)
+	    if(len(collided) > 0):
+		collided.pop().interaction.do()
 
     def _check_input(self):
-	interact = False
+	self.interact = False
         x, y = 0, 0
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -66,7 +69,7 @@ class Gamestate:
             if keysPressed[K_d]:
                 x += 1
             if keysPressed[K_f]:
-                interact = True
+                self.interact = True
         self.frame.update_keys(x,y) 
 #    if interact
 #        self._check_interact()

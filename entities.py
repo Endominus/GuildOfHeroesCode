@@ -151,6 +151,8 @@ class Obstacle(pygame.sprite.Sprite):
 	#absolute coordinates
 	
 	layer = 2
+	interactive = False
+	interaction = 0
 
 	def __init__(self, image, x, y, frm, transparent_pixel = True):
 		pygame.sprite.Sprite.__init__(self)
@@ -305,6 +307,30 @@ class Frame:
 				self.dydt = 0
 
 
+class Event:
+    name = 0
+    run = 0
+
+class Simple_Conversation(Event):
+    lines = 0
+    pictures = 0
+    
+    #Takes a list of filenames in pictures
+    def __init__(self, statements, pictures, form):
+	pass
+
+    #Makes an image for a single line of conversation
+    def _make_line(self, index):
+	pass
+    
+    def do(self):
+	print "doing event"
+
+class Line:
+    text = 0
+    #This is an int for which picture to use
+    picture = 0
+    form = 0
 
 
 

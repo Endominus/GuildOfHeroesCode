@@ -11,6 +11,9 @@ def initialize_level():
     
     actor = Obstacle('Ghost.bmp', 500, 500, frm)
     actor.layer = 3
+    actor.interactive = True
+    actor.interaction = Simple_Conversation(0, 0, 0)
+
     allsprites.add(actor)
     obstacles.add(actor)
 
