@@ -21,8 +21,6 @@ def load_image(name, colorkey=None):
 
 class Player_Character(pygame.sprite.Sprite):
 	"""Main character, Ghost. This controls her image on the screen."""
-#	vert_velocity = 0
-#	hor_velocity = 0
 	frame = 0
 	layer = 3
 	def __init__(self, image, frm):
@@ -31,9 +29,23 @@ class Player_Character(pygame.sprite.Sprite):
 		screen = pygame.display.get_surface()
 		self.area = screen.get_rect()
 		self.rect.topleft = 20*32-16, 15*32-16
-#		self.vert_velocity = 0
-#		self.hor_velocity = 0
 		self.frame = frm
+
+	def update(self):
+	    self._check_interact()
+	
+	interacts = False
+	interactors = 0
+
+	def make_interact(self, interactors):
+	    self.interacts = True
+	    self.interactors = interactors
+	
+	def _check_interact(self):
+	    if (not self.interacts):
+		return
+	    print "interacty"
+
 	
 #	def _degradeSpeed(self):
 #		if self.vert_velocity > 0:
@@ -45,7 +57,7 @@ class Player_Character(pygame.sprite.Sprite):
 #		else:
 #			self.hor_velocity = min(0, self.hor_velocity+1)
 	
-	def update(self):
+#	def update(self):
 #		newpos = self.rect.move((self.hor_velocity, self.vert_velocity))
 #		if not self.area.contains(newpos):
 #			if self.rect.left < self.area.left or self.rect.right > self.area.right:
@@ -55,7 +67,7 @@ class Player_Character(pygame.sprite.Sprite):
 #				newpos = self.rect.move((0, -self.vert_velocity))
 #				self.vert_velocity = 0
 #		self.rect = newpos
-		pass
+#		pass
 		
 #	def change_velocity(self, x, y):
 #		if y < 0:
@@ -193,6 +205,8 @@ class Frame:
 		self.obstacles = group
 		self.player = player
 		self.obstructed = True
+
+
 
 	def fixcollision(self):
 		if(self.obstructed):
