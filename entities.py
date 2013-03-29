@@ -59,6 +59,8 @@ class Player_Character(pygame.sprite.Sprite):
 	state_counter = 0
 	ss = 0
 	change_sprite = False
+	move_around = False
+	x, y = 0, 0
 	def __init__(self, image, frm):
 		pygame.sprite.Sprite.__init__(self)
 		#self.image, self.rect = load_image(image, -1)
@@ -71,7 +73,9 @@ class Player_Character(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		screen = pygame.display.get_surface()
 		self.area = screen.get_rect()
-		self.rect.topleft = 20*32-16, 15*32-16
+		self.x = 20*32-(SPRITE_WIDTH/2)
+		self.y = 15*32-(SPRITE_HEIGHT/2)
+		self.rect.topleft = self.x, self.y
 		self.frame = frm
 		
 #	def _degradeSpeed(self):
@@ -107,15 +111,6 @@ class Player_Character(pygame.sprite.Sprite):
 			
 	
 	def update(self):
-		# newpos = self.rect.move((self.hor_velocity, self.vert_velocity))
-		# if not self.area.contains(newpos):
-			# if self.rect.left < self.area.left or self.rect.right > self.area.right:
-				# newpos = self.rect.move((-self.hor_velocity, 0))
-				# self.hor_velocity = 0
-			# if self.rect.top > self.area.top or self.rect.bottom < self.area.bottom:
-				# newpos = self.rect.move((0, -self.vert_velocity))
-				# self.vert_velocity = 0
-		# self.rect = newpos
 		if abs(self.frame.dxdt) > abs(self.frame.dydt):
 			if self.frame.dxdt > 0:
 				self.change_facing(3)
@@ -127,13 +122,28 @@ class Player_Character(pygame.sprite.Sprite):
 			else:
 				self.change_facing(2)
 		self.cycle_run_state(self.frame.dxdt != 0 or self.frame.dydt != 0)
+		if self.move_around:
+			newpos = self.rect.move((self.frame.dxdt, self.frame.dydt))
+			if not self.area.contains(newpos):
+				if self.rect.left < self.area.left or self.rect.right > self.area.right:
+					newpos = self.rect.move((-self.frame.dxdt, 0))
+					self.frame.dxdt = 0
+				if self.rect.top > self.area.top or self.rect.bottom < self.area.bottom:
+					newpos = self.rect.move((0, -self.frame.dydt))
+					self.frame.dydt = 0
+			self.x += self.frame.dxdt
+			self.y += self.frame.dydt
+			self.rect = newpos
 		if self.change_sprite:
 			self.image = self.ss.image_at(((self.facing*SPRITE_WIDTH, self.run_state*SPRITE_HEIGHT), (SPRITE_WIDTH, SPRITE_HEIGHT)), (255, 0, 255))
 			self.rect = self.image.get_rect()
-			self.rect.topleft = 20*32-16, 15*32-16
+			self.rect.topleft = self.x, self.y
 			self.change_sprite = False
 		
-	# def change_velocity(self, x, y):
+	def toggle_movement(self):
+		self.move_around = not self.move_around
+		
+	def change_velocity(self, x, y):
 		# if self.vert_velocity > 0:
 			# self.vert_velocity = max(0, self.vert_velocity-1)
 		# else:
@@ -142,6 +152,7 @@ class Player_Character(pygame.sprite.Sprite):
 			# self.hor_velocity = max(0, self.hor_velocity-1)
 		# else:
 			# self.hor_velocity = min(0, self.hor_velocity+1)
+		pass
 			
 
 class Obstacle(pygame.sprite.Sprite):
@@ -215,6 +226,8 @@ class Frame:
 	obstructed = False
 	player = 0
 
+	lock_screen = False
+	
 	def update_keys(self, x, y):
 		if x==0:
 			self.d2xdt2 = 0
@@ -250,8 +263,10 @@ class Frame:
 		#print "dy ", self.dydt
 			
 		self.fixcollision()
-		self.x += self.dxdt
-		self.y += self.dydt
+		
+		if not self.lock_screen:
+			self.x += self.dxdt
+			self.y += self.dydt
 
 		
 		if(self.bound):
@@ -273,7 +288,8 @@ class Frame:
 		self.player = player
 		self.obstructed = True
 
-
+	def lock_frame(self):
+		self.lock_screen = not self.lock_screen
 
 	def fixcollision(self):
 		if(self.obstructed):
@@ -308,72 +324,72 @@ class Frame:
 
 
 class Event:
-    name = 0
-    run = 0
+	name = 0
+	run = 0
 
 class Simple_Conversation(Event):
-    lines = 0
-    pictures = 0
-    
-    #Takes a list of filenames in pictures
-    def __init__(self, statements, pictures, form):
+	lines = 0
+	pictures = 0
+	
+	#Takes a list of filenames in pictures
+	def __init__(self, statements, pictures, form):
 	#self.lines = [ Line(0, "First line"), Line(0, "Second line")]	
-	self.lines = []
-	for s in statements:
-	    self.lines.append(Line(0, s))
+		self.lines = []
+		for s in statements:
+			self.lines.append(Line(0, s))
 	
 
-    def do(self, screen, gs):
-	box = Talk_Pane("text_box.bmp", 0, (2*(screen.get_size()[1]/3)))
+	def do(self, screen, gs):
+		box = Talk_Pane("text_box.bmp", 0, (2*(screen.get_size()[1]/3)))
 
-	for line in self.lines:
-	    window = pygame.sprite.Group()
-	    window.add(box)
-	    window.draw(screen)
-	    font = pygame.font.Font(None, 36)
-	    text = font.render(line.text, 1, (255, 255, 255))
-	    textpos = 15 , 15 + 2*(screen.get_size()[1]/3)
-	    screen.blit(text, textpos)
-	    pygame.display.flip()
-	    self.wait_input(gs)
+		for line in self.lines:
+			window = pygame.sprite.Group()
+			window.add(box)
+			window.draw(screen)
+			font = pygame.font.Font(None, 36)
+			text = font.render(line.text, 1, (255, 255, 255))
+			textpos = 15 , 15 + 2*(screen.get_size()[1]/3)
+			screen.blit(text, textpos)
+			pygame.display.flip()
+			self.wait_input(gs)
 
 
-    def wait_input(self, gs):
-	while True:
-	    done = False
-	    for event in pygame.event.get():
-		if event.type == KEYDOWN:
-		    gs.kd += 1
-		    done = True
-		elif event.type == KEYUP:
-		    gs.kd -= 1
-	    if done:
-		return
+	def wait_input(self, gs):
+		while True:
+			done = False
+			for event in pygame.event.get():
+				if event.type == KEYDOWN:
+					gs.kd += 1
+					done = True
+				elif event.type == KEYUP:
+					gs.kd -= 1
+			if done:
+				return
 
  	
 class Line:
-    text = 0
-    #This is an int for which picture to use
-    picture = 0
-    form = 0
+	text = 0
+	#This is an int for which picture to use
+	picture = 0
+	form = 0
 
-    def __init__(self, picture, text):
-	self.picture = picture
-	self.text = text
+	def __init__(self, picture, text):
+		self.picture = picture
+		self.text = text
 
 class Talk_Pane(pygame.sprite.Sprite): 
-    layer = 2
-    interactive = False
-    interaction = 0
+	layer = 2
+	interactive = False
+	interaction = 0
 
-    def __init__(self, image, x, y, transparent_pixel = True):
-	pygame.sprite.Sprite.__init__(self)
-	if transparent_pixel:
-		self.image, self.rect = load_image(image, -1)
-	else:
-		colorkey = (255, 0, 255)
-		self.image, self.rect = load_image(image, colorkey)
-	self.rect.topleft = x, y
+	def __init__(self, image, x, y, transparent_pixel = True):
+		pygame.sprite.Sprite.__init__(self)
+		if transparent_pixel:
+			self.image, self.rect = load_image(image, -1)
+		else:
+			colorkey = (255, 0, 255)
+			self.image, self.rect = load_image(image, colorkey)
+		self.rect.topleft = x, y
 
 
 
