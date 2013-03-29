@@ -43,13 +43,13 @@ class Gamestate:
     def _check_interact(self):
 	if self.interact:
 	    if self.delay_interact<1:
-		self.delay_interact = 100
+		self.delay_interact = 15
 		collider = pygame.sprite.collide_rect_ratio(1.2)
 		collided = pygame.sprite.spritecollide(self.player, self.interactables, False, collider)
 		if(len(collided) > 0):
 		    collided.pop().interaction.do(self.screen, self)
-	    else:
-		self.delay_interact -= 1
+	if self.delay_interact>0:
+	    self.delay_interact -= 1
 
     def _check_input(self):
 	self.interact = False
