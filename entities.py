@@ -317,7 +317,11 @@ class Simple_Conversation(Event):
     
     #Takes a list of filenames in pictures
     def __init__(self, statements, pictures, form):
-	self.lines = [ Line(0, "First line"), Line(0, "Second line")]	
+	#self.lines = [ Line(0, "First line"), Line(0, "Second line")]	
+	self.lines = []
+	for s in statements:
+	    self.lines.append(Line(0, s))
+	
 
     def do(self, screen, gs):
 	box = Talk_Pane("text_box.bmp", 0, (2*(screen.get_size()[1]/3)))
@@ -329,7 +333,6 @@ class Simple_Conversation(Event):
 	    font = pygame.font.Font(None, 36)
 	    text = font.render(line.text, 1, (255, 255, 255))
 	    textpos = 15 , 15 + 2*(screen.get_size()[1]/3)
-	    print line.text
 	    screen.blit(text, textpos)
 	    pygame.display.flip()
 	    self.wait_input(gs)
