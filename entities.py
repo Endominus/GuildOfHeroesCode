@@ -317,23 +317,60 @@ class Simple_Conversation(Event):
     
     #Takes a list of filenames in pictures
     def __init__(self, statements, pictures, form):
-	pass
+	self.lines = [ Line(0, "First line"), Line(0, "Second line")]	
 
-    #Makes an image for a single line of conversation
-    def _make_line(self, index):
-	pass
-    
-    def do(self):
-	print "doing event"
+    def do(self, screen, gs):
+	box = Talk_Pane("text_box.bmp", 0, (2*(screen.get_size()[1]/3)))
 
+	for line in self.lines:
+	    window = pygame.sprite.Group()
+	    window.add(box)
+	    window.draw(screen)
+	    font = pygame.font.Font(None, 36)
+	    text = font.render(line.text, 1, (255, 255, 255))
+	    textpos = 15 , 15 + 2*(screen.get_size()[1]/3)
+	    print line.text
+	    screen.blit(text, textpos)
+	    pygame.display.flip()
+	    self.wait_input(gs)
+
+
+    def wait_input(self, gs):
+	while True:
+	    done = False
+	    for event in pygame.event.get():
+		if event.type == KEYDOWN:
+		    gs.kd += 1
+		    done = True
+		elif event.type == KEYUP:
+		    gs.kd -= 1
+	    if done:
+		return
+
+ 	
 class Line:
     text = 0
     #This is an int for which picture to use
     picture = 0
     form = 0
 
+    def __init__(self, picture, text):
+	self.picture = picture
+	self.text = text
 
+class Talk_Pane(pygame.sprite.Sprite): 
+    layer = 2
+    interactive = False
+    interaction = 0
 
+    def __init__(self, image, x, y, transparent_pixel = True):
+	pygame.sprite.Sprite.__init__(self)
+	if transparent_pixel:
+		self.image, self.rect = load_image(image, -1)
+	else:
+		colorkey = (255, 0, 255)
+		self.image, self.rect = load_image(image, colorkey)
+	self.rect.topleft = x, y
 
 
 

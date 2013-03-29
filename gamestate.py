@@ -14,11 +14,14 @@ class Gamestate:
     interactables = 0
     quit = False
     interact = False
-    
+    held = False
+
+    delay_interact = 0
+
     #interpreting keys
     x, y = 0, 0
     kd = 0
-    
+
     def idle(self):
 	self.clock.tick(60)
         self._check_input()
@@ -31,6 +34,7 @@ class Gamestate:
         self.allsprites.draw(self.screen)
         pygame.display.flip()
 
+
     def __init__(self, screen, background, levelInit):
         self.screen = screen
         self.background = background
@@ -38,10 +42,14 @@ class Gamestate:
 
     def _check_interact(self):
 	if self.interact:
-	    collider = pygame.sprite.collide_rect_ratio(1.2)
-	    collided = pygame.sprite.spritecollide(self.player, self.interactables, False, collider)
-	    if(len(collided) > 0):
-		collided.pop().interaction.do()
+	    if self.delay_interact<1:
+		self.delay_interact = 100
+		collider = pygame.sprite.collide_rect_ratio(1.2)
+		collided = pygame.sprite.spritecollide(self.player, self.interactables, False, collider)
+		if(len(collided) > 0):
+		    collided.pop().interaction.do(self.screen, self)
+	    else:
+		self.delay_interact -= 1
 
     def _check_input(self):
 	self.interact = False
@@ -68,7 +76,7 @@ class Gamestate:
                 x -= 1
             if keysPressed[K_d]:
                 x += 1
-            if keysPressed[K_f]:
+            if keysPressed[K_SPACE]:
                 self.interact = True
         self.frame.update_keys(x,y) 
 #    if interact

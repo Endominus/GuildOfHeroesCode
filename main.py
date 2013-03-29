@@ -5,7 +5,7 @@ import pygame
 from pygame.locals import *
 import prologue_outside
 
-SCREEN_WIDTH = 40*32
+SCREEN_WIDTH = 30*32
 SCREEN_HEIGHT = 30*32
 
 def key_pressed():

@@ -9,7 +9,7 @@ def initialize_level():
     obstacles = pygame.sprite.Group(obstacles_list)
     frm.obstruct(player, obstacles)
     
-    actor = Obstacle('Ghost.bmp', 500, 500, frm)
+    actor = Obstacle('Medic.bmp', 500, 500, frm)
     actor.layer = 3
     actor.interactive = True
     actor.interaction = Simple_Conversation(0, 0, 0)
