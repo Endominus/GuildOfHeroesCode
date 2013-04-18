@@ -152,8 +152,7 @@ class Player_Character(pygame.sprite.Sprite):
 			# self.hor_velocity = max(0, self.hor_velocity-1)
 		# else:
 			# self.hor_velocity = min(0, self.hor_velocity+1)
-		pass
-			
+		pass			
 
 class Obstacle(pygame.sprite.Sprite):
 	x_pos = 0
@@ -321,84 +320,18 @@ class Frame:
 			if(len(collided) > 0):
 				self.dxdt = 0
 				self.dydt = 0
-
-
-class Event:
-	name = 0
-	run = 0
-
-class Simple_Conversation(Event):
-	lines = 0
-	pictures = 0
-	
-	#Takes a list of filenames in pictures
-	def __init__(self, statements, pictures, form):
-	#self.lines = [ Line(0, "First line"), Line(0, "Second line")]	
-		self.lines = []
-		for s in statements:
-			self.lines.append(Line(0, s))
-	
-
-	def do(self, screen, gs):
-		box = Talk_Pane("text_box.bmp", 0, (2*(screen.get_size()[1]/3)))
-
-		for line in self.lines:
-			window = pygame.sprite.Group()
-			window.add(box)
-			window.draw(screen)
-			font = pygame.font.Font(None, 36)
-			text = font.render(line.text, 1, (255, 255, 255))
-			textpos = 15 , 15 + 2*(screen.get_size()[1]/3)
-			screen.blit(text, textpos)
-			pygame.display.flip()
-			self.wait_input(gs)
-
-
-	def wait_input(self, gs):
-		while True:
-			done = False
-			for event in pygame.event.get():
-				if event.type == KEYDOWN:
-					gs.kd += 1
-					done = True
-				elif event.type == KEYUP:
-					gs.kd -= 1
-			if done:
-				return
-
- 	
-class Line:
-	text = 0
-	#This is an int for which picture to use
-	picture = 0
-	form = 0
-
-	def __init__(self, picture, text):
-		self.picture = picture
-		self.text = text
-
-class Talk_Pane(pygame.sprite.Sprite): 
-	layer = 2
-	interactive = False
-	interaction = 0
-
-	def __init__(self, image, x, y, transparent_pixel = True):
-		pygame.sprite.Sprite.__init__(self)
-		if transparent_pixel:
-			self.image, self.rect = load_image(image, -1)
-		else:
-			colorkey = (255, 0, 255)
-			self.image, self.rect = load_image(image, colorkey)
-		self.rect.topleft = x, y
-		
-		
 		
 class NPC(Obstacle):
 	i = 0
 	vision_area_width, vision_area_length = 50, 100
 	state = 1
+	conversation_seed = -1
+	relationship = -1
 	def __init__(self, image, x, y, frm, transparent_pixel = True):
 		Obstacle.__init__(self, image, x, y, frm, transparent_pixel)
+		
+	def setRelationship(self, x):
+		self.relationship = x
 		
 	def update(self):
 		Obstacle.update(self)
@@ -408,3 +341,6 @@ class NPC(Obstacle):
 		
 		if self.y_pos + (self.rect.bottom - self.rect.top) / 2 < other_y and math.fabs(self.x_pos - other_x) < 50:
 			print "I see you! ", self.i
+		
+	def set_seed(self, x):
+		self.conversation_seed = x

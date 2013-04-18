@@ -16,6 +16,8 @@ class Gamestate:
 	quit = False
 	interact = False
 	held = False
+	dialogTree = False
+	eventsDict = {}
 
 	delay_interact = 0
 
@@ -39,16 +41,17 @@ class Gamestate:
 	def __init__(self, screen, background, levelInit):
 		self.screen = screen
 		self.background = background
-		self.frame, self.player, self.interactables, self.allsprites, self.NPCs = levelInit()
+		self.frame, self.player, self.interactables, self.allsprites, self.NPCs, self.dialogTree = levelInit()
 
 	def _check_interact(self):
 		if self.interact:
 			if self.delay_interact<1:
-				self.delay_interact = 15
-			collider = pygame.sprite.collide_rect_ratio(1.2)
-			collided = pygame.sprite.spritecollide(self.player, self.interactables, False, collider)
-			if(len(collided) > 0):
-				collided.pop().interaction.do(self.screen, self)
+				self.delay_interact = 45
+				collider = pygame.sprite.collide_rect_ratio(1.2)
+				collided = pygame.sprite.spritecollide(self.player, self.interactables, False, collider)
+				if(len(collided) > 0):
+					convo = Conversation(self.player, collided.pop(), self.dialogTree, self.eventsDict)
+					convo.do(self.screen, self)
 		if self.delay_interact>0:
 			self.delay_interact -= 1
 			
