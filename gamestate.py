@@ -12,6 +12,7 @@ class Gamestate:
 	clock = pygame.time.Clock()
 	player = 0
 	interactables = 0
+	NPCs = 0
 	quit = False
 	interact = False
 	held = False
@@ -38,7 +39,7 @@ class Gamestate:
 	def __init__(self, screen, background, levelInit):
 		self.screen = screen
 		self.background = background
-		self.frame, self.player, self.interactables, self.allsprites = levelInit() 
+		self.frame, self.player, self.interactables, self.allsprites, self.NPCs = levelInit()
 
 	def _check_interact(self):
 		if self.interact:
@@ -50,6 +51,11 @@ class Gamestate:
 				collided.pop().interaction.do(self.screen, self)
 		if self.delay_interact>0:
 			self.delay_interact -= 1
+			
+		for n in self.NPCs:
+			#print "screen pos: ", self.frame.x, ":", self.frame.y
+			#print "player pos: ", self.player.x, ":", self.player.y
+			n.check_vision(self.frame.x + self.player.x, self.frame.y + self.player.y)
 
 	def _check_input(self):
 		self.interact = False

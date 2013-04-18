@@ -390,6 +390,21 @@ class Talk_Pane(pygame.sprite.Sprite):
 			colorkey = (255, 0, 255)
 			self.image, self.rect = load_image(image, colorkey)
 		self.rect.topleft = x, y
-
-
-
+		
+		
+		
+class NPC(Obstacle):
+	i = 0
+	vision_area_width, vision_area_length = 50, 100
+	state = 1
+	def __init__(self, image, x, y, frm, transparent_pixel = True):
+		Obstacle.__init__(self, image, x, y, frm, transparent_pixel)
+		
+	def update(self):
+		Obstacle.update(self)
+		
+	def check_vision(self, other_x, other_y):
+		self.i += 1
+		
+		if self.y_pos + (self.rect.bottom - self.rect.top) / 2 < other_y and math.fabs(self.x_pos - other_x) < 50:
+			print "I see you! ", self.i
