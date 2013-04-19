@@ -40,12 +40,11 @@ class Gamestate:
 	def new_level(self, level):
 		self.frame, self.player, self.interactables, self.allsprites, self.NPCs, self.dialogTree = level.initialize_level()
 
-
 	def __init__(self, screen, background, levelInit):
 		self.screen = screen
 		self.background = background
 		self.frame, self.player, self.interactables, self.allsprites, self.NPCs, self.dialogTree = levelInit()
-
+		
 	def _check_interact(self):
 		if self.interact:
 			if self.delay_interact<1:
@@ -67,7 +66,11 @@ class Gamestate:
 		for n in self.NPCs:
 			#print "screen pos: ", self.frame.x, ":", self.frame.y
 			#print "player pos: ", self.player.x, ":", self.player.y
-			n.check_vision(self.frame.x + self.player.x, self.frame.y + self.player.y)
+			if n.check_vision(self.frame.x + self.player.x, self.frame.y + self.player.y):
+				self.allsprites.add(n.take_action(1, self.frame, self.frame.x + self.player.x, self.frame.y + self.player.y))
+			else:
+				self.allsprites.remove(n.take_action(1, self.frame, self.frame.x + self.player.x, self.frame.y + self.player.y))
+				
 
 	def _check_input(self):
 		self.interact = False

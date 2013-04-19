@@ -324,12 +324,16 @@ class Frame:
 		
 class NPC(Obstacle):
 	i = 0
-	vision_area_width, vision_area_length = 50, 100
+	vision_area_width, vision_area_length = 50, 150
 	state = 1
 	conversation_seed = -1
 	relationship = -1
+	facing = 2
+	exc = 0
+	
 	def __init__(self, image, x, y, frm, transparent_pixel = True):
 		Obstacle.__init__(self, image, x, y, frm, transparent_pixel)
+		self.exc = Obstacle('exclamation.bmp', 500, 500, frm)
 		
 	def setRelationship(self, x):
 		self.relationship = x
@@ -339,9 +343,42 @@ class NPC(Obstacle):
 		
 	def check_vision(self, other_x, other_y):
 		self.i += 1
-		
-		if self.y_pos + (self.rect.bottom - self.rect.top) / 2 < other_y and math.fabs(self.x_pos - other_x) < 50:
-			print "I see you! ", self.i
+		if self.facing % 4 == 0:
+			if self.y_pos - (self.rect.bottom - self.rect.top) / 2 - other_y > 0 and self.y_pos - (self.rect.bottom - self.rect.top) / 2 - other_y < self.vision_area_length:
+				if math.fabs(self.x_pos - other_x) < self.vision_area_width and self.state != 0:
+					return True
+				
+		if self.facing % 4 == 1:
+			if self.x_pos + (self.rect.right - self.rect.left) / 2 - other_x < 0 and self.x_pos + (self.rect.right - self.rect.left) / 2 - other_x > -1 * self.vision_area_length:
+				if math.fabs(self.y_pos - other_y) < 50 and self.state != 0:
+					return True	
+				
+		if self.facing % 4 == 2:
+			if self.y_pos + (self.rect.bottom - self.rect.top) / 2 - other_y < 0 and self.y_pos + (self.rect.bottom - self.rect.top) / 2 - other_y > -1 * self.vision_area_length:
+				if math.fabs(self.x_pos - other_x) < self.vision_area_width and self.state != 0:
+					return True
+				
+		if self.facing % 4 == 3:
+			if self.x_pos - (self.rect.right - self.rect.left) / 2 - other_x > 0 and self.x_pos - (self.rect.right - self.rect.left) / 2 - other_x < self.vision_area_length:
+				if math.fabs(self.y_pos - other_y) < 50 and self.state != 0:
+					return True	
+				
+		return False
 		
 	def set_seed(self, x):
 		self.conversation_seed = x
+		
+	def change_facing(self, direction):
+		self.image = pygame.transform.rotate(self.image, (self.facing % 4 - direction % 4) * 90)
+		self.rect = self.image.get_rect()
+		self.facing = direction
+		
+	def set_state(self, new_state, frm):
+		self.state = newstate
+		
+	def take_action(self, action, screen, x, y):
+		self.exc.x_pos = self.x_pos + 5
+		self.exc.y_pos = self.y_pos - 40
+		return self.exc
+
+		
