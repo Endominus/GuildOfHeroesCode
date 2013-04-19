@@ -36,11 +36,35 @@ def initialize_level():
 	actor3.interactive = True
 	actor3.change_facing(3)
 
-	nextLv = Obstacle('Medic.bmp', 400, 400, frm)
-	nextLv.layer = 3
-	nextLv.interactive = True
-	nextLv.interaction_type = "level"
-	nextLv.interaction = prologue_hall
+	# nextLv = Obstacle('Medic.bmp', 400, 400, frm)
+	# nextLv.layer = 3
+	# nextLv.interactive = True
+	# nextLv.interaction_type = "level"
+	# nextLv.interaction = prologue_hall
+	
+	lldoor = Obstacle("left_door_temp.bmp", 512, 256, frm, False)
+	lldoor.layer = 3
+	lldoor.interactive = True
+	lldoor.interaction_type = "level"
+	lldoor.interaction = prologue_hall
+	
+	lrdoor = Obstacle("right_door_temp.bmp", 544, 256, frm, False)
+	lrdoor.layer = 3
+	lrdoor.interactive = True
+	lrdoor.interaction_type = "level"
+	lrdoor.interaction = prologue_hall
+	
+	rldoor = Obstacle("left_door_temp.bmp", 640, 256, frm, False)
+	rldoor.layer = 3
+	rldoor.interactive = True
+	rldoor.interaction_type = "level"
+	rldoor.interaction = prologue_hall
+	
+	rrdoor = Obstacle("right_door_temp.bmp", 672, 256, frm, False)
+	rrdoor.layer = 3
+	rrdoor.interactive = True
+	rrdoor.interaction_type = "level"
+	rrdoor.interaction = prologue_hall
 
 	dT = DialogTree()
 	dT.addNode("0", 0, ["First node", "Medic", 0, 0, [], 0, 0, False])
@@ -62,10 +86,22 @@ def initialize_level():
 	allsprites.add(actor3)
 	obstacles.add(actor3)
 
-	allsprites.add(nextLv)
-	obstacles.add(nextLv)
+	# allsprites.add(nextLv)
+	# obstacles.add(nextLv)
+	allsprites.add(lldoor)
+	obstacles.add(lldoor)
+	allsprites.add(rldoor)
+	obstacles.add(rldoor)
+	allsprites.add(rrdoor)
+	obstacles.add(rrdoor)
+	allsprites.add(lrdoor)
+	obstacles.add(lrdoor)
 
 	interactables = pygame.sprite.Group(actor)
-	interactables.add(nextLv)
+	#interactables.add(nextLv)
+	interactables.add(lldoor)
+	interactables.add(rldoor)
+	interactables.add(lrdoor)
+	interactables.add(rrdoor)
 
 	return frm, player, interactables, allsprites, NPCs, dT

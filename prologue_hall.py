@@ -13,7 +13,7 @@ def initialize_level():
 	obstacles = pygame.sprite.Group(obstacles_list)
 	frm.obstruct(player, obstacles)
 	
-	actor = NPC('Medic.bmp', 500, 500, frm)
+	actor = NPC('Medic.bmp', 490, 500, frm)
 	actor.layer = 3
 	actor.interactive = True
 	actor.relationship = 20

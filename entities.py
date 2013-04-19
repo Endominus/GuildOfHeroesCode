@@ -313,14 +313,14 @@ class Frame:
 				self.dydt = 0
 
 			#check collision in diagonal
-			self.player.rect.move_ip(0, self.dxdt)  
-			self.player.rect.move_ip(0, self.dydt)  
-			collided = pygame.sprite.spritecollide(self.player, self.obstacles, False)
-			self.player.rect.move_ip(0, -self.dxdt)
-			self.player.rect.move_ip(0, -self.dydt)
-			if(len(collided) > 0):
-				self.dxdt = 0
-				self.dydt = 0
+			# self.player.rect.move_ip(0, self.dxdt)  
+			# self.player.rect.move_ip(0, self.dydt)  
+			# collided = pygame.sprite.spritecollide(self.player, self.obstacles, False)
+			# self.player.rect.move_ip(0, -self.dxdt)
+			# self.player.rect.move_ip(0, -self.dydt)
+			# if(len(collided) > 0):
+				# self.dxdt = 0
+				# self.dydt = 0
 		
 class NPC(Obstacle):
 	i = 0
