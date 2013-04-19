@@ -12,11 +12,13 @@ def load_level_data(level_file, sprite_sheet):
 	line = f.readline()
 	#Coordinates
 	x, y = 0, 0
+	width = 0
+	height = 0
 	#Image
 	sprite_name = ""
 	#Frame
 	frm = Frame()
-	frm.bind(-20*32, 20*32, -15*32, 15*32)
+	#frm.bind(-20*32, 20*32, -15*32, 15*32)
 	#Returning items
 	allsprites = []
 	obstacles = []
@@ -59,10 +61,15 @@ def load_level_data(level_file, sprite_sheet):
 			allsprites.append(obs)
 			obstacles.append(obs)
 			x += 1
+		width = max(width, x)
 		x = 0
 		y += 1
+		height = y
 		line = f.readline()
-		
+
+	#frm.bind(-width*16, width*16, -height*16, height*16)
+	print x
+	print y
 	return frm, allsprites, obstacles
 		
 	

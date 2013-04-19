@@ -3,7 +3,9 @@ from dialog import *
 import sprites
 
 def initialize_level():
-	frm, allsprites_list, obstacles_list = sprites.load_level_data('prologue_outside.txt', 1)
+	frm, allsprites_list, obstacles_list = sprites.load_level_data('prologue_hall.txt', 1)
+	frm.x = 0#(32*12)
+	frm.y = 0#(32*35)
 	player = Player_Character('ghost_ss.bmp', frm)
 	allsprites_list.append(player)
 	allsprites = pygame.sprite.LayeredUpdates(allsprites_list)
