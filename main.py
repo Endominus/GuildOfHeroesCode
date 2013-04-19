@@ -4,6 +4,7 @@ from gamestate import *
 import pygame
 from pygame.locals import *
 import prologue_outside
+import prologue_hall
 
 SCREEN_WIDTH = 40*32
 SCREEN_HEIGHT = 30*32

@@ -163,6 +163,7 @@ class Obstacle(pygame.sprite.Sprite):
 	layer = 2
 	interactive = False
 	interaction = 0
+	interaction_type = 0
 
 	def __init__(self, image, x, y, frm, transparent_pixel = True):
 		pygame.sprite.Sprite.__init__(self)

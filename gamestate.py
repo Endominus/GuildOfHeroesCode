@@ -37,6 +37,9 @@ class Gamestate:
 		self.allsprites.draw(self.screen)
 		pygame.display.flip()
 
+	def new_level(self, level):
+		self.frame, self.player, self.interactables, self.allsprites, self.NPCs, self.dialogTree = level.initialize_level()
+
 
 	def __init__(self, screen, background, levelInit):
 		self.screen = screen
@@ -50,8 +53,14 @@ class Gamestate:
 				collider = pygame.sprite.collide_rect_ratio(1.2)
 				collided = pygame.sprite.spritecollide(self.player, self.interactables, False, collider)
 				if(len(collided) > 0):
-					convo = Conversation(self.player, collided.pop(), self.dialogTree, self.eventsDict)
-					convo.do(self.screen, self)
+					target = collided.pop()
+					if(target.interaction_type == "conversation"):
+						convo = Conversation(self.player, target, self.dialogTree, self.eventsDict)
+						convo.do(self.screen, self)
+						print "..."
+					elif(target.interaction_type == "level"):
+						self.new_level(target.interaction)
+
 		if self.delay_interact>0:
 			self.delay_interact -= 1
 			
