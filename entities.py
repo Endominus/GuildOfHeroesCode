@@ -61,6 +61,13 @@ class Player_Character(pygame.sprite.Sprite):
 	change_sprite = False
 	move_around = False
 	x, y = 0, 0
+	
+	char_OP = 50
+	char_CO = 50
+	char_EX = 50
+	char_AG = 50
+	char_NE = 50
+	
 	def __init__(self, image, frm):
 		pygame.sprite.Sprite.__init__(self)
 		#self.image, self.rect = load_image(image, -1)

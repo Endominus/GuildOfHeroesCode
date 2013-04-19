@@ -9,7 +9,7 @@ def inEvents(reqs, events):
 			return False
 	return True
 
-class MCNode:
+class MCNode(object):
 	#required attributes to view and required events, given as a dictionary of booleans
 	req_OP = [0, 100]
 	req_CO = [0, 100]
@@ -57,7 +57,13 @@ class MCNode:
 			return self.child.findDialog(id)
 		else:
 			return self.sibling.findDialog(id)
-			
+	
+	#Always returns a child two levels down at least
+	def findNextDialogLevel(self, id, rel, events, att):
+		if id[0] == self.id:
+			return self.child.findNextDialogLevel(id, rel, events)
+		return self.sibling.findNextDialogLevel(id, rel, events)
+
 	def findResponse(self, id, OP, CO, EX, AG, NE, events):
 		if id == self.id:
 			if self.sibling:
@@ -72,7 +78,10 @@ class MCNode:
 			responseList = self.sibling.findResponse(self.sibling.id, OP, CO, EX, AG, NE, events)
 		return responseList
 
-class NPCNode:
+	def findNextDialog(self, id, rel, events, att):
+		return findResponse(id, att[0], att[1], att[2], att[3], att[4], events)
+
+class NPCNode(object):
 	id = 0
 	
 	eff_rel = 0
@@ -126,20 +135,20 @@ class NPCNode:
 		else:
 			return self.sibling.findDialog(id)
 			
-	def findNextDialogLevel(self, id, rel, events):
+	def findNextDialogLevel(self, id, rel, events, att):
 		if id[0] == self.id:
 			if self.terminal:
 				return False
 			if len(id) == 1:
-				return self.child.findNextDialog(id, rel, events)
-			return self.child.findNextDialogLevel(id, rel, events)
-		return self.sibling.findNextDialogLevel(id, rel, events)
+				return self.child.findNextDialog(id, rel, events, att)
+			return self.child.findNextDialogLevel(id, rel, events, att)
+		return self.sibling.findNextDialogLevel(id, rel, events, att)
 		
-	def findNextDialog(self, id, rel, events):
+	def findNextDialog(self, id, rel, events, att):
 		if rel >= self.required_relationship and inEvents(self.required_events, events):
 			return [self.id, self.name, self.text, self.eff_rel, self.eff_HP]
 		else:
-			return self.sibling.findNextDialog(id, rel, events)
+			return self.sibling.findNextDialog(id, rel, events, att)
 			
 	def findResponse(self, id, OP, CO, EX, AG, NE, events):
 		if id[0] == self.id:
@@ -164,8 +173,8 @@ class DialogTree(object):
 	def findDialog(self, id):
 		return self.beginNode.findDialog(id)
 		
-	def findNextDialog(self, id, rel, events):
-		return self.beginNode.findNextDialogLevel(id, rel, events)
+	def findNextDialog(self, id, rel, events, att):
+		return self.beginNode.findNextDialogLevel(id, rel, events, att)
 		
 	def findResponse(self, id, OP, CO, EX, AG, NE, events):
 		return self.beginNode.findDialog(id, OP, CO, EX, AG, NE, events)

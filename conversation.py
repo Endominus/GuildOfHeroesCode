@@ -16,6 +16,11 @@ class Conversation(Event):
 		self.npc = npc
 		self.dialogTree = DialogTree
 		self.eventsDict = eventsDict
+		self.choice = False
+		self.num_choices = 0
+		self.kd = 0
+		self.selected_choice = 0
+		self.lock = True
 	
 
 	def do(self, screen, gs):
@@ -23,39 +28,77 @@ class Conversation(Event):
 
 		dialog = self.dialogTree.findDialog(self.npc.conversation_seed)
 		id = dialog[0]
+		characteristics = [self.player.char_OP, self.player.char_CO, self.player.char_EX, self.player.char_AG, self.player.char_NE]
 		while dialog:
 			window = pygame.sprite.Group()
 			window.add(box)
 			window.draw(screen)
 			font = pygame.font.Font(None, 36)
-			name = font.render(dialog[1], 1, (255, 255, 255))
-			namepos = 15 , 15 + 2*(screen.get_size()[1]/3)
-			text = font.render(dialog[2], 1, (255, 255, 255))
-			textpos = 15 , 40 + 2*(screen.get_size()[1]/3)
-			screen.blit(name, namepos)
-			screen.blit(text, textpos)
-			pygame.display.flip()
-			dialog = self.dialogTree.findNextDialog(id, self.npc.relationship, self.eventsDict)
-			if dialog:
-				id = id + "." + dialog[0]
-			self.wait_input(gs)
+			if type(dialog[0]) == list:
+				self.choice = True
+				self.num_choices = 0
+				self.selected_choice = 0
+				for node in dialog:
+					text = font.render(dialog[1], 1, (255, 255, 255))
+					textpos = 25 , 40 + 2*(screen.get_size()[1]/3) + 25*self.num_choices
+					screen.blit(text, textpos)
+					self.num_choices += 1
+				self.wait_input(gs)
+				dialog = self.dialogTree.findDialog(id)
+			else:
+				name = font.render(dialog[1], 1, (255, 255, 255))
+				namepos = 15 , 15 + 2*(screen.get_size()[1]/3)
+				text = font.render(dialog[2], 1, (255, 255, 255))
+				textpos = 15 , 40 + 2*(screen.get_size()[1]/3)
+				screen.blit(name, namepos)
+				screen.blit(text, textpos)
+				pygame.display.flip()
+				dialog = self.dialogTree.findNextDialog(id, self.npc.relationship, self.eventsDict, characteristics)
+				if dialog:
+					id = id + "." + dialog[0]
+				self.wait_input(gs)
 
 
 	def wait_input(self, gs):
 		done = False
+		x = 0
 		while True:
 			for event in pygame.event.get():
 				if event.type == QUIT:
-					self.quit = True
+					gs.quit = True
 					return
-				if event.type == KEYDOWN:
+				elif event.type == KEYDOWN and event.key == K_ESCAPE:
+					gs.quit = True
+					return
+				elif event.type == KEYDOWN:
 					gs.kd += 1
-					return
+					#self.kd += 1
 				elif event.type == KEYUP:
 					gs.kd -= 1
-			if done:
-				return
-
+					self.lock = False
+					#self.kd -= 1
+			keysPressed = pygame.key.get_pressed()
+					
+			if gs.kd > 0 and not self.lock:
+				print "Holla", x
+				x += 1
+				if self.choice:
+					if keysPressed[K_w]:
+						self.selected_choice -= 1
+						if self.selected_choice < 0:
+							self.selected_choice += self.num_choices
+					if keysPressed[K_s]:
+						self.selected_choice = (self.selected_choice + 1) % self.num_choices
+					pointer = font.render("->", 1, (255, 255, 255))
+					pointerpos = 15 , 40 + 2*(screen.get_size()[1]/3) + 25*self.selected_choice
+					screen.blit(pointer, pointerpos)
+					pygame.display.flip()
+				if keysPressed[K_SPACE]:
+					self.lock = True
+					print "YOLO"
+					return
+					
+					
  	
 class Line:
 	text = 0
