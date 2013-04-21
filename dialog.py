@@ -31,7 +31,7 @@ class MCNode(object):
 	
 	terminal = False
 	
-	def __init__(self, treeid, req_OP, req_CO, req_EX, req_AG, req_NE, events, text, picture, childAttributes, term = False):
+	def __init__(self, treeid, req_OP, req_CO, req_EX, req_AG, req_NE, events, text, childAttributes):
 		self.id = treeid
 		self.req_OP = req_OP
 		self.req_CO = req_CO
@@ -40,9 +40,7 @@ class MCNode(object):
 		self.req_NE = req_NE
 		self.required_events = events
 		self.text = text
-		self.pictureID = picture
-		self.child = NPCNode(childAttributes)
-		self.terminal = term
+		self.child = NPCNode(treeid, childAttributes[0], childAttributes[1],  childAttributes[2], childAttributes[3], childAttributes[4], childAttributes[5], childAttributes[6], childAttributes[7])
 		
 	def addNode(self, id, MCSwitch, attributes):
 		if id[0] == self.id:
@@ -61,25 +59,23 @@ class MCNode(object):
 	#Always returns a child two levels down at least
 	def findNextDialogLevel(self, id, rel, events, att):
 		if id[0] == self.id:
-			return self.child.findNextDialogLevel(id, rel, events)
-		return self.sibling.findNextDialogLevel(id, rel, events)
+			return self.child.findNextDialogLevel(id, rel, events, att)
+		return self.sibling.findNextDialogLevel(id, rel, events, att)
 
-	def findResponse(self, id, OP, CO, EX, AG, NE, events):
-		if id == self.id:
-			if self.sibling:
-				responseList = self.sibling.findResponse(self.sibling.id, OP, CO, EX, AG, NE, events)
-			else:
-				responseList = []
-			if inEvents(self.required_events, events) and inRange(req_OP, OP) and inRange(req_CO, CO) and inRange(req_EX, EX) and inRange(req_AG, AG) and inRange(req_NE, NE):
-				responseList.append([self.id, self.text])
-		elif id[0] == self.id:
-			responseList = self.child.findResponse(id, OP, CO, EX, AG, NE, events)
+	def findResponse(self, OP, CO, EX, AG, NE, events):
+		if self.sibling:
+			responseList = self.sibling.findResponse(OP, CO, EX, AG, NE, events)
 		else:
-			responseList = self.sibling.findResponse(self.sibling.id, OP, CO, EX, AG, NE, events)
+			responseList = []
+		if inEvents(self.required_events, events) and inRange(self.req_OP, OP) and inRange(self.req_CO, CO) and inRange(self.req_EX, EX) and inRange(self.req_AG, AG) and inRange(self.req_NE, NE):
+			print self.id, self.text, id
+			responseList.append([self.id, self.text])
+		print responseList
 		return responseList
 
 	def findNextDialog(self, id, rel, events, att):
-		return findResponse(id, att[0], att[1], att[2], att[3], att[4], events)
+		print "in MCNODE findNextDialog"
+		return self.findResponse(att[0], att[1], att[2], att[3], att[4], events)
 
 class NPCNode(object):
 	id = 0
@@ -115,7 +111,8 @@ class NPCNode(object):
 				self.child.addNode(id[2:], MCSwitch, attributes)
 			else:
 				if MCSwitch:
-					self.child = MCNode(id[2:0], attributes[0], attributes[1],  attributes[2], attributes[3], attributes[4], attributes[5], attributes[6], attributes[7])
+					print id
+					self.child = MCNode(id[2:], attributes[0], attributes[1],  attributes[2], attributes[3], attributes[4], attributes[5], attributes[6], attributes[7])
 				else:
 					self.child = NPCNode(id[2:], attributes[0], attributes[1], attributes[2], attributes[3], attributes[4], attributes[5], attributes[6], attributes[7])
 		else:
@@ -131,6 +128,7 @@ class NPCNode(object):
 			if not self.terminal:
 				return self.child.findDialog(id)
 			else:
+				print "Failing 2"
 				return False
 		else:
 			return self.sibling.findDialog(id)
@@ -138,10 +136,11 @@ class NPCNode(object):
 	def findNextDialogLevel(self, id, rel, events, att):
 		if id[0] == self.id:
 			if self.terminal:
+				print "Faling at", self.text
 				return False
 			if len(id) == 1:
 				return self.child.findNextDialog(id, rel, events, att)
-			return self.child.findNextDialogLevel(id, rel, events, att)
+			return self.child.findNextDialogLevel(id[2:], rel, events, att)
 		return self.sibling.findNextDialogLevel(id, rel, events, att)
 		
 	def findNextDialog(self, id, rel, events, att):
@@ -154,6 +153,7 @@ class NPCNode(object):
 		if id[0] == self.id:
 			if not self.terminal:
 				return self.child.findResponse(id[2:], OP, CO, EX, AG, NE, events)
+			print self.text
 			return False
 		else:
 			return self.sibling.findResponse(id, OP, CO, EX, AG, NE, events)

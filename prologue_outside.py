@@ -68,7 +68,9 @@ def initialize_level():
 
 	dT = DialogTree()
 	dT.addNode("0", 0, ["First node", "Medic", 0, 0, [], 0, 0, False])
-	dT.addNode("0.0", 0, ["Second node", "Ghost", 0, 0, [], 0, 0, True])
+	dT.addNode("0.0", 0, ["Second node", "Ghost", 0, 0, [], 0, 0, False])
+	dT.addNode("0.0.0", True, [[0, 100], [0, 100], [0, 100], [0, 100], [0, 100], [], "A choice", ["I made the good choice. Yay!", "Ghost", 0, 0, [], 0, 0, True]])
+	dT.addNode("0.0.1", True, [[0, 100], [0, 100], [0, 100], [0, 100], [0, 100], [], "Another choice", ["I made the bad choice. Boo!", "Ghost", 0, 0, [], 0, 0, True]])
 	
 	
 	allsprites.add(actor)
