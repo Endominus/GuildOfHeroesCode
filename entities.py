@@ -60,6 +60,7 @@ class Player_Character(pygame.sprite.Sprite):
 	ss = 0
 	change_sprite = False
 	move_around = False
+	passable = False
 	x, y = 0, 0
 	
 	char_OP = 50
@@ -171,6 +172,8 @@ class Obstacle(pygame.sprite.Sprite):
 	interactive = False
 	interaction = 0
 	interaction_type = 0
+
+	passable = False
 
 	def __init__(self, image, x, y, frm, transparent_pixel = True):
 		pygame.sprite.Sprite.__init__(self)
@@ -409,5 +412,4 @@ class Event(object):
 				for i in range(len(self.vals[0])):
 					if self.vals[0][i] in events:
 						events[self.vals[0][i]] = self.vals[1][i]
-				
 			
