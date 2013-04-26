@@ -396,7 +396,7 @@ class Event(object):
 		self.vals = val
 		
 	def do(events):
-		for i in range(len(self.triggers)
+		#for i in range(len(self.triggers)
 	
 		if self.trigger in events and events[self.trigger]:
 			if self.type == 0:

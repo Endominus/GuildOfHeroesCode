@@ -37,6 +37,7 @@ def load_level_data(level_file, sprite_sheet):
 			if c != ' ':
 				sprite_name = spr_dict[c]
 			obs = Obstacle(sprite_name, x*32, y*32, frm, False)
+			obs.passable = True
 			allsprites.append(obs)
 			x += 1
 		x = 0
