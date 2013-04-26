@@ -318,16 +318,6 @@ class Frame:
 			self.player.rect.move_ip(0, -self.dydt)
 			if(len(collided) > 0):
 				self.dydt = 0
-
-			#check collision in diagonal
-			# self.player.rect.move_ip(0, self.dxdt)  
-			# self.player.rect.move_ip(0, self.dydt)  
-			# collided = pygame.sprite.spritecollide(self.player, self.obstacles, False)
-			# self.player.rect.move_ip(0, -self.dxdt)
-			# self.player.rect.move_ip(0, -self.dydt)
-			# if(len(collided) > 0):
-				# self.dxdt = 0
-				# self.dydt = 0
 		
 class NPC(Obstacle):
 	i = 0
@@ -388,4 +378,36 @@ class NPC(Obstacle):
 		self.exc.y_pos = self.y_pos - 40
 		return self.exc
 
+class Event(object):
+
+#Type Codes:
+# 0 = Start Conversation
+	# vals = [gs, npc]
+# 1 = Change Level
+	# vals = [gs, levelname]
+# 2 = Set/Reset Trigger
+	# vals = [[keys], [values]]
+	def __init__(self, trigger, type, val):
+		self.triggers = trigger
+		self.type = type
+		self.vals = val
 		
+	def do(events):
+		for i in range(len(self.triggers)
+	
+		if self.trigger in events and events[self.trigger]:
+			if self.type == 0:
+				events[self.trigger] = False
+				val[0].converse = True
+				val[0].conversation_npc = val[1]
+			elif self.type == 1:
+				events[self.trigger] = False
+				val[0].change_level = True
+				val[0].level_to_change = val[1]
+			elif self.type == 2:
+				events[self.trigger] = False
+				for i in range(len(self.vals[0])):
+					if self.vals[0][i] in events:
+						events[self.vals[0][i]] = self.vals[1][i]
+				
+			

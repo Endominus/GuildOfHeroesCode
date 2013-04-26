@@ -4,11 +4,7 @@ import pygame
 from pygame.locals import *
 from dialog import DialogTree
 
-class Event:
-	name = 0
-	run = 0
-
-class Conversation(Event):
+class Conversation(object):
 	#Takes a list of filenames in pictures
 	def __init__(self, player, npc, DialogTree, eventsDict):
 	#self.lines = [ Line(0, "First line"), Line(0, "Second line")]	

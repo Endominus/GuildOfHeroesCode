@@ -24,6 +24,12 @@ class Gamestate:
 	#interpreting keys
 	x, y = 0, 0
 	kd = 0
+	
+	converse = False
+	conversation_npc = 0
+	
+	change_level = False
+	level_to_change = 0
 
 	def idle(self):
 		self.clock.tick(60)
@@ -56,7 +62,6 @@ class Gamestate:
 					if(target.interaction_type == "conversation"):
 						convo = Conversation(self.player, target, self.dialogTree, self.eventsDict)
 						convo.do(self.screen, self)
-						print "..."
 					elif(target.interaction_type == "level"):
 						self.new_level(target.interaction)
 
