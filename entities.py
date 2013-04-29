@@ -81,8 +81,8 @@ class Player_Character(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		screen = pygame.display.get_surface()
 		self.area = screen.get_rect()
-		self.x = 20*32-(SPRITE_WIDTH/2)
-		self.y = 15*32-(SPRITE_HEIGHT/2)
+		self.x = 20*SPRITE_WIDTH-(SPRITE_WIDTH/2)
+		self.y = 15*SPRITE_HEIGHT-(SPRITE_HEIGHT/2)
 		self.rect.topleft = self.x, self.y
 		self.frame = frm
 		
@@ -396,7 +396,7 @@ class Event(object):
 		self.vals = val
 		
 	def do(events):
-		#for i in range(len(self.triggers)
+		for i in range(len(self.triggers)
 	
 		if self.trigger in events and events[self.trigger]:
 			if self.type == 0:
@@ -412,4 +412,33 @@ class Event(object):
 				for i in range(len(self.vals[0])):
 					if self.vals[0][i] in events:
 						events[self.vals[0][i]] = self.vals[1][i]
+				
 			
+			
+class ProximityTrigger(pygame.sprite.Sprite):
+	anchor = 0
+	link_loc = 0
+	
+	def __init__(self, location, width, height, triggers, keys):
+		pygame.sprite.Sprite.__init__(self)
+		screen = pygame.display.get_surface()
+		self.area = screen.get_rect()
+		self.rect = Rect(location[0], location[1], width, height)
+		self.triggers = triggers
+		self.key_values = keys
+		
+	def link_object(npc):
+		self.anchor = npc
+		self.link_loc = [npc.x_pos, npc.y_pos]
+		self.rect = npc.rect
+		self.rect.inflate(5, 5)
+		
+	def do(player, events):
+	if linked_object:
+		self.rect.move(anchor.x_pos - self.link_loc[0], anchor.y_pos - self.link_loc[1])
+	if pygame.sprite.collide_rect(self, player):
+		for key in self.triggers:
+			if key not in events or !events[key]:
+				return
+		for key_value in self.key_values:
+			events[key_value[0]] = key_value[1]
