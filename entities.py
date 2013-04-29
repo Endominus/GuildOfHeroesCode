@@ -36,7 +36,7 @@ class spritesheet(object):
 				for x in range(image_count)]
 		return self.images_at(tups, colorkey)
 
-def load_image(name, colorkey=None):
+def load_image(name, colorkey=None,):
 	fullname = os.path.join('data', name)
 	try:
 		image = pygame.image.load(fullname)
@@ -381,7 +381,7 @@ class NPC(Obstacle):
 		self.exc.y_pos = self.y_pos - 40
 		return self.exc
 
-class Event(object):
+class EventTrigger(object):
 
 #Type Codes:
 # 0 = Start Conversation
