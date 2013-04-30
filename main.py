@@ -46,7 +46,6 @@ def main():
 	
 	while (not gs.quit):
 		gs.idle()
-		#pathfinding.find_path(gs, gs.player, gs.player)
 	
 	# frm = Frame()
 	# frm.bind(-500, 500, -500, 500)

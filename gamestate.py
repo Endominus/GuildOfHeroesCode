@@ -19,8 +19,8 @@ class Gamestate:
 	dialogTree = False
 	eventsDict = {}
 
-	levelWidth = 2000;
-	levelHeight = 2000;
+	levelWidth = 1280;
+	levelHeight = 736 + 32;
 	#shouldn't be constant
 
 	delay_interact = 0
