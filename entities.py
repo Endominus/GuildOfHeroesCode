@@ -396,23 +396,22 @@ class EventTrigger(object):
 		self.vals = val
 		
 	def do(events):
-		for i in range(len(self.triggers)
-	
-		if self.trigger in events and events[self.trigger]:
-			if self.type == 0:
-				events[self.trigger] = False
-				val[0].converse = True
-				val[0].conversation_npc = val[1]
-			elif self.type == 1:
-				events[self.trigger] = False
-				val[0].change_level = True
-				val[0].level_to_change = val[1]
-			elif self.type == 2:
-				events[self.trigger] = False
-				for i in range(len(self.vals[0])):
-					if self.vals[0][i] in events:
-						events[self.vals[0][i]] = self.vals[1][i]
-				
+		for i in range(len(self.triggers)):
+			if self.trigger in events and events[self.trigger]:
+				if self.type == 0:
+					events[self.trigger] = False
+					val[0].converse = True
+					val[0].conversation_npc = val[1]
+				elif self.type == 1:
+					events[self.trigger] = False
+					val[0].change_level = True
+					val[0].level_to_change = val[1]
+				elif self.type == 2:
+					events[self.trigger] = False
+					for i in range(len(self.vals[0])):
+						if self.vals[0][i] in events:
+							events[self.vals[0][i]] = self.vals[1][i]
+					
 			
 			
 class ProximityTrigger(pygame.sprite.Sprite):
@@ -434,11 +433,11 @@ class ProximityTrigger(pygame.sprite.Sprite):
 		self.rect.inflate(5, 5)
 		
 	def do(player, events):
-	if linked_object:
-		self.rect.move(anchor.x_pos - self.link_loc[0], anchor.y_pos - self.link_loc[1])
-	if pygame.sprite.collide_rect(self, player):
-		for key in self.triggers:
-			if key not in events or !events[key]:
-				return
-		for key_value in self.key_values:
-			events[key_value[0]] = key_value[1]
+		if linked_object:
+			self.rect.move(anchor.x_pos - self.link_loc[0], anchor.y_pos - self.link_loc[1])
+		if pygame.sprite.collide_rect(self, player):
+			for key in self.triggers:
+				if key not in events or (not events[key]):
+					return
+			for key_value in self.key_values:
+				events[key_value[0]] = key_value[1]

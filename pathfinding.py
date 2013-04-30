@@ -14,6 +14,12 @@ def find_path(gamestate, actor, target):
 		pass
 	
 	blockSize = 40
+	grid = [[0]*(gamestate.levelWidth/blockSize) for i in range(gamestate.levelHeight/blockSize)]
+	for r in grid:
+		print r
+
+	
+
 
 
 	
