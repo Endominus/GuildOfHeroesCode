@@ -117,6 +117,13 @@ class Gamestate:
 			elif event.type == KEYDOWN and event.key == K_ESCAPE:
 				self.quit = True
 				return
+			elif event.type == KEYDOWN and event.key == K_m:
+				self.kd += 1
+				print "Openness:", self.player.char_OP
+				print "Conscientiousness:", self.player.char_CO
+				print "Extroversion:", self.player.char_EX
+				print "Agreeableness:", self.player.char_AG
+				print "Neuroticism:", self.player.char_NE 
 			elif event.type == KEYDOWN:
 				self.kd += 1
 			elif event.type == KEYUP:
@@ -138,9 +145,9 @@ class Gamestate:
 			else:
 				self.interact = False
 				self.eventsDict['action_button'] = False
-			if keysPressed[K_m]:
-				self.frame.lock_frame()
-				self.player.toggle_movement()
+			#if keysPressed[K_m]:
+				#self.frame.lock_frame()
+				#self.player.toggle_movement()
 			
 		self.frame.update_keys(x,y) 
 #	if interact

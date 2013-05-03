@@ -18,6 +18,7 @@ class Conversation(object):
 		self.kd = 0
 		self.selected_choice = 0
 		self.lock = True
+		self.stats = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
 	
 
 	def do(self, screen, gs):
@@ -46,7 +47,15 @@ class Conversation(object):
 				pygame.display.flip()
 				self.wait_input(gs, screen)
 				id = id + "." + dialog[self.selected_choice][0]
-				print id
+				a = dialog[self.selected_choice][2]
+				i = 0
+				#print a
+				for stat in a:
+					if stat != -1:
+						self.stats[i][0] += stat
+						self.stats[i][1] += 1
+					i += 1
+				#print self.stats
 				dialog = self.dialogTree.findDialog(id)
 			else:
 				name = font.render(dialog[1], 1, (255, 255, 255))
@@ -60,6 +69,13 @@ class Conversation(object):
 				if dialog and type(dialog[0]) != list:
 					id = id + "." + dialog[0]
 				self.wait_input(gs, screen)
+		for stat in self.stats:
+			if stat[1]:
+				stat[0] = stat[0]/stat[1]
+			else:
+				stat[0] = -1
+		
+		self.player.change_stats(self.stats[0][0], self.stats[1][0], self.stats[2][0], self.stats[3][0], self.stats[4][0])
 
 
 	def wait_input(self, gs, screen):

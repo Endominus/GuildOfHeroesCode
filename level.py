@@ -52,12 +52,12 @@ def load_level(level_name):
 	if level_name == "prologue_outside":
 		level = Level('prologue_outside.txt', 1)
 		medic = level.add_npc('Medic.bmp', 500, 500, 20)
-		level.add_events_dict(['prologue_near_medic'], [False, False])
+		level.add_events_dict(['prologue_near_medic', 'prologue_near_door'], [False, False])
 		level.add_proximity_trigger(medic, [], [['prologue_near_medic', True]], True)
 		level.add_event_trigger(['prologue_near_medic', 'action_button'], 0, ['0', medic])
 		level.add_dialog_node("0", 0, ["First node", "Medic", 0, 0, [], 0, 0, False])
 		level.add_dialog_node("0.0", 0, ["Second node", "Ghost", 0, 0, [], 0, 0, False])
-		level.add_dialog_node("0.0.0", True, [[0, 100], [0, 100], [0, 100], [0, 100], [0, 100], [], "A choice", ["I made the good choice. Yay!", "Ghost", 0, 0, [], 0, 0, True]])
-		level.add_dialog_node("0.0.1", True, [[0, 100], [0, 100], [0, 100], [0, 100], [0, 100], [], "Another choice", ["I made the bad choice. Boo!", "Ghost", 0, 0, [], 0, 0, True]])
+		level.add_dialog_node("0.0.0", True, [[0, 100], [0, 100], [0, 100], [0, 100], [0, 100], [], "A choice", [100, -1, -1, -1, -1], ["I made the good choice. Yay!", "Ghost", 0, 0, [], 0, 0, True]])
+		level.add_dialog_node("0.0.1", True, [[0, 100], [0, 100], [0, 100], [0, 100], [0, 100], [], "Another choice", [-1, -1, -1, -1, 0], ["I made the bad choice. Boo!", "Ghost", 0, 0, [], 0, 0, True]])
 		
 		return level

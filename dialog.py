@@ -29,15 +29,27 @@ class MCNode(object):
 	#picture of the character as she says the line
 	pictureID = 0
 	
+	#Effect on player stats
+	eff_OP = -1
+	eff_CO = -1
+	eff_EX = -1
+	eff_AG = -1
+	eff_NE = -1
+	
 	terminal = False
 	
-	def __init__(self, treeid, req_OP, req_CO, req_EX, req_AG, req_NE, events, text, childAttributes):
+	def __init__(self, treeid, req_OP, req_CO, req_EX, req_AG, req_NE, events, text, stats, childAttributes):
 		self.id = treeid
 		self.req_OP = req_OP
 		self.req_CO = req_CO
 		self.req_EX = req_EX
 		self.req_AG = req_AG
 		self.req_NE = req_NE
+		self.eff_OP = stats[0]
+		self.eff_CO = stats[1]
+		self.eff_EX = stats[2]
+		self.eff_AG = stats[3]
+		self.eff_NE = stats[4]
 		self.required_events = events
 		self.text = text
 		self.child = NPCNode(treeid, childAttributes[0], childAttributes[1],  childAttributes[2], childAttributes[3], childAttributes[4], childAttributes[5], childAttributes[6], childAttributes[7])
@@ -46,7 +58,7 @@ class MCNode(object):
 		if id[0] == self.id:
 			self.child.addNode(id, MCSwitch, attributes)
 		elif not self.sibling:
-			self.sibling = MCNode(id, attributes[0], attributes[1],  attributes[2], attributes[3], attributes[4], attributes[5], attributes[6], attributes[7])
+			self.sibling = MCNode(id, attributes[0], attributes[1],  attributes[2], attributes[3], attributes[4], attributes[5], attributes[6], attributes[7], attributes[8])
 		else:
 			self.sibling.addNode(id, MCSwitch, attributes)
 			
@@ -68,7 +80,7 @@ class MCNode(object):
 		else:
 			responseList = []
 		if inEvents(self.required_events, events) and inRange(self.req_OP, OP) and inRange(self.req_CO, CO) and inRange(self.req_EX, EX) and inRange(self.req_AG, AG) and inRange(self.req_NE, NE):
-			responseList.append([self.id, self.text])
+			responseList.append([self.id, self.text, [self.eff_OP, self.eff_CO, self.eff_EX, self.eff_AG, self.eff_NE]])
 		return responseList
 
 	def findNextDialog(self, id, rel, events, att):
@@ -109,7 +121,7 @@ class NPCNode(object):
 			else:
 				if MCSwitch:
 					print id
-					self.child = MCNode(id[2:], attributes[0], attributes[1],  attributes[2], attributes[3], attributes[4], attributes[5], attributes[6], attributes[7])
+					self.child = MCNode(id[2:], attributes[0], attributes[1],  attributes[2], attributes[3], attributes[4], attributes[5], attributes[6], attributes[7], attributes[8])
 				else:
 					self.child = NPCNode(id[2:], attributes[0], attributes[1], attributes[2], attributes[3], attributes[4], attributes[5], attributes[6], attributes[7])
 		else:
