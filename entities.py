@@ -326,7 +326,6 @@ class NPC(Obstacle):
 	i = 0
 	vision_area_width, vision_area_length = 50, 150
 	state = 1
-	conversation_seed = -1
 	relationship = -1
 	facing = 2
 	exc = 0
@@ -365,9 +364,6 @@ class NPC(Obstacle):
 				
 		return False
 		
-	def set_seed(self, x):
-		self.conversation_seed = x
-		
 	def change_facing(self, direction):
 		self.image = pygame.transform.rotate(self.image, (self.facing % 4 - direction % 4) * 90)
 		self.rect = self.image.get_rect()
@@ -383,11 +379,13 @@ class NPC(Obstacle):
 
 class EventTrigger(object):
 
+	gs = 0
+
 #Type Codes:
 # 0 = Start Conversation
-	# vals = [gs, npc]
+	# vals = [seed, npc]
 # 1 = Change Level
-	# vals = [gs, levelname]
+	# vals = levelname
 # 2 = Set/Reset Trigger
 	# vals = [[keys], [values]]
 	def __init__(self, trigger, type, val):
@@ -395,22 +393,26 @@ class EventTrigger(object):
 		self.type = type
 		self.vals = val
 		
-	def do(events):
+	def do(self, events):
 		for i in range(len(self.triggers)):
-			if self.trigger in events and events[self.trigger]:
+			if self.triggers[i] in events and events[self.triggers[i]]:
 				if self.type == 0:
-					events[self.trigger] = False
-					val[0].converse = True
-					val[0].conversation_npc = val[1]
+					#events[self.trigger] = False
+					self.gs.converse = True
+					self.gs.conversation_seed = self.vals[0]
+					self.gs.conversation_npc = self.vals[1]
 				elif self.type == 1:
-					events[self.trigger] = False
-					val[0].change_level = True
-					val[0].level_to_change = val[1]
+					#events[self.trigger] = False
+					self.gs.change_level = True
+					self.gs.level_to_change = self.vals
 				elif self.type == 2:
-					events[self.trigger] = False
+					#events[self.trigger] = False
 					for i in range(len(self.vals[0])):
 						if self.vals[0][i] in events:
 							events[self.vals[0][i]] = self.vals[1][i]
+							
+	def set_gs(self, gs):
+		self.gs = gs
 					
 			
 			
@@ -418,26 +420,31 @@ class ProximityTrigger(pygame.sprite.Sprite):
 	anchor = 0
 	link_loc = 0
 	
-	def __init__(self, location, width, height, triggers, keys):
+	#key value format: [[key, value], [key2, value2]]
+	def __init__(self, location, width, height, triggers, keys, unstable):
 		pygame.sprite.Sprite.__init__(self)
 		screen = pygame.display.get_surface()
 		self.area = screen.get_rect()
 		self.rect = Rect(location[0], location[1], width, height)
 		self.triggers = triggers
 		self.key_values = keys
+		self.stability = unstable
 		
-	def link_object(npc):
+	def link_object(self, npc):
 		self.anchor = npc
 		self.link_loc = [npc.x_pos, npc.y_pos]
 		self.rect = npc.rect
 		self.rect.inflate(5, 5)
 		
-	def do(player, events):
-		if linked_object:
-			self.rect.move(anchor.x_pos - self.link_loc[0], anchor.y_pos - self.link_loc[1])
+	def do(self, player, events):
+		if self.anchor:
+			self.rect.move(self.anchor.x_pos - self.link_loc[0], self.anchor.y_pos - self.link_loc[1])
 		if pygame.sprite.collide_rect(self, player):
 			for key in self.triggers:
 				if key not in events or (not events[key]):
 					return
 			for key_value in self.key_values:
 				events[key_value[0]] = key_value[1]
+		elif self.stability:
+			for key_value in self.key_values:
+				events[key_value[0]] = not key_value[1]

@@ -6,10 +6,11 @@ from dialog import DialogTree
 
 class Conversation(object):
 	#Takes a list of filenames in pictures
-	def __init__(self, player, npc, DialogTree, eventsDict):
+	def __init__(self, player, seed, npc, DialogTree, eventsDict):
 	#self.lines = [ Line(0, "First line"), Line(0, "Second line")]	
 		self.player = player
 		self.npc = npc
+		self.seed = seed
 		self.dialogTree = DialogTree
 		self.eventsDict = eventsDict
 		self.choice = False
@@ -22,7 +23,7 @@ class Conversation(object):
 	def do(self, screen, gs):
 		box = Talk_Pane("text_box.bmp", 0, (2*(screen.get_size()[1]/3)))
 
-		dialog = self.dialogTree.findDialog(self.npc.conversation_seed)
+		dialog = self.dialogTree.findDialog(self.seed)
 		id = dialog[0]
 		characteristics = [self.player.char_OP, self.player.char_CO, self.player.char_EX, self.player.char_AG, self.player.char_NE]
 		while dialog:

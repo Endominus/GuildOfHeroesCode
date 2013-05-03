@@ -42,7 +42,7 @@ def main():
 	screen.blit(background, (0, 0))
 	pygame.display.flip()
 
-	gs = Gamestate(screen, background, prologue_outside.initialize_level)
+	gs = Gamestate(screen, background, "prologue_outside")
 	
 	while (not gs.quit):
 		gs.idle()

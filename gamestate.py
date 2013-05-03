@@ -12,13 +12,12 @@ class Gamestate:
 	allsprites = 0
 	clock = pygame.time.Clock()
 	player = 0
-	interactables = 0
 	NPCs = 0
 	quit = False
 	interact = False
 	held = False
 	dialogTree = False
-	eventsDict = {}
+	eventsDict = {'action_button':False}
 	level = 0
 
 	levelWidth = 1280;
@@ -32,6 +31,7 @@ class Gamestate:
 	kd = 0
 	
 	converse = False
+	conversation_seed = 0
 	conversation_npc = 0
 	
 	change_level = False
@@ -41,6 +41,10 @@ class Gamestate:
 		self.clock.tick(60)
 		self._check_input()
 		self.frame.run_kinetics()
+		for trigger in self.proximity_triggers:
+			trigger.do(self.player, self.eventsDict)
+		for trigger in self.event_triggers:
+			trigger.do(self.eventsDict)
 		self._check_interact()
 
 		self.allsprites.update()
@@ -51,32 +55,45 @@ class Gamestate:
 
 	def new_level(self, level_name):
 		#self.frame, self.player, self.interactables, self.allsprites, self.NPCs, self.dialogTree = level.initialize_level()
-		self.level = load_level(level_name)
-		self.frame = self.level.frm
-		self.player = self.level.player
-		self.event_triggers = self.level.event_triggers
-		self.proximity_triggers = self.level.proximity_triggers
-		self.allsprites = self.level.allsprites
-		self.NPCs = self.level.NPCs
+		level = load_level(level_name)
+		self.frame = level.frm
+		self.player = level.player
+		self.event_triggers = level.event_triggers
+		for trigger in self.event_triggers:
+			trigger.set_gs(self)
+		self.proximity_triggers = level.proximity_triggers
+		self.allsprites = level.allsprites
+		self.NPCs = level.NPCs
+		self.dialogueTree = level.dT
+		for event in level.events.keys():
+			self.eventsDict[event] = level.events[event]
+		self.level = level
 
 	def __init__(self, screen, background, levelInit):
 		self.screen = screen
 		self.background = background
-		self.frame, self.player, self.interactables, self.allsprites, self.NPCs, self.dialogTree = levelInit()
+		self.new_level(levelInit)
 		
 	def _check_interact(self):
 		if self.interact:
 			if self.delay_interact<1:
 				self.delay_interact = 45
-				collider = pygame.sprite.collide_rect_ratio(1.2)
-				collided = pygame.sprite.spritecollide(self.player, self.interactables, False, collider)
-				if(len(collided) > 0):
-					target = collided.pop()
-					if(target.interaction_type == "conversation"):
-						convo = Conversation(self.player, target, self.dialogTree, self.eventsDict)
-						convo.do(self.screen, self)
-					elif(target.interaction_type == "level"):
-						self.new_level(target.interaction)
+				# collider = pygame.sprite.collide_rect_ratio(1.2)
+				# collided = pygame.sprite.spritecollide(self.player, self.interactables, False, collider)
+				# if(len(collided) > 0):
+					# target = collided.pop()
+					# if(target.interaction_type == "conversation"):
+						# convo = Conversation(self.player, target, self.dialogTree, self.eventsDict)
+						# convo.do(self.screen, self)
+					# elif(target.interaction_type == "level"):
+						# self.new_level(target.interaction)
+				if self.converse:
+					convo = Conversation(self.player, self.conversation_seed, self.conversation_npc, self.level.dT, self.eventsDict)
+					convo.do(self.screen, self)
+					converse = False
+				elif self.change_level:
+					self.new_level(self.level_to_change)
+					self.change_level = False
 
 		if self.delay_interact>0:
 			self.delay_interact -= 1
@@ -102,7 +119,7 @@ class Gamestate:
 				return
 			elif event.type == KEYDOWN:
 				self.kd += 1
-			elif event.type ==KEYUP:
+			elif event.type == KEYUP:
 				self.kd -= 1 
 		keysPressed = pygame.key.get_pressed()
 	
@@ -117,9 +134,14 @@ class Gamestate:
 				x += 1
 			if keysPressed[K_SPACE]:
 				self.interact = True
+				self.eventsDict['action_button'] = True
+			else:
+				self.interact = False
+				self.eventsDict['action_button'] = False
 			if keysPressed[K_m]:
 				self.frame.lock_frame()
 				self.player.toggle_movement()
+			
 		self.frame.update_keys(x,y) 
 #	if interact
 #		self._check_interact()
