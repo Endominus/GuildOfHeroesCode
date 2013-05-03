@@ -17,8 +17,8 @@ class Level(object):
 		self.event_triggers = []
 		self.proximity_triggers = []
 		
-	def add_npc(self, image, x_loc, y_loc, rel):
-		actor = NPC(image, x_loc, y_loc, self.frm)
+	def add_npc(self, image, x_loc, y_loc, rel, id):
+		actor = NPC(image, x_loc, y_loc, self.frm, id)
 		actor.layer = 3
 		actor.interactive = True
 		actor.relationship = rel
@@ -51,7 +51,7 @@ class Level(object):
 def load_level(level_name):
 	if level_name == "prologue_outside":
 		level = Level('prologue_outside.txt', 1)
-		medic = level.add_npc('Medic.bmp', 500, 500, 20)
+		medic = level.add_npc('Medic.bmp', 500, 500, 20, 1)
 		level.add_events_dict(['prologue_near_medic', 'prologue_near_door'], [False, False])
 		level.add_proximity_trigger(medic, [], [['prologue_near_medic', True]], True)
 		level.add_event_trigger(['prologue_near_medic', 'action_button'], 0, ['0', medic])

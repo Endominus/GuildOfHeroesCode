@@ -20,8 +20,8 @@ class Gamestate:
 	eventsDict = {'action_button':False}
 	level = 0
 
-	levelWidth = 1280;
-	levelHeight = 736 + 32;
+	levelWidth = 40*SPRITE_WIDTH;
+	levelHeight = 30*SPRITE_HEIGHT;
 	#shouldn't be constant
 
 	delay_interact = 0

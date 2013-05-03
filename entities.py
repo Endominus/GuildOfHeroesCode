@@ -351,10 +351,12 @@ class NPC(Obstacle):
 	relationship = -1
 	facing = 2
 	exc = 0
+	id = 0
 	
-	def __init__(self, image, x, y, frm, transparent_pixel = True):
+	def __init__(self, image, x, y, frm, id, transparent_pixel = True):
 		Obstacle.__init__(self, image, x, y, frm, transparent_pixel)
 		self.exc = Obstacle('exclamation.bmp', 500, 500, frm)
+		self.id = id
 		
 	def setRelationship(self, x):
 		self.relationship = x
@@ -417,21 +419,22 @@ class EventTrigger(object):
 		
 	def do(self, events):
 		for i in range(len(self.triggers)):
-			if self.triggers[i] in events and events[self.triggers[i]]:
-				if self.type == 0:
-					#events[self.trigger] = False
-					self.gs.converse = True
-					self.gs.conversation_seed = self.vals[0]
-					self.gs.conversation_npc = self.vals[1]
-				elif self.type == 1:
-					#events[self.trigger] = False
-					self.gs.change_level = True
-					self.gs.level_to_change = self.vals
-				elif self.type == 2:
-					#events[self.trigger] = False
-					for i in range(len(self.vals[0])):
-						if self.vals[0][i] in events:
-							events[self.vals[0][i]] = self.vals[1][i]
+			if self.triggers[i] not in events or not events[self.triggers[i]]:
+				return
+		if self.type == 0:
+			#events[self.trigger] = False
+			self.gs.converse = True
+			self.gs.conversation_seed = self.vals[0]
+			self.gs.conversation_npc = self.vals[1]
+		elif self.type == 1:
+			#events[self.trigger] = False
+			self.gs.change_level = True
+			self.gs.level_to_change = self.vals
+		elif self.type == 2:
+			#events[self.trigger] = False
+			for i in range(len(self.vals[0])):
+				if self.vals[0][i] in events:
+					events[self.vals[0][i]] = self.vals[1][i]
 							
 	def set_gs(self, gs):
 		self.gs = gs
@@ -454,13 +457,19 @@ class ProximityTrigger(pygame.sprite.Sprite):
 		
 	def link_object(self, npc):
 		self.anchor = npc
-		self.link_loc = [npc.x_pos, npc.y_pos]
-		self.rect = npc.rect
-		self.rect.inflate(5, 5)
+		self.link_loc = [npc.rect.x, npc.rect.y]
+		self.rect = npc.rect.copy()
+		self.rect = self.rect.inflate(10, 10)
 		
 	def do(self, player, events):
+		
 		if self.anchor:
-			self.rect.move(self.anchor.x_pos - self.link_loc[0], self.anchor.y_pos - self.link_loc[1])
+			self.rect.move_ip(self.anchor.rect.x - self.link_loc[0], self.anchor.rect.y - self.link_loc[1])
+			self.link_loc[0] = self.anchor.rect.x
+			self.link_loc[1] = self.anchor.rect.y
+		#print pygame.sprite.collide_rect(self, player)
+		#print player.rect.colliderect(self.rect)
+		#print self.rect.top
 		if pygame.sprite.collide_rect(self, player):
 			for key in self.triggers:
 				if key not in events or (not events[key]):
