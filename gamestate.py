@@ -3,6 +3,7 @@ from entities import *
 from conversation import *
 import pygame
 from pygame.locals import*
+from level import *
 
 class Gamestate:
 	screen = 0
@@ -18,6 +19,7 @@ class Gamestate:
 	held = False
 	dialogTree = False
 	eventsDict = {}
+	level = 0
 
 	levelWidth = 1280;
 	levelHeight = 736 + 32;
@@ -47,8 +49,15 @@ class Gamestate:
 		self.allsprites.draw(self.screen)
 		pygame.display.flip()
 
-	def new_level(self, level):
-		self.frame, self.player, self.interactables, self.allsprites, self.NPCs, self.dialogTree = level.initialize_level()
+	def new_level(self, level_name):
+		#self.frame, self.player, self.interactables, self.allsprites, self.NPCs, self.dialogTree = level.initialize_level()
+		self.level = load_level(level_name)
+		self.frame = self.level.frm
+		self.player = self.level.player
+		self.event_triggers = self.level.event_triggers
+		self.proximity_triggers = self.level.proximity_triggers
+		self.allsprites = self.level.allsprites
+		self.NPCs = self.level.NPCs
 
 	def __init__(self, screen, background, levelInit):
 		self.screen = screen

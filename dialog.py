@@ -68,13 +68,10 @@ class MCNode(object):
 		else:
 			responseList = []
 		if inEvents(self.required_events, events) and inRange(self.req_OP, OP) and inRange(self.req_CO, CO) and inRange(self.req_EX, EX) and inRange(self.req_AG, AG) and inRange(self.req_NE, NE):
-			print self.id, self.text, id
 			responseList.append([self.id, self.text])
-		print responseList
 		return responseList
 
 	def findNextDialog(self, id, rel, events, att):
-		print "in MCNODE findNextDialog"
 		return self.findResponse(att[0], att[1], att[2], att[3], att[4], events)
 
 class NPCNode(object):
@@ -126,9 +123,8 @@ class NPCNode(object):
 			return [self.id, self.name, self.text, self.eff_rel, self.eff_HP]
 		elif id[0] == self.id:
 			if not self.terminal:
-				return self.child.findDialog(id)
+				return self.child.findDialog(id[2:])
 			else:
-				print "Failing 2"
 				return False
 		else:
 			return self.sibling.findDialog(id)
@@ -136,7 +132,6 @@ class NPCNode(object):
 	def findNextDialogLevel(self, id, rel, events, att):
 		if id[0] == self.id:
 			if self.terminal:
-				print "Faling at", self.text
 				return False
 			if len(id) == 1:
 				return self.child.findNextDialog(id, rel, events, att)

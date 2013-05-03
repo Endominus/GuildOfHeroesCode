@@ -13,7 +13,6 @@ class Level(object):
 		self.obstacles = pygame.sprite.Group(self.obstacles_list)
 		self.frm.obstruct(self.player, self.obstacles)
 		self.dT = DialogTree()
-		self.interactables = pygame.sprite.Group()
 		self.events = dict()
 		self.event_triggers = []
 		self.proximity_triggers = []
@@ -28,7 +27,6 @@ class Level(object):
 		self.allsprites.add(actor)
 		self.obstacles.add(actor)
 		self.NPCs.add(actor)
-		self.interactables.add(actor)
 		
 	def add_events_dict(self, keys, values):
 		self.events = dict(zip(keys, values))
@@ -46,3 +44,7 @@ class Level(object):
 		self.proximity_triggers.append(p)
 		
 		
+		
+def load_level(level_name):
+	if level_name == "pro_outside":
+		level = Level('prologue_outside.txt', 1)
