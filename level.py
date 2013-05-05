@@ -59,5 +59,7 @@ def load_level(level_name):
 		level.add_dialog_node("0.0", 0, ["Second node", "Ghost", 0, 0, [], 0, 0, False])
 		level.add_dialog_node("0.0.0", True, [[0, 100], [0, 100], [0, 100], [0, 100], [0, 100], [], "A choice", [100, -1, -1, -1, -1], ["I made the good choice. Yay!", "Ghost", 0, 0, [], 0, 0, True]])
 		level.add_dialog_node("0.0.1", True, [[0, 100], [0, 100], [0, 100], [0, 100], [0, 100], [], "Another choice", [-1, -1, -1, -1, 0], ["I made the bad choice. Boo!", "Ghost", 0, 0, [], 0, 0, True]])
+		#level.player.x = 40*SPRITE_WIDTH - SPRITE_WIDTH/2
+		#level.player.y = 30*SPRITE_HEIGHT - SPRITE_HEIGHT/2
 		
 		return level

@@ -4,8 +4,8 @@ import math
 from pygame.locals import *
 
 MAX_SPEED = 8
-SPRITE_WIDTH = 14
-SPRITE_HEIGHT = 20
+SPRITE_WIDTH = 32
+SPRITE_HEIGHT = 32
 
 class spritesheet(object):
 	def __init__(self, filename):
@@ -69,6 +69,9 @@ class Player_Character(pygame.sprite.Sprite):
 	char_AG = 50
 	char_NE = 50
 	
+	ghost_sprite_width = 14
+	ghost_sprite_height = 20
+	
 	def __init__(self, image, frm):
 		pygame.sprite.Sprite.__init__(self)
 		#self.image, self.rect = load_image(image, -1)
@@ -77,12 +80,12 @@ class Player_Character(pygame.sprite.Sprite):
 		self.state_counter = 0
 		image_name = os.path.join('data', image)
 		self.ss = spritesheet(image_name)
-		self.image = self.ss.image_at(((self.facing*SPRITE_WIDTH, self.run_state*SPRITE_HEIGHT), (SPRITE_WIDTH, SPRITE_HEIGHT)), (255, 0, 255))
+		self.image = self.ss.image_at(((self.facing*self.ghost_sprite_width, self.run_state*self.ghost_sprite_height), (self.ghost_sprite_width, self.ghost_sprite_height)), (255, 0, 255))
 		self.rect = self.image.get_rect()
 		screen = pygame.display.get_surface()
 		self.area = screen.get_rect()
-		self.x = 20*SPRITE_WIDTH-(SPRITE_WIDTH/2)
-		self.y = 15*SPRITE_HEIGHT-(SPRITE_HEIGHT/2)
+		self.x = 20*SPRITE_WIDTH-(self.ghost_sprite_width/2)
+		self.y = 15*SPRITE_HEIGHT-(self.ghost_sprite_height/2)
 		self.rect.topleft = self.x, self.y
 		self.frame = frm
 		
@@ -143,7 +146,7 @@ class Player_Character(pygame.sprite.Sprite):
 			self.y += self.frame.dydt
 			self.rect = newpos
 		if self.change_sprite:
-			self.image = self.ss.image_at(((self.facing*SPRITE_WIDTH, self.run_state*SPRITE_HEIGHT), (SPRITE_WIDTH, SPRITE_HEIGHT)), (255, 0, 255))
+			self.image = self.ss.image_at(((self.facing*self.ghost_sprite_width, self.run_state*self.ghost_sprite_height), (self.ghost_sprite_width, self.ghost_sprite_height)), (255, 0, 255))
 			self.rect = self.image.get_rect()
 			self.rect.topleft = self.x, self.y
 			self.change_sprite = False
