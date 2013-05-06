@@ -62,6 +62,9 @@ class Player_Character(pygame.sprite.Sprite):
 	move_around = False
 	passable = False
 	x, y = 0, 0
+
+	#Player's absolute position, used for pathing
+	x_pos, y_pos = 0, 0
 	
 	char_OP = 50
 	char_CO = 50
@@ -88,6 +91,8 @@ class Player_Character(pygame.sprite.Sprite):
 		self.y = 15*SPRITE_HEIGHT-(self.ghost_sprite_height/2)
 		self.rect.topleft = self.x, self.y
 		self.frame = frm
+		self.x_pos = self.x
+		self.y_pos = self.y
 		
 #	def _degradeSpeed(self):
 #		if y < 0:
@@ -150,7 +155,9 @@ class Player_Character(pygame.sprite.Sprite):
 			self.rect = self.image.get_rect()
 			self.rect.topleft = self.x, self.y
 			self.change_sprite = False
-		
+		self.x_pos += self.frame.dxdt
+		self.y_pos += self.frame.dydt
+
 	def toggle_movement(self):
 		self.move_around = not self.move_around
 		
@@ -355,6 +362,7 @@ class NPC(Obstacle):
 	facing = 2
 	exc = 0
 	id = 0
+	movement_target = 0;
 	
 	def __init__(self, image, x, y, frm, id, transparent_pixel = True):
 		Obstacle.__init__(self, image, x, y, frm, transparent_pixel)
@@ -365,6 +373,15 @@ class NPC(Obstacle):
 		self.relationship = x
 		
 	def update(self):
+		if(self.movement_target != 0):
+		    if(self.x_pos>self.movement_target.x_pos):
+			self.x_pos-=1
+		    if(self.x_pos<self.movement_target.x_pos):
+			self.x_pos+=1
+		    if(self.y_pos>self.movement_target.y_pos):
+			self.y_pos-=1
+		    if(self.y_pos<self.movement_target.y_pos):
+			self.y_pos+=1
 		Obstacle.update(self)
 		
 	def check_vision(self, other_x, other_y):

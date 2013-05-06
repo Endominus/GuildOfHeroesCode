@@ -105,5 +105,5 @@ def initialize_level():
 	interactables.add(rldoor)
 	interactables.add(lrdoor)
 	interactables.add(rrdoor)
-
+	
 	return frm, player, interactables, allsprites, NPCs, dT
