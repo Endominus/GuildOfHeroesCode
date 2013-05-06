@@ -11,8 +11,8 @@ def find_path(gamestate, actor, target):
 		while(True):
 			n = it.next()
 			if((not n.passable) & (n != actor) & (n != target)):
-				x = n.rect.centerx
-				y = n.rect.centery
+				x = n.x_pos
+				y = n.y_pos
 				x = int(x/blockSize)
 				y = int(y/blockSize)
 				grid[y][x]='x'
@@ -45,9 +45,11 @@ def find_path(gamestate, actor, target):
 		news = _neighbors(position.nodes[len(position.nodes)-1])
 		for n in news:
 			if not (n in position.nodes):
-				newPath = Path(position, n)
+				newPath = Path.extend(position, n)
 				qu.put((abs(targetx - n[0]) + abs(targety - n[1]) + newPath.length, newPath), False)
 	
+	for n in result.nodes:
+	    grid[n[1]][n[0]] = 'o'
 	for r in grid:
 		print r
 
@@ -59,14 +61,14 @@ def find_path(gamestate, actor, target):
 #returns a list of neighbors
 def _neighbors(pos):
 	return [
-		(pos[0]-1, pos[1] -1)
-		(pos[0]+1, pos[1] -1)
-		(pos[0]-1, pos[1] +1)
-		(pos[0]+1, pos[1] +1)
-		(pos[0], pos[1] -1)
-		(pos[0], pos[1] +1)
-		(pos[0]-1, pos[1])
-		(pos[0]+1, pos[1])
+		(pos[0]-1, pos[1] -1),
+		(pos[0]+1, pos[1] -1),
+		(pos[0]-1, pos[1] +1),
+		(pos[0]+1, pos[1] +1),
+		(pos[0], pos[1] -1),
+		(pos[0], pos[1] +1),
+		(pos[0]-1, pos[1]),
+		(pos[0]+1, pos[1]),
 		]
 	
 class Path:
@@ -86,10 +88,10 @@ class Path:
 	#copy with new node appended
 	def extend(self, new_node):
 		r = Path()
-		r.length = length
-		r.nodes = list(nodes)
-		dx = math.abs(r.nodes[len(r.nodes)-1][0] - new_node[0])
-		dy = math.abs(r.nodes[len(r.nodes)-1][1] - new_node[1])
+		r.length = self.length
+		r.nodes = list(self.nodes)
+		dx = abs(r.nodes[len(r.nodes)-1][0] - new_node[0])
+		dy = abs(r.nodes[len(r.nodes)-1][1] - new_node[1])
 		
 		#using cases for this avoids taking a square root
 		if dx == 0:

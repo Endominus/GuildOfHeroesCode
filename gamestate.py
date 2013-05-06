@@ -55,7 +55,7 @@ class Gamestate:
 
 	def new_level(self, level_name):
 		#self.frame, self.player, self.interactables, self.allsprites, self.NPCs, self.dialogTree = level.initialize_level()
-		level = load_level(level_name)
+		level = load_level(level_name, self)
 		self.frame = level.frm
 		self.player = level.player
 		self.event_triggers = level.event_triggers

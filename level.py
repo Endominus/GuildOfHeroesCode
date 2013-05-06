@@ -4,7 +4,7 @@ import sprites
 
 class Level(object):
 
-	def __init__(self, source, assets):
+	def __init__(self, source, assets, gs):
 		self.frm, allsprites_list, obstacles_list = sprites.load_level_data(source, assets)
 		self.player = Player_Character('ghost_ss.bmp', self.frm)
 		allsprites_list.append(self.player)
@@ -16,6 +16,7 @@ class Level(object):
 		self.events = dict()
 		self.event_triggers = []
 		self.proximity_triggers = []
+		self.gs = gs
 		
 	def add_npc(self, image, x_loc, y_loc, rel, id):
 		actor = NPC(image, x_loc, y_loc, self.frm, id)
@@ -48,9 +49,9 @@ class Level(object):
 		
 		
 		
-def load_level(level_name):
+def load_level(level_name, gs):
 	if level_name == "prologue_outside":
-		level = Level('prologue_outside.txt', 1)
+		level = Level('prologue_outside.txt', 1, gs)
 		medic = level.add_npc('Medic.bmp', 500, 500, 20, 1)
 		level.add_events_dict(['prologue_near_medic', 'prologue_near_door'], [False, False])
 		level.add_proximity_trigger(medic, [], [['prologue_near_medic', True]], True)
@@ -63,4 +64,5 @@ def load_level(level_name):
 		#level.player.y = 30*SPRITE_HEIGHT - SPRITE_HEIGHT/2
 		follower = level.add_npc('Medic.bmp', 600, 600, 0, 2)
 		follower.movement_target = level.player
+		follower.gs = level.gs
 		return level

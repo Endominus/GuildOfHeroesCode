@@ -2,6 +2,8 @@ import os, sys
 import pygame
 import math
 from pygame.locals import *
+import pathfinding
+from pathfinding import *
 
 MAX_SPEED = 8
 SPRITE_WIDTH = 32
@@ -200,6 +202,7 @@ class Obstacle(pygame.sprite.Sprite):
 	frame = 0
 	#absolute coordinates
 	
+	gs = 0
 	layer = 2
 	interactive = False
 	interaction = 0
@@ -362,7 +365,9 @@ class NPC(Obstacle):
 	facing = 2
 	exc = 0
 	id = 0
-	movement_target = 0;
+	movement_target = 0
+	movement_path = 0
+	movement_path_age = 0
 	
 	def __init__(self, image, x, y, frm, id, transparent_pixel = True):
 		Obstacle.__init__(self, image, x, y, frm, transparent_pixel)
@@ -373,15 +378,16 @@ class NPC(Obstacle):
 		self.relationship = x
 		
 	def update(self):
-		if(self.movement_target != 0):
-		    if(self.x_pos>self.movement_target.x_pos):
-			self.x_pos-=1
-		    if(self.x_pos<self.movement_target.x_pos):
-			self.x_pos+=1
-		    if(self.y_pos>self.movement_target.y_pos):
-			self.y_pos-=1
-		    if(self.y_pos<self.movement_target.y_pos):
-			self.y_pos+=1
+		#if(self.movement_target != 0):
+		    #print find_path(self.gs, self, self.movement_target);
+#		    if(self.x_pos>self.movement_target.x_pos):
+#			self.x_pos-=1
+#		    if(self.x_pos<self.movement_target.x_pos):
+#			self.x_pos+=1
+#		    if(self.y_pos>self.movement_target.y_pos):
+#			self.y_pos-=1
+#		    if(self.y_pos<self.movement_target.y_pos):
+#			self.y_pos+=1
 		Obstacle.update(self)
 		
 	def check_vision(self, other_x, other_y):
