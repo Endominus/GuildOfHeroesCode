@@ -7,8 +7,8 @@ import prologue_outside
 import prologue_hall
 import pathfinding
 
-SCREEN_WIDTH = 40*SPRITE_WIDTH
-SCREEN_HEIGHT = 30*SPRITE_HEIGHT
+SCREEN_WIDTH = 16*SPRITE_WIDTH
+SCREEN_HEIGHT = 10*SPRITE_HEIGHT
 
 def key_pressed():
 	x, y = 0, 0

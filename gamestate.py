@@ -20,8 +20,8 @@ class Gamestate:
 	eventsDict = {'action_button':False}
 	level = 0
 
-	levelWidth = 40*SPRITE_WIDTH
-	levelHeight = 30*SPRITE_HEIGHT
+	levelWidth = 16*SPRITE_WIDTH
+	levelHeight = 10*SPRITE_HEIGHT
 	#shouldn't be constant
 
 	delay_interact = 0
@@ -78,19 +78,10 @@ class Gamestate:
 		if self.interact:
 			if self.delay_interact<1:
 				self.delay_interact = 45
-				# collider = pygame.sprite.collide_rect_ratio(1.2)
-				# collided = pygame.sprite.spritecollide(self.player, self.interactables, False, collider)
-				# if(len(collided) > 0):
-					# target = collided.pop()
-					# if(target.interaction_type == "conversation"):
-						# convo = Conversation(self.player, target, self.dialogTree, self.eventsDict)
-						# convo.do(self.screen, self)
-					# elif(target.interaction_type == "level"):
-						# self.new_level(target.interaction)
 				if self.converse:
+					self.converse = False
 					convo = Conversation(self.player, self.conversation_seed, self.conversation_npc, self.level.dT, self.eventsDict)
 					convo.do(self.screen, self)
-					converse = False
 				elif self.change_level:
 					self.new_level(self.level_to_change)
 					self.change_level = False
@@ -124,6 +115,7 @@ class Gamestate:
 				print "Extroversion:", self.player.char_EX
 				print "Agreeableness:", self.player.char_AG
 				print "Neuroticism:", self.player.char_NE 
+				print self.eventsDict
 			elif event.type == KEYDOWN:
 				self.kd += 1
 			elif event.type == KEYUP:

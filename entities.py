@@ -6,8 +6,8 @@ import pathfinding
 from pathfinding import *
 
 MAX_SPEED = 8
-SPRITE_WIDTH = 32
-SPRITE_HEIGHT = 32
+SPRITE_WIDTH = 64
+SPRITE_HEIGHT = 64
 
 class spritesheet(object):
 	def __init__(self, filename):
@@ -74,8 +74,8 @@ class Player_Character(pygame.sprite.Sprite):
 	char_AG = 50
 	char_NE = 50
 	
-	ghost_sprite_width = 14
-	ghost_sprite_height = 20
+	current_sprite_width = 28
+	current_sprite_height = 40
 	
 	def __init__(self, image, frm):
 		pygame.sprite.Sprite.__init__(self)
@@ -85,12 +85,12 @@ class Player_Character(pygame.sprite.Sprite):
 		self.state_counter = 0
 		image_name = os.path.join('data', image)
 		self.ss = spritesheet(image_name)
-		self.image = self.ss.image_at(((self.facing*self.ghost_sprite_width, self.run_state*self.ghost_sprite_height), (self.ghost_sprite_width, self.ghost_sprite_height)), (255, 0, 255))
+		self.image = self.ss.image_at(((self.facing*self.current_sprite_width, self.run_state*self.current_sprite_height), (self.current_sprite_width, self.current_sprite_height)), (255, 0, 255))
 		self.rect = self.image.get_rect()
 		screen = pygame.display.get_surface()
 		self.area = screen.get_rect()
-		self.x = 20*SPRITE_WIDTH-(self.ghost_sprite_width/2)
-		self.y = 15*SPRITE_HEIGHT-(self.ghost_sprite_height/2)
+		self.x = 8*SPRITE_WIDTH-(self.current_sprite_width/2)
+		self.y = 5*SPRITE_HEIGHT-(self.current_sprite_height/2)
 		self.rect.topleft = self.x, self.y
 		self.frame = frm
 		self.x_pos = self.x
@@ -122,9 +122,10 @@ class Player_Character(pygame.sprite.Sprite):
 		else:
 			self.state_counter = 0
 			self.run_state = 0
+			self.change_sprite = True
 		if self.state_counter > 10:
 			self.state_counter = 0
-			self.run_state = (self.run_state + 1) % 6
+			self.run_state = (self.run_state % 4) + 1
 			self.change_sprite = True
 			
 	
@@ -153,7 +154,7 @@ class Player_Character(pygame.sprite.Sprite):
 			self.y += self.frame.dydt
 			self.rect = newpos
 		if self.change_sprite:
-			self.image = self.ss.image_at(((self.facing*self.ghost_sprite_width, self.run_state*self.ghost_sprite_height), (self.ghost_sprite_width, self.ghost_sprite_height)), (255, 0, 255))
+			self.image = self.ss.image_at(((self.facing*self.current_sprite_width, self.run_state*self.current_sprite_height), (self.current_sprite_width, self.current_sprite_height)), (255, 0, 255))
 			self.rect = self.image.get_rect()
 			self.rect.topleft = self.x, self.y
 			self.change_sprite = False
@@ -483,9 +484,13 @@ class ProximityTrigger(pygame.sprite.Sprite):
 		
 	def link_object(self, npc):
 		self.anchor = npc
+		#self.link_loc = [npc.x_pos, npc.y_pos]
 		self.link_loc = [npc.rect.x, npc.rect.y]
+		print "Anchoring trigger at", self.link_loc
 		self.rect = npc.rect.copy()
-		self.rect = self.rect.inflate(10, 10)
+		#self.rect.x = npc.x_pos
+		#self.rect.y = npc.y_pos
+		self.rect = self.rect.inflate(20, 20)
 		
 	def do(self, player, events):
 		
@@ -493,15 +498,19 @@ class ProximityTrigger(pygame.sprite.Sprite):
 			self.rect.move_ip(self.anchor.rect.x - self.link_loc[0], self.anchor.rect.y - self.link_loc[1])
 			self.link_loc[0] = self.anchor.rect.x
 			self.link_loc[1] = self.anchor.rect.y
-		#print pygame.sprite.collide_rect(self, player)
-		#print player.rect.colliderect(self.rect)
-		#print self.rect.top
-		if pygame.sprite.collide_rect(self, player):
+			#print "Player Pos:", player.x, player.y
+			#print "Trigger Pos:", self.rect.x, self.rect.y
+			playerRect = player.rect
+		else:
+			playerRect = Rect(player.x_pos, player.y_pos, player.current_sprite_width, player.current_sprite_height)
+		if self.rect.colliderect(playerRect):
+			#print "Colliding"
 			for key in self.triggers:
 				if key not in events or (not events[key]):
 					return
 			for key_value in self.key_values:
 				events[key_value[0]] = key_value[1]
 		elif self.stability:
+			
 			for key_value in self.key_values:
 				events[key_value[0]] = not key_value[1]
