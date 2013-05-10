@@ -12,19 +12,19 @@ def find_path(gamestate, actor, target):
 		while(True):
 			n = it.next()
 			if((not n.passable) & (n != actor) & (n != target)):
-				x = n.x_pos
-				y = n.y_pos
+				x = n.x_pos+blockSize/2
+				y = n.y_pos+blockSize/2
 				x = int(x/blockSize)
 				y = int(y/blockSize)
 				grid[y][x]='x'
 	except StopIteration:
 		pass
 	
-	initx = int(actor.x_pos/blockSize)
-	inity = int(actor.y_pos/blockSize)
+	initx = int((actor.x_pos+blockSize/2)/blockSize)
+	inity = int((actor.y_pos+blockSize/2)/blockSize)
 	
-	targetx = int(target.x_pos/blockSize)
-	targety = int(target.y_pos/blockSize)
+	targetx = int((target.x_pos+blockSize/2)/blockSize)
+	targety = int((target.y_pos+blockSize/2)/blockSize)
 
 	qu = Queue.PriorityQueue()
 	initp = Path()
@@ -52,6 +52,8 @@ def find_path(gamestate, actor, target):
 	while (len(result.nodes) > 0):
 	    n = result.nodes.pop()
 	    expanded_result.append(((n[1]*blockSize), (n[0]*blockSize)))
+	#Don't go to the node we're already in
+	expanded_result.pop()
 	return expanded_result
 	
 

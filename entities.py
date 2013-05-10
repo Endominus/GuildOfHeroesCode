@@ -366,11 +366,12 @@ class NPC(Obstacle):
 	facing = 2
 	exc = 0
 	id = 0
-	speed = 2
+	speed = 5
 	movement_target = 0
 	movement_target_node = 0
 	movement_path = 0
 	movement_path_life = 0
+	movement_path_init_life = 15
 	
 	def __init__(self, image, x, y, frm, id, transparent_pixel = True):
 		Obstacle.__init__(self, image, x, y, frm, transparent_pixel)
@@ -382,40 +383,41 @@ class NPC(Obstacle):
 		
 	def update(self):
 		if(self.movement_target != 0):
+		    self.movement_path
 		    #generate path
 		    if(self.movement_path_life == 0):
 			self.movement_path = find_path(self.gs, self, self.movement_target);
-			self.movement_path_life = 10
-			self.movement_target_node = self.movement_path.pop()
+			self.movement_path_life = self.movement_path_init_life
+			self.movement_target_node = (self.y_pos, self.x_pos)
 
 		    #check node
 		    if( (self.x_pos == self.movement_target_node[1]) and (self.y_pos == self.movement_target_node[0])):
 			if(len(self.movement_path) > 0):
 			    self.movement_target_node = self.movement_path.pop()
 			else:
-			    self.movement_path = find_path(self.gs, self, self.movement_target);
-			    self.movement_path_life = 100
-			    self.movement_target_node = self.movement_path.pop()
+			    self.movement_target_node = (self.y_pos, self.x_pos)
 
 		    if(self.x_pos > self.movement_target_node[1]):
-			self.x_pos -= self.speed
+			dx = -self.speed
 		    elif(self.x_pos < self.movement_target_node[1]):
-			self.x_pos += self.speed
-
+			dx = self.speed
+		    else:
+			dx = 0
 
 		    if(self.y_pos > self.movement_target_node[0]):
-			self.y_pos -= self.speed
+			dy = -self.speed
 		    elif(self.y_pos < self.movement_target_node[0]):
-			self.y_pos += self.speed
+			dy = self.speed
+		    else:
+			dy = 0
 
+		    if((dx != 0) and (dy != 0)):
+			dx = int(dx/1.414)
+			dy = int(dy/1.414)
+
+		    self.x_pos += dx
+		    self.y_pos += dy
 		    self.movement_path_life -= 1
-
-
-		    
-		
-		
-		
-		
 		
 		Obstacle.update(self)
 		
