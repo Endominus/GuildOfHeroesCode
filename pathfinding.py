@@ -48,14 +48,11 @@ def find_path(gamestate, actor, target):
 			if (grid[n[1]][n[0]] == ' ')and (not (n in position.nodes)):
 				newPath = Path.extend(position, n)
 				qu.put((abs(targetx - n[0]) + abs(targety - n[1]) + newPath.length, newPath), False)
-	
-	for n in result.nodes:
-	    grid[n[1]][n[0]] = 'o'
-	for r in grid:
-		print r
-
-	print result.nodes
-
+	expanded_result = []
+	while (len(result.nodes) > 0):
+	    n = result.nodes.pop()
+	    expanded_result.append(((n[1]*blockSize), (n[0]*blockSize)))
+	return expanded_result
 	
 
 #pos is a position tuple t = (x, y)
