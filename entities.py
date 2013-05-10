@@ -379,8 +379,8 @@ class NPC(Obstacle):
 		self.relationship = x
 		
 	def update(self):
-		#if(self.movement_target != 0):
-		    #print find_path(self.gs, self, self.movement_target);
+		if(self.movement_target != 0):
+		    print find_path(self.gs, self, self.movement_target);
 #		    if(self.x_pos>self.movement_target.x_pos):
 #			self.x_pos-=1
 #		    if(self.x_pos<self.movement_target.x_pos):

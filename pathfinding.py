@@ -4,8 +4,9 @@ import math
 def find_path(gamestate, actor, target):
 	it = gamestate.allsprites.__iter__()
 	
-	blockSize = 32
-	grid = [[' ']*(gamestate.levelWidth/blockSize) for i in range(gamestate.levelHeight/blockSize)]
+	blockSize = 64
+	
+	grid = [[' ']*(gamestate.levelWidth/blockSize) for i in range(2*gamestate.levelHeight/blockSize)]
 	
 	try:
 		while(True):
@@ -19,12 +20,12 @@ def find_path(gamestate, actor, target):
 	except StopIteration:
 		pass
 	
-	initx = int(actor.rect.centerx/blockSize)
-	inity = int(actor.rect.centery/blockSize)
+	initx = int(actor.x_pos/blockSize)
+	inity = int(actor.y_pos/blockSize)
 	
-	targetx = int(target.rect.centerx/blockSize)
-	targety = int(target.rect.centery/blockSize)
-	
+	targetx = int(target.x_pos/blockSize)
+	targety = int(target.y_pos/blockSize)
+
 	qu = Queue.PriorityQueue()
 	initp = Path()
 	initp.nodes = [(initx, inity)]
@@ -44,7 +45,7 @@ def find_path(gamestate, actor, target):
 
 		news = _neighbors(position.nodes[len(position.nodes)-1])
 		for n in news:
-			if not (n in position.nodes):
+			if (grid[n[1]][n[0]] == ' ')and (not (n in position.nodes)):
 				newPath = Path.extend(position, n)
 				qu.put((abs(targetx - n[0]) + abs(targety - n[1]) + newPath.length, newPath), False)
 	

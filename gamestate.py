@@ -20,8 +20,9 @@ class Gamestate:
 	eventsDict = {'action_button':False}
 	level = 0
 
-	levelWidth = 16*SPRITE_WIDTH
-	levelHeight = 10*SPRITE_HEIGHT
+	levelWidth = 40*SPRITE_WIDTH#16*SPRITE_WIDTH
+	levelHeight = 12*SPRITE_WIDTH#10*SPRITE_HEIGHT
+	#Damnit, ahmed, this is the size of the level- not of the screen.
 	#shouldn't be constant
 
 	delay_interact = 0
