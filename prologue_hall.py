@@ -2,6 +2,8 @@ from entities import *
 from dialog import *
 import sprites
 
+
+#So, this file doesn't do anything anymore?
 def initialize_level():
 	frm, allsprites_list, obstacles_list = sprites.load_level_data('prologue_hall.txt', 1)
 	frm.x = 0#(32*12)

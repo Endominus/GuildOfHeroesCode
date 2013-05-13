@@ -87,11 +87,22 @@ def load_level(level_name, gs):
 		level = Level('prologue_hall.txt', 1, gs)
 		level.adjust_starting_pos(-DISTANCE_TO_CENTER_X, -DISTANCE_TO_CENTER_Y)
 		level.adjust_starting_pos(13*SPRITE_WIDTH+14, 30*SPRITE_HEIGHT+20)
-		
+
+		stealth_npc = level.add_npc('Medic.bmp', 500, 500, 20, 1)
+		level.add_events_dict(['prologue_near_stealther'], [False])
+		level.add_proximity_trigger(stealth_npc, [], [['prologue_near_stealther', True]], True)
+		level.add_event_trigger(['prologue_near_stealther', 'action_button'], 1, 'prologue_stealth')
 		
 		#8, 18
 		return level
+	elif level_name == 'prologue_stealth':
+		level = Level('prologue_hall.txt', 1, gs)
+		level.adjust_starting_pos(-DISTANCE_TO_CENTER_X, -DISTANCE_TO_CENTER_Y)
+		level.adjust_starting_pos(13*SPRITE_WIDTH+14, 30*SPRITE_HEIGHT+20)
+
+		return level
 	elif level_name == "":
+		
 		pass
 		#Initialize level
 		#level = Level('NAME.txt', SPR_SHEET, gs)
