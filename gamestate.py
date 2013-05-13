@@ -95,6 +95,8 @@ class Gamestate:
 			#print "player pos: ", self.player.x, ":", self.player.y
 			if n.check_vision(self.frame.x + self.player.x, self.frame.y + self.player.y):
 				self.allsprites.add(n.take_action(1, self.frame, self.frame.x + self.player.x, self.frame.y + self.player.y))
+				if n.guard_behavior:
+				    n.chase(self.player)
 			else:
 				self.allsprites.remove(n.take_action(1, self.frame, self.frame.x + self.player.x, self.frame.y + self.player.y))
 				

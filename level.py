@@ -104,7 +104,8 @@ def load_level(level_name, gs):
 
 		for n in guards_positions:
 		    guard = level.add_npc('Medic.bmp', SPRITE_WIDTH*(n[1]-1), SPRITE_HEIGHT*(n[0]-1), 20, 1)
-
+		    guard.guard_behavior = True
+		    guard.gs = level.gs
 
 		return level
 	elif level_name == "":

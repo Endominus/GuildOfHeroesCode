@@ -372,6 +372,8 @@ class NPC(Obstacle):
 	movement_path = 0
 	movement_path_life = 0
 	movement_path_init_life = 15
+
+	guard_behavior = False
 	
 	def __init__(self, image, x, y, frm, id, transparent_pixel = True):
 		Obstacle.__init__(self, image, x, y, frm, transparent_pixel)
@@ -457,6 +459,10 @@ class NPC(Obstacle):
 		self.exc.x_pos = self.x_pos + 5
 		self.exc.y_pos = self.y_pos - 40
 		return self.exc
+
+	def chase(self, target):
+		self.movement_target = target
+		return
 
 class EventTrigger(object):
 

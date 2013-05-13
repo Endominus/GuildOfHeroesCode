@@ -31,9 +31,10 @@ def find_path(gamestate, actor, target):
 	initp.nodes = [(initx, inity)]
 	initp.length = 0
 	qu.put ((abs(initx-targetx)+abs(inity-targety), initp), False)
-	timeout = 10000
+	timeout = 500
 
-	result = 0
+	result = Path()
+	result.nodes = [(initx, inity)]
 
 	while timeout>0:
 		timeout = timeout - 1
@@ -48,6 +49,10 @@ def find_path(gamestate, actor, target):
 			if (grid[n[1]][n[0]] == ' ')and (not (n in position.nodes)):
 				newPath = Path.extend(position, n)
 				qu.put((abs(targetx - n[0]) + abs(targety - n[1]) + newPath.length, newPath), False)
+		result = newPath
+	if timeout==0:
+	    print "Warning: Failed to find a path"
+
 	expanded_result = []
 	while (len(result.nodes) > 0):
 	    n = result.nodes.pop()
