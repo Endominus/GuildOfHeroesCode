@@ -98,7 +98,7 @@ def load_level(level_name, gs):
 	elif level_name == 'prologue_stealth':
 		level = Level('prologue_stealth.txt', 1, gs)
 		level.adjust_starting_pos(-DISTANCE_TO_CENTER_X, -DISTANCE_TO_CENTER_Y)
-		level.adjust_starting_pos(13*SPRITE_WIDTH+14, 30*SPRITE_HEIGHT+20)
+		level.adjust_starting_pos(38*SPRITE_WIDTH+14, 20*SPRITE_HEIGHT+20)
 
 		return level
 	elif level_name == "":
