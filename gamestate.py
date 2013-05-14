@@ -80,12 +80,13 @@ class Gamestate:
 			if self.delay_interact<1:
 				self.delay_interact = 45
 				if self.converse:
-					self.converse = False
 					convo = Conversation(self.player, self.conversation_seed, self.conversation_npc, self.level.dT, self.eventsDict)
 					convo.do(self.screen, self)
 				elif self.change_level:
 					self.new_level(self.level_to_change)
-					self.change_level = False
+		
+		self.converse = False
+		self.change_level = False
 
 		if self.delay_interact>0:
 			self.delay_interact -= 1

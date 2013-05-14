@@ -86,6 +86,7 @@ class Player_Character(pygame.sprite.Sprite):
 		image_name = os.path.join('data', image)
 		self.ss = spritesheet(image_name)
 		self.image = self.ss.image_at(((self.facing*self.current_sprite_width, self.run_state*self.current_sprite_height), (self.current_sprite_width, self.current_sprite_height)), (255, 0, 255))
+		#self.image = pygame.transform.scale2x(self.image)
 		self.rect = self.image.get_rect()
 		screen = pygame.display.get_surface()
 		self.area = screen.get_rect()
@@ -95,17 +96,6 @@ class Player_Character(pygame.sprite.Sprite):
 		self.frame = frm
 		self.x_pos = self.x
 		self.y_pos = self.y
-		
-#	def _degradeSpeed(self):
-#		if y < 0:
-#			self.vert_velocity = max(-MAX_SPEED, self.vert_velocity+y)
-#		elif y > 0:
-#			self.vert_velocity = min(MAX_SPEED, self.vert_velocity+y)
-#		if x > 0:
-#			self.hor_velocity = min(MAX_SPEED, self.hor_velocity + x)
-#		elif x < 0:
-#			self.hor_velocity = max(-MAX_SPEED, self.hor_velocity + x)
-#		self._degradeSpeed()
 
 	def change_facing(self, direction):
 		if abs(direction) > 3:
@@ -157,6 +147,7 @@ class Player_Character(pygame.sprite.Sprite):
 			self.image = self.ss.image_at(((self.facing*self.current_sprite_width, self.run_state*self.current_sprite_height), (self.current_sprite_width, self.current_sprite_height)), (255, 0, 255))
 			self.rect = self.image.get_rect()
 			self.rect.topleft = self.x, self.y
+			#self.image = pygame.transform.scale2x(self.image)
 			self.change_sprite = False
 		self.x_pos += self.frame.dxdt
 		self.y_pos += self.frame.dydt
@@ -464,6 +455,48 @@ class NPC(Obstacle):
 		self.movement_target = target
 		return
 
+class AnimatedNPC(NPC):
+	i = 0
+	vision_area_width, vision_area_length = 50, 150
+	state = 1
+	relationship = -1
+	animation = 0
+	animation_timer = 0
+	exc = 0
+	id = 0
+	speed = 5
+	movement_target = 0
+	movement_target_node = 0
+	movement_path = 0
+	movement_path_life = 0
+	movement_path_init_life = 15
+	change_sprite = False
+	
+	def __init__(self, image, loc, sizes, frm, id):
+		NPC.__init__(self, image, loc[0], loc[1], frm, id)
+		pygame.sprite.Sprite.__init__(self)
+		self.current_sprite_width = sizes[0]
+		self.current_sprite_height = sizes[1]
+		self.facing = 0
+		self.run_state = 0
+		self.state_counter = 0
+		
+		image_name = os.path.join('data', image)
+		self.ss = spritesheet(image_name)
+		self.image = self.ss.image_at(((self.facing*self.current_sprite_width, self.run_state*self.current_sprite_height), (self.current_sprite_width, self.current_sprite_height)), (255, 0, 255))
+		self.image = pygame.transform.scale2x(self.image)
+		self.rect = self.image.get_rect()
+		screen = pygame.display.get_surface()
+		self.area = screen.get_rect()
+		self.rect.topleft = loc[0], loc[1]
+		self.x = loc[0]
+		self.y = loc[1]
+		self.x_pos = loc[0]
+		self.y_pos = loc[1]
+		self.frame = frm
+		self.update()
+		
+		
 class EventTrigger(object):
 
 	gs = 0
@@ -486,6 +519,7 @@ class EventTrigger(object):
 				return
 		if self.type == 0:
 			#events[self.trigger] = False
+			#print events
 			self.gs.converse = True
 			self.gs.conversation_seed = self.vals[0]
 			self.gs.conversation_npc = self.vals[1]
@@ -502,8 +536,6 @@ class EventTrigger(object):
 	def set_gs(self, gs):
 		self.gs = gs
 					
-			
-			
 class ProximityTrigger(pygame.sprite.Sprite):
 	anchor = 0
 	link_loc = 0
@@ -522,7 +554,6 @@ class ProximityTrigger(pygame.sprite.Sprite):
 		self.anchor = npc
 		#self.link_loc = [npc.x_pos, npc.y_pos]
 		self.link_loc = [npc.rect.x, npc.rect.y]
-		print "Anchoring trigger at", self.link_loc
 		self.rect = npc.rect.copy()
 		#self.rect.x = npc.x_pos
 		#self.rect.y = npc.y_pos

@@ -52,7 +52,7 @@ class MCNode(object):
 		self.eff_NE = stats[4]
 		self.required_events = events
 		self.text = text
-		self.child = NPCNode(treeid, childAttributes[0], childAttributes[1],  childAttributes[2], childAttributes[3], childAttributes[4], childAttributes[5], childAttributes[6], childAttributes[7])
+		self.child = NPCNode(treeid, childAttributes[0], childAttributes[1],  childAttributes[2], childAttributes[3], childAttributes[4], childAttributes[5], childAttributes[6])
 		
 	def addNode(self, id, MCSwitch, attributes):
 		if id[0] == self.id:
@@ -90,7 +90,6 @@ class NPCNode(object):
 	id = 0
 	
 	eff_rel = 0
-	eff_HP = 0
 	text = ""
 	name = ""
 	pictureID = 0
@@ -103,7 +102,7 @@ class NPCNode(object):
 	
 	terminal = False
 	
-	def __init__(self, treeid, text, name, picture, req_rel = 0, req_events = [], eff_rel = 0, eff_HP = 0, term = False):
+	def __init__(self, treeid, text, name, picture, req_rel = 0, req_events = [], eff_rel = 0, term = False):
 		self.id = treeid
 		self.text = text
 		self.name = name
@@ -111,7 +110,6 @@ class NPCNode(object):
 		self.required_relationship = req_rel
 		self.required_events = req_events
 		self.eff_rel = eff_rel
-		self.eff_HP = eff_HP
 		self.terminal = term
 		
 	def addNode(self, id, MCSwitch, attributes):
@@ -122,16 +120,16 @@ class NPCNode(object):
 				if MCSwitch:
 					self.child = MCNode(id[2:], attributes[0], attributes[1],  attributes[2], attributes[3], attributes[4])
 				else:
-					self.child = NPCNode(id[2:], attributes[0], attributes[1], attributes[2], attributes[3], attributes[4], attributes[5], attributes[6], attributes[7])
+					self.child = NPCNode(id[2:], attributes[0], attributes[1], attributes[2], attributes[3], attributes[4], attributes[5], attributes[6])
 		else:
 			if self.sibling:
 				self.sibling.addNode(id, MCSwitch, attributes)
 			else:
-				self.sibling = NPCNode(id, attributes[0], attributes[1], attributes[2], attributes[3], attributes[4], attributes[5], attributes[6], attributes[7])
+				self.sibling = NPCNode(id, attributes[0], attributes[1], attributes[2], attributes[3], attributes[4], attributes[5], attributes[6])
 				
 	def findDialog(self, id):
 		if id == self.id:
-			return [self.id, self.name, self.text, self.eff_rel, self.eff_HP]
+			return [self.id, self.name, self.text, self.eff_rel]
 		elif id[0] == self.id:
 			if not self.terminal:
 				return self.child.findDialog(id[2:])
@@ -151,7 +149,7 @@ class NPCNode(object):
 		
 	def findNextDialog(self, id, rel, events, att):
 		if rel >= self.required_relationship and inEvents(self.required_events, events):
-			return [self.id, self.name, self.text, self.eff_rel, self.eff_HP]
+			return [self.id, self.name, self.text, self.eff_rel]
 		else:
 			return self.sibling.findNextDialog(id, rel, events, att)
 			
@@ -159,7 +157,6 @@ class NPCNode(object):
 		if id[0] == self.id:
 			if not self.terminal:
 				return self.child.findResponse(id[2:], OP, CO, EX, AG, NE, events)
-			print self.text
 			return False
 		else:
 			return self.sibling.findResponse(id, OP, CO, EX, AG, NE, events)
@@ -180,7 +177,7 @@ class DialogTree(object):
 		if self.beginNode:
 			self.beginNode.addNode(id, MCSwitch, attributes)
 		else:
-			self.beginNode = NPCNode(id, attributes[0], attributes[1], attributes[2], attributes[3], attributes[4], attributes[5], attributes[6], attributes[7])
+			self.beginNode = NPCNode(id, attributes[0], attributes[1], attributes[2], attributes[3], attributes[4], attributes[5], attributes[6])
 			
 	def findDialog(self, id):
 		return self.beginNode.findDialog(id)

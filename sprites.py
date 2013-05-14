@@ -69,8 +69,6 @@ def load_level_data(level_file, sprite_sheet):
 		line = f.readline()
 
 	#frm.bind(-width*16, width*16, -height*16, height*16)
-	print x
-	print y
 	return frm, allsprites, obstacles
 		
 	
