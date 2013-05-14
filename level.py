@@ -148,21 +148,34 @@ def load_level(level_name, gs):
 		level.add_dialog_node("0.0.1.0.1", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "That sounded kinda suspicious.", [-1, -1, -1, -1, -1], ["Do you have some kinda problem with the Guild? Like those people outside?", "Shay de Morta", 0, 0, [], 5, False]])
 		level.add_dialog_node("0.0.1.0.1.0", False, ["No, not like those people. They want to join the Guild. I... do not. Please, go. I have wasted enough time speaking to you.", "Definitely A Creep", 0, 0, [], 0, True])
 		
-		level.add_dialog_node("1", False, ["This is the trophy President O'Harra gave to Paragon for saving New Las Vegas from the Moon-Martians of Neptune! I can't believe people thought that was faked.", "Shay de Morta", 0, 0, [], 0, True])
-		level.add_dialog_node("2", False, ["I didn't know the Leadbelter and Velvet Glove saved Panama!", "Shay de Morta", 0, 0, [], 0, False])
-		level.add_dialog_node("2.0", False, ["Oh, wait, this says they saved Panama, Illinois.", "Shay de Morta", 0, 0, [], 0, True])
-		level.add_dialog_node("3", False, ["\'Awarded to Crovax, from the people of Atlanta.\' Crovax, Crovax... He's the guy who shoots bees out of his mouth, right? Ugh, I hate bees.", "Shay de Morta", 0, 0, [], 0, False])
-		level.add_dialog_node("3.0", False, ["I guess this was when the Atlanteans attacked Georgia. That was a real bummer. Mom canceled our vacation there and everything. I could have seen the Guild helping out in person.", "Shay de Morta", 0, 0, [], 0, True])
-		level.add_dialog_node("4", False, ["\'Awarded to the true patriots who helped defeat secessionists in our midst.\' I remember when South Carolina tried to secede. It was a plot by the Union of Evil, right?", "Shay de Morta", 0, 0, [], 0, False])
-		level.add_dialog_node("4.0", False, ["No, wait, they found out later that some people there actually did want to secede. Honestly, though, the Union only have themselves to blame when they have such a terrible title.", "Shay de Morta", 0, 0, [], 0, True])
-		level.add_dialog_node("5", False, ["\'New York Department of Food Inspections Rating: B+.\' Well, that\'s nice.", "Shay de Morta", 0, 0, [], 0, True])
-		level.add_dialog_node("6", False, ["\'New York Department of Food Inspections Rating: B+.\' Well, that\'s nice.", "Shay de Morta", 0, 0, [], 0, True])
-		# level.add_dialog_node("", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "", [-1, -1, -1, -1, -1], ["", "", 0, , [], , , False]])
-		# level.add_dialog_node("", False, ["", "", 0, , [], , , False])
-		# level.add_dialog_node("", False, ["", "", 0, , [], , , False])
+		level.add_dialog_node("1", False, ["This is the trophy President O'Harra gave to Paragon for saving New Las Vegas from the Moon-Martians of Neptune! I can't believe people thought that was faked.", "Shay de Morta", 0, 0, [], 0, False])
+		level.add_dialog_node("1.0", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "Maybe it was...", [0, 1, 0, -2, 2], ["Then again, it could have been. I mean, no one but Paragon ever saw them. He said that they were invisible, and I suppose Moon-Martians would be.", "Shay de Morta", 0, 0, [], 0, True]])
+		level.add_dialog_node("1.1", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "But it couldn't have been.", [0, -1, 0, 2, -2], ["But he's a hero, and he wouldn't lie. Anyway, the government said they recovered evidence of the alien spacecraft, whatever nuts on the Internet might say.", "Shay de Morta", 0, 0, [], 0, True]])
 		
-		# level.add_dialog_node("", False, ["", "", 0, 0, [], , , False])
-		# level.add_dialog_node("", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "", [-1, -1, -1, -1, -1], ["", "Shay de Morta", 0, , [], , , False]])
+		level.add_dialog_node("2", False, ["I didn't know the Leadbelter and Velvet Glove saved Panama! I thought they stayed more towards the Canadian border, just in case.", "Shay de Morta", 0, 0, [], 0, False])
+		level.add_dialog_node("2.0", False, ["Oh, wait, this says they saved Panama, Illinois. That's... huh.", "Shay de Morta", 0, 0, [], 0, False])
+		level.add_dialog_node("2.0.0", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "Are they trying to make themselves look good?", [0, 1, 0, -2, 0], ["The fine print there makes them kinda look like they're saying the saved the country. That's a little cheap.", "Shay de Morta", 0, 0, [], 0, True]])
+		level.add_dialog_node("2.0.1", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "It's something...", [0, 0, 0, 3, -1], ["Hey, they can't all be world-shaking heroics. They were there for Panama when no one else was, I guess.", "Shay de Morta", 0, 0, [], 0, True]])
+		level.add_dialog_node("2.0.2", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "That's not that heroic.", [0, -5, 0, -2, 1], ["What, the National Guard couldn't handle that? Heroes are supposed to be larger than life, trotting around the globe, saving millions. That's a real let down.", "Shay de Morta", 0, 0, [], 0, True]])
+		
+		level.add_dialog_node("3", False, ["\'Awarded to Crovax, from the people of Atlanta.\' Crovax, Crovax... He's the guy who shoots bees out of his mouth, right? Ugh, I hate bees.", "Shay de Morta", 0, 0, [], 0, False])
+		level.add_dialog_node("3.0", False, ["I guess this was when the Atlanteans attacked Georgia. That was a real bummer. Mom canceled our vacation there and everything. I could have seen the Guild helping out in person.", "Shay de Morta", 0, 0, [], 0, False])
+		level.add_dialog_node("3.0.0", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "She was totally overreacting.", [0, 0, 0, 0, -2], ["I don't care what anyone says, Crovax did good work in Georgia. So some people got hurt. That's what happens when you defend the homeland, right?", "Shay de Morta", 0, 0, [], 0, True]])
+		level.add_dialog_node("3.0.1", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "Shame what happened to those people.", [0, 2, 1, 0, 2], ["Maybe Crovax wasn't the best choice to defend some place. I heard a lot of people there were killed by bee swarms before they all got cleared out. What a mess that was.", "Shay de Morta", 0, 0, [], 0, True]])
+		
+		level.add_dialog_node("4", False, ["\'Awarded to the true patriots who helped defeat secessionists in our midst.\' I remember when South Carolina tried to secede. It was a plot by the Union of Evil, right?", "Shay de Morta", 0, 0, [], 0, False])
+		level.add_dialog_node("4.0", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "No, it wasn't...", [0, 0, 0, 0, 0], ["No, wait, they found out later that some people there actually did want to secede. Honestly, though, the Union only have themselves to blame when they have such a terrible title.", "Shay de Morta", 0, 0, [], 0, True]])
+		level.add_dialog_node("4.1", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "Damn Unionists.", [0, -1, 0, -2, 2], ["I don't see why the government even lets them stay around. I mean, we know where the bad guys are, right? Why not just arrest them all?", "Shay de Morta", 0, 0, [], 0, True]])
+		
+		level.add_dialog_node("5", False, ["\'New York Department of Food  and Safety Inspections Rating: B+.\' Well, that\'s nice.", "Shay de Morta", 0, 0, [], 0, False])
+		level.add_dialog_node("5.0", False, ["Wait, how'd they get a trophy made out of this? Does the sanitation department just give out trophies now?", "Shay de Morta", 0, 0, [], 0, True])
+		
+		level.add_dialog_node("6", False, ["'In Memoriam; To all those who gave their lives to stop the tyranny of the Septemberists, and the martyrs of May 6th, 1992. Your sacrifice will always be remembered.'", "Shay de Morta", 0, 0, [], 0, False])
+		level.add_dialog_node("6.0", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "If only we could put the war behind us.", [0, 3, 1, 2, -1], ["The sooner the world moves past the Succession, the better it will be for everyone. There's been enough fighting over who controls what. The world can't afford another war like that one.", "Shay de Morta", 0, 0, [], 0, True]])
+		level.add_dialog_node("6.1", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "We will never forget", [0, 1, -1, -2, 1], ["One day we'll pay them back. It won't bring anyone back, but it's wrong to just walk away like they meant nothing. Maybe we couldn't have done anything then, but now...", "Shay de Morta", 0, 0, [], 0, True]])
+		
+		# level.add_dialog_node("", False, ["", "", 0, , [], , False])
+		# level.add_dialog_node("", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "", [0, 0, 0, 0, 0], ["", "Shay de Morta", 0, 0, [], 0, False]])
 		
 		return level
 	elif level_name == 'prologue_stealth':
