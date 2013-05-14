@@ -38,13 +38,13 @@ class MCNode(object):
 	
 	terminal = False
 	
-	def __init__(self, treeid, req_OP, req_CO, req_EX, req_AG, req_NE, events, text, stats, childAttributes):
+	def __init__(self, treeid, reqs, events, text, stats, childAttributes):
 		self.id = treeid
-		self.req_OP = req_OP
-		self.req_CO = req_CO
-		self.req_EX = req_EX
-		self.req_AG = req_AG
-		self.req_NE = req_NE
+		self.req_OP = reqs[0]
+		self.req_CO = reqs[1]
+		self.req_EX = reqs[2]
+		self.req_AG = reqs[3]
+		self.req_NE = reqs[4]
 		self.eff_OP = stats[0]
 		self.eff_CO = stats[1]
 		self.eff_EX = stats[2]
@@ -58,7 +58,7 @@ class MCNode(object):
 		if id[0] == self.id:
 			self.child.addNode(id, MCSwitch, attributes)
 		elif not self.sibling:
-			self.sibling = MCNode(id, attributes[0], attributes[1],  attributes[2], attributes[3], attributes[4], attributes[5], attributes[6], attributes[7], attributes[8])
+			self.sibling = MCNode(id, attributes[0], attributes[1],  attributes[2], attributes[3], attributes[4])
 		else:
 			self.sibling.addNode(id, MCSwitch, attributes)
 			
@@ -120,8 +120,7 @@ class NPCNode(object):
 				self.child.addNode(id[2:], MCSwitch, attributes)
 			else:
 				if MCSwitch:
-					print id
-					self.child = MCNode(id[2:], attributes[0], attributes[1],  attributes[2], attributes[3], attributes[4], attributes[5], attributes[6], attributes[7], attributes[8])
+					self.child = MCNode(id[2:], attributes[0], attributes[1],  attributes[2], attributes[3], attributes[4])
 				else:
 					self.child = NPCNode(id[2:], attributes[0], attributes[1], attributes[2], attributes[3], attributes[4], attributes[5], attributes[6], attributes[7])
 		else:
@@ -171,6 +170,12 @@ class DialogTree(object):
 	def __init__(self):
 		pass
 		
+	#Argument format for NPC dialog:
+	#(id, False, ["text", "Name", 0, relationship, events, eff_rel, eff_HP, term])
+	#Argument format for MC dialog:
+	#(id, True, [[[reqs]], [events], "text", [stats], childAttributes])
+	#Openness, Conscientiousness, Extroversion, Agreeableness, Neuroticism
+	
 	def addNode(self, id, MCSwitch, attributes):
 		if self.beginNode:
 			self.beginNode.addNode(id, MCSwitch, attributes)
