@@ -118,7 +118,6 @@ class Player_Character(pygame.sprite.Sprite):
 			self.run_state = (self.run_state % 4) + 1
 			self.change_sprite = True
 			
-	
 	def update(self):
 		if abs(self.frame.dxdt) > abs(self.frame.dydt):
 			if self.frame.dxdt > 0:
@@ -215,7 +214,6 @@ class Obstacle(pygame.sprite.Sprite):
 		self.x_pos = x
 		self.y_pos = y
 		self.frame = frm
-		self.update()
 
 
 	def update(self):
@@ -379,7 +377,7 @@ class NPC(Obstacle):
 		    self.movement_path
 		    #generate path
 		    if(self.movement_path_life == 0):
-			self.movement_path = find_path(self.gs, self, self.movement_target);
+			self.movement_path = find_path(self.gs, self, self.movement_target)
 			self.movement_path_life = self.movement_path_init_life
 			self.movement_target_node = (self.y_pos, self.x_pos)
 
@@ -462,6 +460,7 @@ class AnimatedNPC(NPC):
 	relationship = -1
 	animation = 0
 	animation_timer = 0
+	idle_animation_timer = 60
 	exc = 0
 	id = 0
 	speed = 5
@@ -472,18 +471,17 @@ class AnimatedNPC(NPC):
 	movement_path_init_life = 15
 	change_sprite = False
 	
-	def __init__(self, image, loc, sizes, frm, id):
+	def __init__(self, image, loc, sizes, frm, id, frames):
 		NPC.__init__(self, image, loc[0], loc[1], frm, id)
 		pygame.sprite.Sprite.__init__(self)
-		self.current_sprite_width = sizes[0]
-		self.current_sprite_height = sizes[1]
-		self.facing = 0
+		self.sprite_width = sizes[0]
+		self.sprite_height = sizes[1]
 		self.run_state = 0
-		self.state_counter = 0
+		self.facing = 0
 		
 		image_name = os.path.join('data', image)
 		self.ss = spritesheet(image_name)
-		self.image = self.ss.image_at(((self.facing*self.current_sprite_width, self.run_state*self.current_sprite_height), (self.current_sprite_width, self.current_sprite_height)), (255, 0, 255))
+		self.image = self.ss.image_at(((self.facing*self.sprite_width, self.run_state*self.sprite_height), (self.sprite_width, self.sprite_height)), (255, 0, 255))
 		self.image = pygame.transform.scale2x(self.image)
 		self.rect = self.image.get_rect()
 		screen = pygame.display.get_surface()
@@ -494,8 +492,44 @@ class AnimatedNPC(NPC):
 		self.x_pos = loc[0]
 		self.y_pos = loc[1]
 		self.frame = frm
+		self.walk_frames = frames[0]
+		self.idle_frames = frames[1]
 		self.update()
 		
+	def cycle_run_state(self):
+		if self.animation > 0:
+			self.animation_timer -= 1
+			self.idle_animation_timer = 240
+		else:
+			self.run_state = 0
+			self.idle_animation_timer -= 1
+			if self.idle_animation_timer == 0:
+				self.run_state = self.walk_frames
+				self.animation = 2
+			self.change_sprite = False
+		if self.animation_timer == 0:
+			if self.animation == 1:
+				self.animation_timer = 15
+				self.run_state = (self.run_state % self.walk_frames) + 1
+				self.change_sprite = True
+			elif self.animation == 2:
+				self.animation_timer = 30
+				self.run_state += 1
+				if self.run_state > self.idle_frames + self.walk_frames:
+					self.animation = 0
+					self.run_state = 0
+				self.change_sprite = True
+				
+	def update(self):
+		self.cycle_run_state()
+		if self.change_sprite:
+			self.image = self.ss.image_at(((self.facing*self.sprite_width, self.run_state*self.sprite_height), (self.sprite_width, self.sprite_height)), (255, 0, 255))
+			self.rect = self.image.get_rect()
+			self.rect.topleft = self.x, self.y
+			self.image = pygame.transform.scale2x(self.image)
+			self.change_sprite = False
+		
+		Obstacle.update(self)
 		
 class EventTrigger(object):
 

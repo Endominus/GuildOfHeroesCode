@@ -32,6 +32,17 @@ class Level(object):
 		self.NPCs.add(actor)
 		return actor
 		
+	def add_animated_npc(self, image, loc, sizes, rel, id, frames):
+		actor = AnimatedNPC(image, loc, sizes, self.frm, id, frames)
+		actor.layer = 3
+		actor.interactive = True
+		actor.relationship = rel
+		
+		self.allsprites.add(actor)
+		self.obstacles.add(actor)
+		self.NPCs.add(actor)
+		return actor
+		
 	def add_events_dict(self, keys, values):
 		self.events = dict(zip(keys, values))
 		
@@ -67,6 +78,7 @@ def load_level(level_name, gs):
 		#follower = level.add_npc('Medic.bmp', 1200, 1200, 0, 2)
 		#follower.movement_target = level.player
 		#follower.gs = level.gs
+		lucca = level.add_animated_npc('Lucca_ss.bmp', [1200, 1000], [16, 32], 50, 2, [6, 3])
 		
 		level.add_events_dict(['prologue_near_medic', 'prologue_near_door'], [False, False])
 		
