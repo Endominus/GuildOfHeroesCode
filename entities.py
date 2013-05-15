@@ -517,7 +517,7 @@ class AnimatedNPC(NPC):
 	relationship = -1
 	animation = 0
 	animation_timer = 0
-	idle_animation_timer = 60
+	idle_animation_timer = 300
 	exc = 0
 	id = 0
 	speed = 5
@@ -556,7 +556,7 @@ class AnimatedNPC(NPC):
 	def cycle_run_state(self):
 		if self.animation > 0:
 			self.animation_timer -= 1
-			self.idle_animation_timer = 240
+			self.idle_animation_timer = 300
 		else:
 			self.run_state = 0
 			self.idle_animation_timer -= 1

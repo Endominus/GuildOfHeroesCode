@@ -78,7 +78,7 @@ class Gamestate:
 	def _check_interact(self):
 		if self.interact:
 			if self.delay_interact<1:
-				self.delay_interact = 45
+				self.delay_interact = 20
 				if self.converse:
 					convo = Conversation(self.player, self.conversation_seed, self.conversation_npc, self.level.dT, self.eventsDict)
 					convo.do(self.screen, self)
@@ -103,7 +103,7 @@ class Gamestate:
 				
 
 	def _check_input(self):
-		self.interact = False
+		self.interact = True
 		x, y = 0, 0
 		for event in pygame.event.get():
 			if event.type == QUIT:
@@ -135,14 +135,16 @@ class Gamestate:
 			if keysPressed[K_d]:
 				x += 1
 			if keysPressed[K_SPACE]:
-				self.interact = True
+				#self.interact = True
 				self.eventsDict['action_button'] = True
 			else:
-				self.interact = False
+				#self.interact = False
 				self.eventsDict['action_button'] = False
 			#if keysPressed[K_m]:
 				#self.frame.lock_frame()
 				#self.player.toggle_movement()
+		else:
+			self.eventsDict['action_button'] = False
 			
 		self.frame.update_keys(x,y) 
 #	if interact

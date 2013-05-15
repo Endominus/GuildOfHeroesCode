@@ -32,11 +32,12 @@ class Level(object):
 		self.NPCs.add(actor)
 		return actor
 		
-	def add_animated_npc(self, image, loc, sizes, rel, id, frames):
+	def add_animated_npc(self, image, loc, sizes, rel, id, frames, facing = 0):
 		actor = AnimatedNPC(image, loc, sizes, self.frm, id, frames)
 		actor.layer = 3
 		actor.interactive = True
 		actor.relationship = rel
+		actor.facing = facing
 		
 		self.allsprites.add(actor)
 		self.obstacles.add(actor)
@@ -222,15 +223,35 @@ def load_level(level_name, gs):
 		ped3 = level.add_npc('pedestal.bmp', 19*SPRITE_WIDTH, 32*SPRITE_HEIGHT, 1, 1)
 		ped4 = level.add_npc('pedestal.bmp', 28*SPRITE_WIDTH, 32*SPRITE_HEIGHT, 1, 1)
 		ped5 = level.add_npc('pedestal.bmp', 23.5*SPRITE_WIDTH, 26.5*SPRITE_HEIGHT, 1, 1)
+		medic = level.add_npc('Medic.bmp', 21*SPRITE_WIDTH, 9*SPRITE_HEIGHT, 1, 1)
+		lucca = level.add_animated_npc('Lucca_ss.bmp', [21*SPRITE_WIDTH, 10*SPRITE_HEIGHT], [16, 32], 50, 2, [6, 3], 2)
 		
 		#Create events_dict
-		level.add_events_dict(['near_ped2', 'near_ped3', 'near_ped1', 'near_ped4', 'near_ped5', 'near_chatterers', 'eavesdropped_on_chatterers'], [False, False, False, False, False, False, False, False, ])
+		level.add_events_dict(['near_ped2', 'near_ped3', 'near_ped1', 'near_ped4', 'near_ped5', 'near_chatterers', 'not_eavesdropped_on_chatterers'], [False, False, False, False, False, False, True, False])
 		
 		#Add Proximity triggers
+		level.add_proximity_trigger(ped1, [], [['near_ped1', True]], True)
+		level.add_proximity_trigger(ped2, [], [['near_ped2', True]], True)
+		level.add_proximity_trigger(ped3, [], [['near_ped3', True]], True)
+		level.add_proximity_trigger(ped4, [], [['near_ped4', True]], True)
+		level.add_proximity_trigger(ped5, [], [['near_ped5', True]], True)
+		level.add_proximity_trigger([[22*SPRITE_WIDTH, 10*SPRITE_HEIGHT], SPRITE_WIDTH, 3*SPRITE_HEIGHT], [], [['near_chatterers', True]], False)
 		
 		#Add Event triggers
+		level.add_event_trigger(['near_chatterers', 'not_eavesdropped_on_chatterers'], 0, ['0', lucca])
+		level.add_event_trigger(['near_chatterers', 'not_eavesdropped_on_chatterers', 'action_button'], 2, [['not_eavesdropped_on_chatterers'], [False]])
 		
 		#Add Dialog nodes
+		level.add_dialog_node("0", 0, ["I don't feel comfortable fighting Dr. Octavio anymore. Can you cover Jersey for a couple of weeks while I decompress?", "Scarlet Fever", 0, 0, [], 0, False])
+		level.add_dialog_node("0.0", 0, ["Why? What happened?", "Magefire", 0, 0, [], 0, False])
+		level.add_dialog_node("0.0.0", 0, ["Last week he was doing his usual thing; you know, 'I am the rightful king of this city, you shall all kneel,' blah blah blah. I show up, tell him we'll never succumb.", "Scarlet Fever", 0, 0, [], 0, False])
+		level.add_dialog_node("0.0.0.0", 0, ["Obviously.", "Magefire", 0, 0, [], 0, False])
+		level.add_dialog_node("0.0.0.0.0", 0, ["We exchange insults as usual, then he just kind of slumps over.", "Scarlet Fever", 0, 0, [], 0, False])
+		level.add_dialog_node("0.0.0.0.0.0", 0, ["A trick? Don't tell me you fell for it.", "Magefire", 0, 0, [], 0, False])
+		level.add_dialog_node("0.0.0.0.0.0.0", 0, ["It wasn't a trick. I shot him with an energy blast to make sure. He barely moved. So I go up and ask him what's wrong. He says he's just not feeling the connection any more. That we don't have the same spark.", "Scarlet Fever", 0, 0, [], 0, False])
+		level.add_dialog_node("0.0.0.0.0.0.0.0", 0, ["Yikes.", "Magefire", 0, 0, [], 0, False])
+		level.add_dialog_node("0.0.0.0.0.0.0.0.0", 0, ["I know, right? This whole time, he thought we were flirting. We get into this huge argument about it, too. Right in front of City Hall! I asked him what he thought of me fighting other villains, then. He tells me he likes a girl who's adventurous. That he's  okay with sharing.", "Scarlet Fever", 0, 0, [], 0, False])
+		level.add_dialog_node("0.0.0.0.0.0.0.0.0.0", 0, ["What a creep. Don't worry, you take as long as you need. I'll cover for you until this blows over.", "Magefire", 0, 0, [], 0, True])
 		
 		return level
 	elif level_name == "":
