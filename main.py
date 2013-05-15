@@ -6,6 +6,7 @@ from pygame.locals import *
 import prologue_outside
 import prologue_hall
 import pathfinding
+import pygame.mixer
 
 SCREEN_WIDTH = 16*SPRITE_WIDTH
 SCREEN_HEIGHT = 10*SPRITE_HEIGHT

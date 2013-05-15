@@ -217,8 +217,14 @@ def load_level(level_name, gs):
 		level.adjust_starting_pos(24*SPRITE_WIDTH, 32*SPRITE_HEIGHT)
 		
 		#Create all NPCs
+		ped1 = level.add_npc('pedestal.bmp', 19*SPRITE_WIDTH, 23*SPRITE_HEIGHT, 1, 1)
+		ped2 = level.add_npc('pedestal.bmp', 28*SPRITE_WIDTH, 23*SPRITE_HEIGHT, 1, 1)
+		ped3 = level.add_npc('pedestal.bmp', 19*SPRITE_WIDTH, 32*SPRITE_HEIGHT, 1, 1)
+		ped4 = level.add_npc('pedestal.bmp', 28*SPRITE_WIDTH, 32*SPRITE_HEIGHT, 1, 1)
+		ped5 = level.add_npc('pedestal.bmp', 23.5*SPRITE_WIDTH, 26.5*SPRITE_HEIGHT, 1, 1)
 		
 		#Create events_dict
+		level.add_events_dict(['near_ped2', 'near_ped3', 'near_ped1', 'near_ped4', 'near_ped5', 'near_chatterers', 'eavesdropped_on_chatterers'], [False, False, False, False, False, False, False, False, ])
 		
 		#Add Proximity triggers
 		
@@ -238,6 +244,7 @@ def load_level(level_name, gs):
 		#Create all NPCs
 		
 		#Create events_dict
+		#level.add_events_dict([], [])
 		
 		#Add Proximity triggers
 		

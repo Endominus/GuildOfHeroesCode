@@ -388,7 +388,7 @@ class NPC(Obstacle):
 		Obstacle.__init__(self, image, x, y, frm, transparent_pixel)
 		self.x_home = self.x_pos
 		self.y_home = self.y_pos
-		self.exc = Obstacle('exclamation.bmp', 500, 500, frm)
+		#self.exc = Obstacle('exclamation.bmp', 500, 500, frm)
 		self.id = id
 		
 	def setRelationship(self, x):
