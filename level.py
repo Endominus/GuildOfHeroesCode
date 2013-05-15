@@ -95,7 +95,7 @@ def load_level(level_name, gs):
 		
 		return level
 	elif level_name == "prologue_hall":
-		level = Level('prologue_hall.txt', 1, gs)
+		level = Level('prologue_hall.txt', 2, gs)
 		level.adjust_starting_pos(-DISTANCE_TO_CENTER_X, -DISTANCE_TO_CENTER_Y)
 		level.adjust_starting_pos(13*SPRITE_WIDTH+14, 30*SPRITE_HEIGHT+20)
 
@@ -119,7 +119,7 @@ def load_level(level_name, gs):
 		level.add_proximity_trigger(trophy6, [], [['near_trophy6', True]], True)
 		level.add_proximity_trigger(mad_dog, [], [['prologue_near_mad_dog', True]], True)
 		
-		level.add_event_trigger(['prologue_near_stealther', 'action_button'], 1, 'prologue_stealth')
+		level.add_event_trigger(['prologue_near_stealther', 'action_button'], 1, 'prologue_walkaround')
 		level.add_event_trigger(['prologue_near_mad_dog', 'action_button'], 0, ['0', mad_dog])
 		level.add_event_trigger(['near_trophy1', 'action_button'], 0, ['1', trophy1])
 		level.add_event_trigger(['near_trophy2', 'action_button'], 0, ['2', trophy2])
@@ -209,6 +209,23 @@ def load_level(level_name, gs):
 		cat.AI_cat_target = level.player
 		cat.gs = level.gs
 
+		return level
+	elif level_name == "prologue_walkaround":
+		#Initialize level
+		level = Level('prologue_walkaround.txt', 2, gs)
+		level.adjust_starting_pos(-DISTANCE_TO_CENTER_X, -DISTANCE_TO_CENTER_Y)
+		level.adjust_starting_pos(24*SPRITE_WIDTH, 32*SPRITE_HEIGHT)
+		
+		#Create all NPCs
+		
+		#Create events_dict
+		
+		#Add Proximity triggers
+		
+		#Add Event triggers
+		
+		#Add Dialog nodes
+		
 		return level
 	elif level_name == "":
 		

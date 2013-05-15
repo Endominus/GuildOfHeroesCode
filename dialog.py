@@ -168,7 +168,7 @@ class DialogTree(object):
 		pass
 		
 	#Argument format for NPC dialog:
-	#(id, False, ["text", "Name", 0, relationship, events, eff_rel, eff_HP, term])
+	#(id, False, ["text", "Name", 0, relationship, events, eff_rel, term])
 	#Argument format for MC dialog:
 	#(id, True, [[[reqs]], [events], "text", [stats], childAttributes])
 	#Openness, Conscientiousness, Extroversion, Agreeableness, Neuroticism

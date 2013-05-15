@@ -1,7 +1,9 @@
 import os
 from entities import *
 
-sprite_dictionary_1 = {'a': "tile_floor.bmp", 'b': "bottom_sidewalk_temp.bmp", 'c': ".bmp", 'd': "left_door_temp.bmp", 'e': ".bmp", 'f': ".bmp", 'g': ".bmp", 'h': ".bmp", 'i': ".bmp", 'j': ".bmp", 'k': ".bmp", 'l': ".bmp", 'm': ".bmp", 'n': ".bmp", 'o': ".bmp", 'p': ".bmp", 'q': ".bmp", 'r': ".bmp", 's': "sidewalk_temp.bmp", 't': "top_sidewalk_temp.bmp", 'u': ".bmp", 'v': ".bmp", 'w': "window_temp.bmp", 'x': ".bmp", 'y': ".bmp", 'z': ".bmp", 'A': ".bmp", 'B': "banner_temp.bmp", 'C': ".bmp", 'D': "right_door_temp.bmp", 'E': ".bmp", 'F': ".bmp", 'G': ".bmp", 'H': ".bmp", 'I': ".bmp", 'J': ".bmp", 'K': ".bmp", 'L': "street_lines_temp.bmp", 'M': ".bmp", 'N': ".bmp", 'O': ".bmp", 'P': ".bmp", 'Q': ".bmp", 'R': ".bmp", 'S': "street_temp.bmp", 'T': "trophy_template.bmp", 'U': ".bmp", 'V': "wall_temp.bmp", 'W': ".bmp", 'X': ".bmp", 'Y': ".bmp", 'Z': ".bmp"}
+sprite_dictionary_1 = {'a': "tile_floor.bmp", 'b': "bottom_sidewalk_temp.bmp", 'c': ".bmp", 'd': "left_door_temp.bmp", 'e': ".bmp", 'f': ".bmp", 'g': ".bmp", 'h': ".bmp", 'i': ".bmp", 'j': ".bmp", 'k': ".bmp", 'l': ".bmp", 'm': ".bmp", 'n': ".bmp", 'o': ".bmp", 'p': ".bmp", 'q': ".bmp", 'r': ".bmp", 's': "sidewalk_temp.bmp", 't': "top_sidewalk_temp.bmp", 'u': ".bmp", 'v': ".bmp", 'w': "window_temp.bmp", 'x': ".bmp", 'y': ".bmp", 'z': ".bmp", 'A': ".bmp", 'B': "banner_temp.bmp", 'C': ".bmp", 'D': "right_door_temp.bmp", 'E': ".bmp", 'F': ".bmp", 'G': ".bmp", 'H': ".bmp", 'I': ".bmp", 'J': ".bmp", 'K': ".bmp", 'L': "street_lines_temp.bmp", 'M': ".bmp", 'N': ".bmp", 'O': ".bmp", 'P': ".bmp", 'Q': ".bmp", 'R': ".bmp", 'S': "street.bmp", 'T': "trophy_template.bmp", 'U': ".bmp", 'V': "wall_temp.bmp", 'W': ".bmp", 'X': ".bmp", 'Y': ".bmp", 'Z': ".bmp"}
+
+sprite_dictionary_2 = {'a': "tile_floor.bmp", 'b': ".bmp", 'c': ".bmp", 'd': "left_door_temp.bmp", 'e': "street.bmp", 'f': "nw_corner.bmp", 'g': "north_wall.bmp", 'h': "ne_corner.bmp", 'i': "left_wall.bmp", 'j': "se_corner.bmp", 'k': "south_wall.bmp", 'l': "sw_corner.bmp", 'm': "right_wall.bmp", 'n': "nw_uncorner.bmp", 'o': "north_uncorner.bmp", 'p': "ne_uncorner.bmp", 'q': "north_p_wall.bmp", 'r': "east_uncorner.bmp", 's': "east_p_wall.bmp", 't': "se_uncorner.bmp", 'u': "south_uncorner.bmp", 'v': "sw_uncorner.bmp", 'w': "south_p_wall.bmp", 'x': "west_uncorner.bmp", 'y': "west_p_wall.bmp", 'z': ".bmp", 'A': ".bmp", 'B': ".bmp", 'C': ".bmp", 'D': "right_door_temp.bmp", 'E': ".bmp", 'F': ".bmp", 'G': ".bmp", 'H': ".bmp", 'I': ".bmp", 'J': ".bmp", 'K': ".bmp", 'L': "street_lines_temp.bmp", 'M': ".bmp", 'N': ".bmp", 'O': ".bmp", 'P': ".bmp", 'Q': ".bmp", 'R': ".bmp", 'S': "street.bmp", 'T': "trophy_template.bmp", 'U': ".bmp", 'V': "wall_temp.bmp", 'W': ".bmp", 'X': ".bmp", 'Y': ".bmp", 'Z': ".bmp"}
 
 def load_level_data(level_file, sprite_sheet):
 	fullname = os.path.join('data', level_file)
@@ -9,6 +11,8 @@ def load_level_data(level_file, sprite_sheet):
 	#May be extended for more sprites
 	if sprite_sheet == 1:
 		spr_dict = sprite_dictionary_1
+	elif sprite_sheet == 2:
+		spr_dict = sprite_dictionary_2
 	line = f.readline()
 	#Coordinates
 	x, y = 0, 0

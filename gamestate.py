@@ -119,7 +119,6 @@ class Gamestate:
 				print "Extroversion:", self.player.char_EX
 				print "Agreeableness:", self.player.char_AG
 				print "Neuroticism:", self.player.char_NE 
-				print self.eventsDict
 			elif event.type == KEYDOWN:
 				self.kd += 1
 			elif event.type == KEYUP:

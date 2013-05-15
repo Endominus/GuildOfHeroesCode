@@ -167,23 +167,23 @@ class Player_Character(pygame.sprite.Sprite):
 		
 	def change_stats(self, OP, CO, EX, AG, NE):
 		if OP > -1:
-			self.char_OP = (self.char_OP + OP)/2
+			self.char_OP = (self.char_OP + OP)
 			self.char_OP = max(0, self.char_OP)
 			self.char_OP = min(100, self.char_OP)
 		if CO > -1:
-			self.char_CO = (self.char_CO + CO)/2
+			self.char_CO = (self.char_CO + CO)
 			self.char_CO = max(0, self.char_CO)
 			self.char_CO = min(100, self.char_CO)
 		if EX > -1:
-			self.char_EX = (self.char_EX + EX)/2
+			self.char_EX = (self.char_EX + EX)
 			self.char_EX = max(0, self.char_EX)
 			self.char_EX = min(100, self.char_EX)
 		if AG > -1:
-			self.char_AG = (self.char_AG + AG)/2
+			self.char_AG = (self.char_AG + AG)
 			self.char_AG = max(0, self.char_AG)
 			self.char_AG = min(100, self.char_AG)
 		if NE > -1:
-			self.char_NE = (self.char_NE + NE)/2
+			self.char_NE = (self.char_NE + NE)
 			self.char_NE = max(0, self.char_NE)
 			self.char_NE = min(100, self.char_NE)
 
