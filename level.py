@@ -184,11 +184,30 @@ def load_level(level_name, gs):
 		level.adjust_starting_pos(38*SPRITE_WIDTH+14, 20*SPRITE_HEIGHT+20)
 
 		guards_positions = ((5,18), (5, 38), (6, 3), (14, 6), (6, 23), (21, 4), (23, 5), (21, 17))
-
+		guards_paths = (0, 
+		    0,#((5,38), (2, 38), (2, 30), (2, 38)),
+		    0,#((6, 3), (10, 8)),
+		    #((adjx(14) ,adjy(6)), (adjx(9), adjy(6))),
+		    ((adjx(1), adjy(1)), (adjx(10), adjy(1))),
+		    0,#((6, 23), (12, 33)),
+		    0,
+		    0,#((adjx(23), adjy(5)), (adjx(19), adjy(21))),
+		    0)
+		i = 0
 		for n in guards_positions:
 		    guard = level.add_npc('Medic.bmp', SPRITE_WIDTH*(n[1]-1), SPRITE_HEIGHT*(n[0]-1), 20, 1)
 		    guard.guard_behavior = True
+		    guard.AI_behavior = "guard"
+		    guard.AI_guard_target = level.player
+		    guard.movement_target = level.player
 		    guard.gs = level.gs
+		    guard.AI_patrol_route = guards_paths[i]
+		    i+=1
+
+		cat = level.add_npc('Pascal.png',250, 250, 20, 1)
+		cat.AI_behavior = "cat"
+		cat.AI_cat_target = level.player
+		cat.gs = level.gs
 
 		return level
 	elif level_name == "":
@@ -210,3 +229,8 @@ def load_level(level_name, gs):
 		#Add Dialog nodes
 		
 		#return level
+
+def adjx(x):
+    return (x)*SPRITE_WIDTH
+def adjy(y):
+    return (y)*SPRITE_HEIGHT

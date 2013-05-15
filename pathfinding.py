@@ -31,7 +31,7 @@ def find_path(gamestate, actor, target):
 	initp.nodes = [(initx, inity)]
 	initp.length = 0
 	qu.put ((abs(initx-targetx)+abs(inity-targety), initp), False)
-	timeout = 500
+	timeout = 50
 
 	result = Path()
 	result.nodes = [(initx, inity)]

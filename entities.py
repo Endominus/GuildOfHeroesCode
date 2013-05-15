@@ -294,8 +294,8 @@ class Frame:
 			self.dxdt += (self.d2xdt2*f_k)/m
 			self.dydt += (self.d2ydt2*f_k)/m
 		
-		#print "dx ", self.dxdt
-		#print "dy ", self.dydt
+		#rint "dx ", self.dxdt
+		#rint "dy ", self.dydt
 			
 		self.fixcollision()
 		
@@ -346,7 +346,16 @@ class Frame:
 			self.player.rect.move_ip(0, -self.dydt)
 			if(len(collided) > 0):
 				self.dydt = 0
-		
+
+class Position:
+	x_pos = 0
+	y_pos = 0
+
+	def __init__(self, x, y):
+	    self.x_pos = x
+	    self.y_pos = y
+
+
 class NPC(Obstacle):
 	i = 0
 	vision_area_width, vision_area_length = 50, 150
@@ -361,11 +370,24 @@ class NPC(Obstacle):
 	movement_path = 0
 	movement_path_life = 0
 	movement_path_init_life = 15
+	x_home = 0
+	y_home = 0
 
-	guard_behavior = False
-	
+	AI_behavior = 0
+	AI_state = 0
+	AI_guard_target = 0
+	AI_attention_span = 1000
+	AI_patrol_route = 0
+	AI_patrol_route_position = 0
+	last_seen_player = AI_attention_span + 1
+
+	AI_cat_target=0
+	AI_cat_flee_box = 300
+
 	def __init__(self, image, x, y, frm, id, transparent_pixel = True):
 		Obstacle.__init__(self, image, x, y, frm, transparent_pixel)
+		self.x_home = self.x_pos
+		self.y_home = self.y_pos
 		self.exc = Obstacle('exclamation.bmp', 500, 500, frm)
 		self.id = id
 		
@@ -373,67 +395,102 @@ class NPC(Obstacle):
 		self.relationship = x
 		
 	def update(self):
-		if(self.movement_target != 0):
-		    self.movement_path
-		    #generate path
-		    if(self.movement_path_life == 0):
-			self.movement_path = find_path(self.gs, self, self.movement_target)
-			self.movement_path_life = self.movement_path_init_life
+		if(self.AI_behavior == "guard"):
+		    if(self.last_seen_player < self.AI_attention_span):
+			self.AI_state = "chase"
+			self.movement_target = self.AI_guard_target
+		    elif(self.AI_patrol_route == 0):
+			self.AI_state = "go home"
+		    else:
+			self.AI_state = "patrol"
+		if(self.AI_behavior == "cat"):
+		    xd = self.x_pos - self.AI_cat_target.x_pos
+		    yd = self.y_pos - self.AI_cat_target.y_pos
+		    if( abs(xd) + abs(yd) < self.AI_cat_flee_box):
+			t = Position(self.x_pos + xd, self.y_pos + yd)
+			self.movement_target = t
+			self.AI_state = "chase"
+		    else:
+			self.AI_state = "go home"
+
+		if(self.AI_state == "chase"):
+		    self.move(self.movement_target)
+		elif(self.AI_state == "go home"):
+		    if(not (self.x_home == self.x_pos & self.y_pos == self.y_home)):
+			self.move(Position(self.x_home, self.y_home))
+		elif(self.AI_state == "patrol"):
+		    t = Position(self.AI_patrol_route[self.AI_patrol_route_position][0], self.AI_patrol_route[self.AI_patrol_route_position][1])
+		    p = self.move(t)
+		    if (len(p) == 0):
+			self.AI_patrol_route_position += 1
+		    if (self.AI_patrol_route_position >= len(self.AI_patrol_route)):
+			self.AI_patrol_route_position = 0
+		    pass
+		Obstacle.update(self)
+
+	def move(self, target):
+		#generate path
+		if(self.movement_path_life == 0):
+		    self.movement_path = find_path(self.gs, self, target)
+		    self.movement_path_life = self.movement_path_init_life
+		    self.movement_target_node = (self.y_pos, self.x_pos)
+
+		#check node
+		if( (self.x_pos == self.movement_target_node[1]) and (self.y_pos == self.movement_target_node[0])):
+		    if(len(self.movement_path) > 0):
+			self.movement_target_node = self.movement_path.pop()
+		    else:
 			self.movement_target_node = (self.y_pos, self.x_pos)
 
-		    #check node
-		    if( (self.x_pos == self.movement_target_node[1]) and (self.y_pos == self.movement_target_node[0])):
-			if(len(self.movement_path) > 0):
-			    self.movement_target_node = self.movement_path.pop()
-			else:
-			    self.movement_target_node = (self.y_pos, self.x_pos)
+		if(self.x_pos > self.movement_target_node[1]):
+		    dx = -self.speed
+		elif(self.x_pos < self.movement_target_node[1]):
+		    dx = self.speed
+		else:
+		    dx = 0
 
-		    if(self.x_pos > self.movement_target_node[1]):
-			dx = -self.speed
-		    elif(self.x_pos < self.movement_target_node[1]):
-			dx = self.speed
-		    else:
-			dx = 0
+		if(self.y_pos > self.movement_target_node[0]):
+		    dy = -self.speed
+		elif(self.y_pos < self.movement_target_node[0]):
+		    dy = self.speed
+		else:
+		    dy = 0
 
-		    if(self.y_pos > self.movement_target_node[0]):
-			dy = -self.speed
-		    elif(self.y_pos < self.movement_target_node[0]):
-			dy = self.speed
-		    else:
-			dy = 0
+		if((dx != 0) and (dy != 0)):
+		    dx = int(dx/1.414)
+		    dy = int(dy/1.414)
 
-		    if((dx != 0) and (dy != 0)):
-			dx = int(dx/1.414)
-			dy = int(dy/1.414)
+		self.x_pos += dx
+		self.y_pos += dy
+		self.movement_path_life -= 1
+		return self.movement_path
 
-		    self.x_pos += dx
-		    self.y_pos += dy
-		    self.movement_path_life -= 1
-		
-		Obstacle.update(self)
-		
 	def check_vision(self, other_x, other_y):
 		self.i += 1
 		if self.facing % 4 == 0:
 			if self.y_pos - (self.rect.bottom - self.rect.top) / 2 - other_y > 0 and self.y_pos - (self.rect.bottom - self.rect.top) / 2 - other_y < self.vision_area_length:
 				if math.fabs(self.x_pos - other_x) < self.vision_area_width and self.state != 0:
+					self.last_seen_player = 0
 					return True
 				
 		if self.facing % 4 == 1:
 			if self.x_pos + (self.rect.right - self.rect.left) / 2 - other_x < 0 and self.x_pos + (self.rect.right - self.rect.left) / 2 - other_x > -1 * self.vision_area_length:
 				if math.fabs(self.y_pos - other_y) < 50 and self.state != 0:
+					self.last_seen_player = 0
 					return True	
 				
 		if self.facing % 4 == 2:
 			if self.y_pos + (self.rect.bottom - self.rect.top) / 2 - other_y < 0 and self.y_pos + (self.rect.bottom - self.rect.top) / 2 - other_y > -1 * self.vision_area_length:
 				if math.fabs(self.x_pos - other_x) < self.vision_area_width and self.state != 0:
+					self.last_seen_player = 0
 					return True
 				
 		if self.facing % 4 == 3:
 			if self.x_pos - (self.rect.right - self.rect.left) / 2 - other_x > 0 and self.x_pos - (self.rect.right - self.rect.left) / 2 - other_x < self.vision_area_length:
 				if math.fabs(self.y_pos - other_y) < 50 and self.state != 0:
+					self.last_seen_player = 0
 					return True	
-				
+		self.last_seen_player += 1
 		return False
 		
 	def change_facing(self, direction):
@@ -449,9 +506,9 @@ class NPC(Obstacle):
 		self.exc.y_pos = self.y_pos - 40
 		return self.exc
 
-	def chase(self, target):
-		self.movement_target = target
-		return
+#	def chase(self, target):
+#		self.movement_target = target
+#		return
 
 class AnimatedNPC(NPC):
 	i = 0
