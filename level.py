@@ -74,25 +74,25 @@ def load_level(level_name, gs):
 		level.adjust_starting_pos(-DISTANCE_TO_CENTER_X, -DISTANCE_TO_CENTER_Y)
 		level.adjust_starting_pos(18.5*SPRITE_WIDTH+20, 10*SPRITE_HEIGHT+20)
 		
-		medic = level.add_npc('Medic.bmp', 1000, 1000, 20, 1)
+		#medic = level.add_npc('Medic.bmp', 1000, 1000, 20, 1)
 		banner = level.add_npc('banner.bmp', 15.5*SPRITE_WIDTH, 5*SPRITE_HEIGHT, 0, 3)
 		#follower = level.add_npc('Medic.bmp', 1200, 1200, 0, 2)
 		#follower.movement_target = level.player
 		#follower.gs = level.gs
-		lucca = level.add_animated_npc('Lucca_ss.bmp', [1200, 1000], [16, 32], 50, 2, [6, 3])
+		#lucca = level.add_animated_npc('Lucca_ss.bmp', [1200, 1000], [16, 32], 50, 2, [6, 3])
 		
 		level.add_events_dict(['prologue_near_medic', 'prologue_near_door'], [False, False])
 		
-		level.add_proximity_trigger(medic, [], [['prologue_near_medic', True]], True)
+		#level.add_proximity_trigger(medic, [], [['prologue_near_medic', True]], True)
 		level.add_proximity_trigger([[18*SPRITE_WIDTH, 8*SPRITE_HEIGHT], 2*SPRITE_WIDTH, SPRITE_HEIGHT+10], [], [['prologue_near_door', True]], True)
 		
-		level.add_event_trigger(['prologue_near_medic', 'action_button'], 0, ['0', medic])
+		#level.add_event_trigger(['prologue_near_medic', 'action_button'], 0, ['0', medic])
 		level.add_event_trigger(['prologue_near_door', 'action_button'], 1, 'prologue_hall')
 		
-		level.add_dialog_node("0", 0, ["First node", "Medic", 0, 0, [], 0, False])
-		level.add_dialog_node("0.0", 0, ["Second node", "Ghost", 0, 0, [], 0, False])
-		level.add_dialog_node("0.0.0", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "A choice", [100, -1, -1, -1, -1], ["I made the good choice. Yay!", "Ghost", 0, 0, [], 0, True]])
-		level.add_dialog_node("0.0.1", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "Another choice", [-1, -1, -1, -1, 0], ["I made the bad choice. Boo!", "Ghost", 0, 0, [], 0, True]])
+		# level.add_dialog_node("0", 0, ["First node", "Medic", 0, 0, [], 0, False])
+		# level.add_dialog_node("0.0", 0, ["Second node", "Ghost", 0, 0, [], 0, False])
+		# level.add_dialog_node("0.0.0", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "A choice", [100, -1, -1, -1, -1], ["I made the good choice. Yay!", "Ghost", 0, 0, [], 0, True]])
+		# level.add_dialog_node("0.0.1", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "Another choice", [-1, -1, -1, -1, 0], ["I made the bad choice. Boo!", "Ghost", 0, 0, [], 0, True]])
 		
 		return level
 	elif level_name == "prologue_hall":
@@ -135,20 +135,20 @@ def load_level(level_name, gs):
 		level.add_dialog_node("0", False, ["Who are you?", "Shay de Morta", 0, 0, [], 0, 0, False])
 		level.add_dialog_node("0.0", False, ["Huh? What? Oh, I'm just a tourist. Minding my own business, as you can see.", "Trustworthy Fellow", 0, 0, [], 0, 0, False])
 		
-		level.add_dialog_node("0.0.0", True, [[[0, 100], [0, 100], [0, 100], [0, 80], [30, 100]], [], "He doesn't look like a tourist...", [-1, -1, -1, 40, 60], ["Really? Because you look more like a supervillain.", "Shay de Morta", 0, 0, [], -5, False]])
+		level.add_dialog_node("0.0.0", True, [[[0, 100], [0, 100], [0, 100], [0, 80], [30, 100]], [], "He doesn't look like a tourist...", [0, 0, 0, -1, 1], ["Really? Because you look more like a supervillain.", "Shay de Morta", 0, 0, [], -5, False]])
 		level.add_dialog_node("0.0.0.0", False, ["Uh...", "Possible Supervillain", 0, 0, [], 0, False])
 		level.add_dialog_node("0.0.0.0.0", False, ["Oh, I get it. You're a cosplayer, aren't you? I read about you guys on the Internet. You go around dressed like your favorite bad guy, right?", "Shay de Morta", 0, 0, [], 0, False])
 		level.add_dialog_node("0.0.0.0.0.0", False, ["That's right! I came here dressed as the dreaded villain, Anghamar. But I'm not him. Just acting.", "Just a cosplayer", 0, 0, [], 0, False])
 		level.add_dialog_node("0.0.0.0.0.0.0", False, ["Huh, I've never heard of Anghamar. He must be pretty small-time. Well, I 'll leave you to it, then.", "Shay de Morta", 0, 0, [], -10, True])
 		
-		level.add_dialog_node("0.0.1", True, [[[30, 100], [0, 100], [0, 100], [50, 100], [0, 100]], [], "Cool, another superhero nerd!", [60, -1, 55, 70, -1], ["You're a tourist? I just got here myself, though I wanted to come for years. Isn't this place awesome? Have you seen all the trophies they have?", "Shay de Morta", 0, 0, [], -5, False]])
+		level.add_dialog_node("0.0.1", True, [[[30, 100], [0, 100], [0, 100], [50, 100], [0, 100]], [], "Cool, another superhero nerd!", [1, 0, 0, 2, 0], ["You're a tourist? I just got here myself, though I wanted to come for years. Isn't this place awesome? Have you seen all the trophies they have?", "Shay de Morta", 0, 0, [], -5, False]])
 		level.add_dialog_node("0.0.1.0", False, ["Yes. I've seen the... trophies. They are very nice testaments to the Guild's... effectiveness in battle.", "Not Suspicious At All", 0, 0, [], 0, False])
 		
-		level.add_dialog_node("0.0.1.0.0", True, [[[30, 100], [40, 100], [40, 100], [0, 100], [0, 100]], [], "Not just in battle!", [-1, 60, 70, -1, -1], ["Hey, the Guild of Heroes is more than a group of people punching out bad guys, you know. They have a really active charitable arm and stuff. You should read this book I've got here by Paragon, \'The Vanguard of Righteousness.\' It talks about how great the Guild is for the country and stuff.", "Shay de Morta", 0, 0, [], -20, False]])
+		level.add_dialog_node("0.0.1.0.0", True, [[[30, 100], [40, 100], [40, 100], [0, 100], [0, 100]], [], "Not just in battle!", [0, 1, 2, 0, 0], ["Hey, the Guild of Heroes is more than a group of people punching out bad guys, you know. They have a really active charitable arm and stuff. You should read this book I've got here by Paragon, \'The Vanguard of Righteousness.\' It talks about how great the Guild is for the country and stuff.", "Shay de Morta", 0, 0, [], -20, False]])
 		level.add_dialog_node("0.0.1.0.0.0", False, ["Trust me, I've read the book. I did not come away from it as... enchanted as you clearly were. Now if you would excuse me, I really must get back to observing the area.", "Clearly In It For the Punches", 0, 0, [], 0, False])
 		level.add_dialog_node("0.0.1.0.0.0.0", False, ["Whatever, dude. Suit yourself.", "Shay de Morta", 0, 0, [], 0, True])
 		
-		level.add_dialog_node("0.0.1.0.1", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "That sounded kinda suspicious.", [-1, -1, -1, -1, -1], ["Do you have some kinda problem with the Guild? Like those people who protested a couple of weeks ago?", "Shay de Morta", 0, 0, [], 5, False]])
+		level.add_dialog_node("0.0.1.0.1", True, [[[0, 100], [0, 100], [0, 100], [0, 100], [0, 100]], [], "That sounded kinda suspicious.", [0, 0, 0, 0, 0], ["Do you have some kinda problem with the Guild? Like those people who protested a couple of weeks ago?", "Shay de Morta", 0, 0, [], 5, False]])
 		level.add_dialog_node("0.0.1.0.1.0", False, ["No, not like those people. They want to join the Guild, and have complaints about its progressiveness. I... do not want to join. Please, go. I have wasted enough time speaking to you.", "Definitely A Creep", 0, 0, [], 0, True])
 		
 		level.add_dialog_node("1", False, ["This is the trophy President O'Harra gave to Paragon for saving New Las Vegas from the Moon-Martians of Neptune! I can't believe people thought that was faked.", "Shay de Morta", 0, 0, [], 0, False])

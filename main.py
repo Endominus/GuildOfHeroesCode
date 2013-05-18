@@ -48,45 +48,4 @@ def main():
 	while (not gs.quit):
 		gs.idle()
 	
-	# frm = Frame()
-	# frm.bind(-500, 500, -500, 500)
-	# player = Player_Character('Ghost.bmp', frm)
-	# rock = Obstacle('Concrete Wall Horizontal.png', 200, 200, frm, False)
-	# rock2 = Obstacle('Concrete Wall Horizontal.png', 800, 200, frm, False)
-	# rock3 = Obstacle('Concrete Wall Horizontal.png', 200, 800, frm, False)
-	# rock4 = Obstacle('Concrete Wall Horizontal.png', 600, 600, frm, False)
-	# allsprites = pygame.sprite.RenderPlain((player, rock, rock2, rock3, rock4))
-	# obstacles = pygame.sprite.Group((rock, rock4, rock2, rock3))
-	# frm.obstruct(player, obstacles)
-	
-#	frm, player, interactables, allsprites = prologue_outside.initialize_level()
-#	clock = pygame.time.Clock()
-#	
-#
-#	key_down = 0
-#	while 1:
-#		clock.tick(60)
-#		x, y = 0, 0
-#		for event in pygame.event.get():
-#			if event.type == QUIT:
-#				return
-#			elif event.type == KEYDOWN and event.key == K_ESCAPE:
-#				return
-#			elif event.type == KEYDOWN:
-#				key_down += 1
-#			elif event.type == KEYUP:
-#				key_down -= 1
-#				
-#		#if key_down:
-#		#	print "Key down"
-#		if key_down > 0:
-#			x, y = key_pressed()
-#		
-#		frm.update_keys(x, y)
-#		frm.run_kinetics()
-#		
-#		allsprites.update()
-#		screen.blit(background, (0, 0))
-#		allsprites.draw(screen)
-#		pygame.display.flip()
 main()

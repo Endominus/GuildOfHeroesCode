@@ -91,15 +91,16 @@ class Gamestate:
 		if self.delay_interact>0:
 			self.delay_interact -= 1
 			
-		# for n in self.NPCs:
-##			print "screen pos: ", self.frame.x, ":", self.frame.y
-##			print "player pos: ", self.player.x, ":", self.player.y
-			# if n.check_vision(self.frame.x + self.player.x, self.frame.y + self.player.y):
-				# self.allsprites.add(n.take_action(1, self.frame, self.frame.x + self.player.x, self.frame.y + self.player.y))
-##				if n.guard_behavior:
-##				   n.chase(self.player)
-			# else:
-				# self.allsprites.remove(n.take_action(1, self.frame, self.frame.x + self.player.x, self.frame.y + self.player.y))
+		for n in self.NPCs:
+#			print "screen pos: ", self.frame.x, ":", self.frame.y
+#			print "player pos: ", self.player.x, ":", self.player.y
+			if n.check_vision(self.frame.x + self.player.x, self.frame.y + self.player.y):
+				#self.allsprites.add(n.take_action(1, self.frame, self.frame.x + self.player.x, self.frame.y + self.player.y))
+				pass
+#				if n.guard_behavior:
+#				   n.chase(self.player)
+			else:
+				self.allsprites.remove(n.take_action(1, self.frame, self.frame.x + self.player.x, self.frame.y + self.player.y))
 				
 
 	def _check_input(self):
@@ -134,6 +135,9 @@ class Gamestate:
 				x -= 1
 			if keysPressed[K_d]:
 				x += 1
+			if keysPressed[K_4]:
+				self.change_level = True
+				self.level_to_change = 'prologue_stealth'
 			if keysPressed[K_SPACE]:
 				#self.interact = True
 				self.eventsDict['action_button'] = True
